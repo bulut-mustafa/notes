@@ -1,17 +1,21 @@
-import Image from "next/image"
-export default function Button() {
+import Image from "next/image";
+
+export default function FolderButton() {
     return (
-        <div className="">
-            <button className="flex rounded-lg border border-slate-200 active:bg-[#fff5f2] active:border-2 active:border-[#9f857a] rounded-lg p-2">
+        <li className="w-full list-none">
+            <button className="group flex w-full rounded-xl active:bg-[#fff2ee] text-lg active:font-semibold active:text-[#856559] text-[#a9a9a9] items-center p-2">
                 <Image
-                    src={`/buttons/heart.svg`}
-                    width={32}
-                    height={32}
+                    src={`/folders/all-notes-active.svg`}
+                    width={48}
+                    height={48}
                     alt={`favorite`}
-                    className=""
+                    className="m-2"
                 />
-                <p>All folder</p>
+                <p>All Notes</p>
+                <span className="ml-auto mr-2 bg-[#f3f3f3] text-[#a9a9a9] rounded-xl p-2 group-active:bg-[#fce4dc] group-active:text-[#856559]">
+                    24
+                </span>
             </button>
-        </div>
-    )
+        </li>
+    );
 }
