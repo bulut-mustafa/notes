@@ -1,16 +1,30 @@
-import DateTag from "./date-tag"
-export default function NoteCard() {
+"use client";
+import { useRouter, usePathname } from "next/navigation";
+import DateTag from "./date-tag";
+import FavoriteTag from "./favorite-tag";
+
+export default function NoteCard({
+    id, title, description, }: {
+    id: string; title: string; description: string; }) {
+    const router = useRouter();
+    const pathname = usePathname(); 
+
+    const folder = pathname.split("/")[1];
+
+    const handleClick = () => {
+        router.push(`/${folder}/${id}`); 
+    };
+
     return (
-        <div className="flex group flex-col bg-[#fafafa] active-bg:fef p-4">
+        <div onClick={handleClick} className="flex group rounded-lg flex-col p-4 text-sm cursor-pointer transition-all border bg-[#fafafa] border-transparent hover:bg-[#fef6f4] hover:border-[#e1c3bd] hover:border-2" >
             <div className="flex justify-between items-center">
-                <p className="text-lg font-semibold text-[#727272] group-active:text-[#856559]">
-                    Title of the note
-                </p>
+                <p className="text-md font-medium text-[#727272] truncate">{title}</p>
             </div>
-            <p className="text-[#a9a9a9] group-active:text-[#868282]">
-                Some content for the note
-            </p>
-            <DateTag />
+            <p className="text-xs text-[#a9a9a9] truncate">{description}</p>
+            <div className="flex gap-2 mt-1">
+                <DateTag />
+                <FavoriteTag />
+            </div>
         </div>
-    )
+    );
 }
