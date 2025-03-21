@@ -1,7 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FolderButton from "./folder-button";
 import Image from "next/image";
+import { auth } from '@/firebase';
+import { useRouter } from 'next/navigation';
+import { useAuth } from "@/context/auth-context";
+import AvatarDropdown from "./avatar-dropdown";
+
+
 const sidebarItems = [
   { name: "All Notes", icon: "📄", link: "/notes", count: 24 },
   { name: "Favorites", icon: "⭐", link: "/favorites", count: 24 },
@@ -19,17 +25,28 @@ const tags = [
 
 
 export default function Sidebar() {
+  const {user, loading} = useAuth();
   const [isOpen, setIsOpen] = useState(true);
+  const router = useRouter();
   // Detect if the screen is small
   const isSmallScreen = typeof window !== "undefined" && window.innerWidth < 640;
 
+
+  useEffect(() => {
+    console.log("User in Sidebar:", user);
+    console.log("Loading state in Sidebar:", loading);
+    if (!loading && !user) {
+        router.replace('/login');
+    }
+}, [user, loading, router]);
   const handleSelect = () => {
-    console.log(isSmallScreen);
     if (isSmallScreen) {
       
       setIsOpen(false);
     }
   };
+
+  
   return (
     <aside
       className={`h-screen p-2 bg-white border-r border-slate-200 transition-all ${isOpen ? "w-full sm:w-64" : "w-16"
@@ -52,15 +69,8 @@ export default function Sidebar() {
       </div>
 
       {/* Profile */}
-      <div className="flex items-center gap-3 py-2 border-b border-slate-200">
-        <div className="min-w-12 min-h-12 rounded-full bg-gray-300"></div>
-        {isOpen && (
-          <div>
-            <h3 className="font-semibold">Mustafa Bulut</h3>
-            <p className="text-sm text-gray-500">mustafaiste@outlook.com</p>
-          </div>
-        )}
-      </div>
+      {user && <AvatarDropdown user={user} loading={loading} logOut={() => auth.signOut()} />}
+      
       <ul className="mt-2 last:mb-0">
         {sidebarItems.map((item) => (
           <FolderButton key={item.link} name={item.name} icon="all-notes" count={24} link={item.link} isOpen={isOpen} onSelect={handleSelect} />
