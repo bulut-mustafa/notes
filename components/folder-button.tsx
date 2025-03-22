@@ -7,13 +7,13 @@ export default function FolderButton({ name, icon, count, link, isOpen, onSelect
     const router = useRouter();
 
     // Check if the current pathname matches the button link
-    const isActive = pathname === link;
+    const isActive = pathname.includes(link);
     const handleRoute = () => {
         onSelect();
         router.push(link);
     };
     return (
-        <li className="w-full list-none mb-1">
+        <li className="w-full list-none">
             <button
                 className={`group flex w-full rounded-xl text-sm items-center p-1 transition-colors cursor-pointer
                     ${isActive ? "bg-[#fff2ee] font-semibold text-[#856559]" : "text-[#a9a9a9] hover:bg-gray-100"}

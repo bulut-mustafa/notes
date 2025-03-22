@@ -38,7 +38,6 @@ export const loginUser = async (email: string, password: string) => {
   try {
     const credential = await signInWithEmailAndPassword(auth, email, password);
     const user = credential.user;
-    console.log(user);
     // Convert user instance to plain object
     return {
       uid: user.uid,
