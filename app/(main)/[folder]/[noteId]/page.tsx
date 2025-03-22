@@ -8,7 +8,7 @@ export default function NotePage() {
         <div className="p-2">
             <ButtonBar />
             <h1 className="text-2xl font-bold">Note {noteId}</h1>
-            <p className="text-gray-600">Here is the content of note {noteId}...</p>
+            <p className="text-[#856559]">Here is the content of note {noteId}...</p>
         </div>
     );
 }

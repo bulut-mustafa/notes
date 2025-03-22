@@ -46,7 +46,7 @@ export default function ImagePicker({ name }: ImagePickerProps) {
       {/* Image Preview Container */}
       <div
         onClick={handlePickClick}
-        className="w-full max-w-lg border-2 rounded-lg border-slate-400 flex justify-center items-center text-gray-400 cursor-pointer overflow-hidden"
+        className="w-full max-w-lg border-2 rounded-lg border-[#956e60]flex justify-center items-center text-gray-400 cursor-pointer overflow-hidden"
       >
         {pickedImage ? (
           <Image 
