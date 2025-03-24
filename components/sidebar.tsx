@@ -4,7 +4,8 @@ import FolderButton from "./folder-button";
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import { useAuth } from "@/context/auth-context";
-
+import UserDropdown from "./avatar-dropdown";
+import { auth } from '@/firebase';
 
 const sidebarItems = [
   { name: "Notes", icon: "📄", link: "/notes", count: 24 },
@@ -63,16 +64,10 @@ export default function Sidebar() {
           Note<span className="text-black">App</span>
         </h2>
       </div>
-      <div className="flex items-center gap-3 py-2 border-b border-slate-200">
-
         {user ?
           <div className="flex items-center gap-3 py-2 border-b border-slate-200">
-            <div className="min-w-12 min-h-12 rounded-full bg-gray-300"></div>
             {isOpen && (
-              <div>
-                <h3 className="font-semibold">Mustafa Bulut</h3>
-                <p className="text-sm text-gray-500">mustafaiste@outlook.com</p>
-              </div>
+              <UserDropdown user={user} loading={loading} isOpen={isOpen} logOut={() => auth.signOut()} />
             )}
           </div> :
           <div className="flex items-center space-x-3 p-2 animate-pulse">
@@ -81,7 +76,6 @@ export default function Sidebar() {
               <div className="w-24 h-4 bg-gray-300 rounded"></div>
             </div>
           </div>}
-      </div>
 
       <ul className="mt-2 last:mb-0">
         {sidebarItems.map((item) => (

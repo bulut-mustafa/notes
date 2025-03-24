@@ -1,6 +1,6 @@
 "use client";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import CardList from "@/components/card-list";
+import CardList from "@/components/note/card-list";
 import Image from "next/image";
 
 const sidebarItems = [

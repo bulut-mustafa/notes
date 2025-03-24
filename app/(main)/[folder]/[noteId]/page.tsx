@@ -1,6 +1,6 @@
 'use client';
 import { useParams } from "next/navigation";
-import ButtonBar from "@/components/button-bar";
+import ButtonBar from "@/components/note/button-bar";
 export default function NotePage() {
     const { noteId } = useParams();
 
