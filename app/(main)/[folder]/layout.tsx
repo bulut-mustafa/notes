@@ -28,7 +28,7 @@ export default function FolderLayout({ children }: { children: React.ReactNode }
         <div className="flex gap-2 items-center border-b border-slate-200 pb-2">
           <input
             type="text"
-            className="w-full border border-slate-200 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#956e60]"
+            className="w-full border border-slate-200 p-2 rounded-lg focus:outline-none focus:ring focus:ring-[#956e60]"
             placeholder="Search"
           />
           <button

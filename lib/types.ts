@@ -4,3 +4,11 @@ export type authUser = {
     photoURL?: string | null;
     email: string | null;
   };
+
+export type Tag = {
+    id: string;
+    userId: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+  };
