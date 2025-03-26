@@ -1,12 +1,13 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import FolderButton from "./folder-button";
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import { useAuth } from "@/context/auth-context";
 import UserDropdown from "./avatar-dropdown";
 import { auth } from '@/firebase';
-
+import { addTag, getTags } from "@/lib/actions";
+import { Tag } from "@/lib/types";
 const sidebarItems = [
   { name: "Notes", icon: "📄", link: "/notes", count: 24 },
   { name: "Favorites", icon: "⭐", link: "/favorites", count: 24 },
@@ -20,13 +21,8 @@ export default function Sidebar() {
   const { user, loading } = useAuth();
   const [isOpen, setIsOpen] = useState(true);
   const router = useRouter();
-  const [tags, setTags] = useState([
-    "School Related",
-    "Church Sermons",
-    "Movies and Games",
-    "Family Trip",
-    "Love Life",
-  ]);
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [tagsLoading, setTagsLoading] = useState(true);
   // Detect if the screen is small
   const isSmallScreen = typeof window !== "undefined" && window.innerWidth < 640;
 
@@ -45,10 +41,24 @@ export default function Sidebar() {
     }
   };
 
-  const addTag = () => {
-    if (newTag.trim()) {
-      
-      setTags([...tags, newTag.trim()]);
+  const fetchTags = useCallback(async () => {
+    if (!user) return;
+    try {
+      const data = await getTags(user.uid);
+      setTags(data);
+      setTagsLoading(false);
+    } catch (error) {
+      console.error("Error fetching reservations:", error);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    fetchTags();
+  }, [user, fetchTags]);
+  const handleAddTag = () => {
+    if (newTag.trim() && user) {
+      addTag(user.uid, newTag);
+      fetchTags();
       setNewTag("");
       setIsDropdownOpen(false);
     }
@@ -94,11 +104,11 @@ export default function Sidebar() {
       {/* Tags */}
       <div className="flex justify-between mt-6 items-center relative">
         <h4 className="text-xs text-gray-500">TAGS</h4>
-        <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className={`${isOpen ? 'flex' : 'hidden'} cursor-pointer rounded-lg border border-slate-200 active:bg-[#fff5f2] active:border-2 active:border-[#9f857a] p-1 px-2`}>+</button>
+        <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className={`${isOpen ? 'flex' : 'hidden'} cursor-pointer rounded-lg border border-slate-200 active:bg-[#fff5f2] active:border-[#9f857a] p-1 px-2`}>+</button>
       </div>
-      
+
       {isDropdownOpen && (
-        <div className="absolute bg-white shadow-lg rounded-lg p-2 mt-2 w-full border border-gray-200">
+        <div className="absolute bg-white shadow-lg rounded-lg p-2 mt-2 w-full sm:w-60 border border-gray-200">
           <input
             type="text"
             value={newTag}
@@ -106,15 +116,24 @@ export default function Sidebar() {
             placeholder="Enter tag name"
             className="w-full p-1 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#9f857a]"
           />
-          <button onClick={addTag} className="w-full mt-2 p-1 bg-[#9f857a] text-white rounded-md">Add</button>
+          <button onClick={handleAddTag} className="w-full mt-2 p-1 bg-[#9f857a] text-white rounded-md">Add</button>
         </div>
       )}
       <ul className="mt-2">
-        {tags.map((tag) => (
-          <li key={tag} className="flex items-center gap-2 p-2 text-gray-500">
-            🏷️ {isOpen && <span className="text-nowrap">{tag}</span>}
-          </li>
-        ))}
+        {tagsLoading ? (
+          Array.from({ length: 5 }).map((_, index) => (
+            <li key={index} className="flex items-center gap-2 p-2 animate-pulse">
+              <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
+              {isOpen && <div className="w-24 h-4 bg-gray-300 rounded"></div>}
+            </li>
+          ))
+        ) : (
+          tags.map((tag) => (
+            <li key={tag.id} className="flex items-center gap-2 p-2 text-gray-500">
+              🏷️ {isOpen && <span className="text-nowrap">{tag.name}</span>}
+            </li>
+          ))
+        )}
       </ul>
     </aside >
   );
