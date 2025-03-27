@@ -6,7 +6,7 @@ const nextConfig = ({
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: 'plus.unsplash.com' },
-      { protocol: 'https', hostname: 'timetogo-pictures.s3.amazonaws.com' },
+      { protocol: 'https', hostname: 'notes-app-note-images.s3.amazonaws.com' },
       { protocol: 'https', hostname: 'timetogo-user-pictures.s3.amazonaws.com' },
     ],
     deviceSizes: [320, 420, 768, 1024, 1200],

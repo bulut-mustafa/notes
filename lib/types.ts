@@ -12,3 +12,27 @@ export type Tag = {
     createdAt: string;
     updatedAt: string;
   };
+
+
+export type NoteFormData = {
+  title: string;
+  content: string;
+  image: string;
+  tags: string[];
+  status: string;
+  newsAttached: string[];
+  isFavorite: boolean;
+}
+export type Note = {
+  id: string;
+  userId: string;
+  title: string;
+  content: string;
+  image: string;
+  tags: string[];
+  status: string;
+  newsAttached: string[];
+  isFavorite: boolean;
+  createdAt: string;
+  updatedAt: string;
+}

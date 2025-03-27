@@ -1,9 +1,5 @@
-// import Button from "@/components/button";
-export default function Home() {
-  return (
-    <main className="p-4">
-      {/* <Button /> */}
-      
-    </main>
-  );
+import { redirect } from "next/navigation";
+
+export default function MainPage() {
+  redirect("/main/notes");
 }

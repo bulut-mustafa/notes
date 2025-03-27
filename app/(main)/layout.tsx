@@ -1,5 +1,6 @@
 import Sidebar from "@/components/sidebar";
-
+import { TagsProvider } from "@/context/tag-context";
+import { AuthProvider } from "@/context/auth-context";
 
 export default function MainLayout({
   children,
@@ -7,11 +8,15 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <main className="flex h-screen">
-        <Sidebar />
-        <div className="flex-1 overflow-auto">
-          {children}
+    <AuthProvider>
+      <TagsProvider>
+        <div className="flex h-screen">
+          <Sidebar />
+          <div className="flex-1 overflow-auto">
+            {children}
+          </div>
         </div>
-      </main>
+      </TagsProvider>
+    </AuthProvider>
   );
 }

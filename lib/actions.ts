@@ -1,11 +1,11 @@
 'use server';
 import { db } from '../firebase';
 import { collection, setDoc, getDoc,deleteDoc ,getDocs, doc, query, where, updateDoc } from "firebase/firestore"; 
-import type { Tag } from "@/lib/types";
+import type { Tag, NoteFormData, Note } from "@/lib/types";
 import { revalidatePath } from 'next/cache';
 
 const TAGS_COLLECTION = "tags";
-
+const NOTES_COLLECTION = "notes";
 export const addTag = async (userId: string, name: string) => {
   try {
     const tagId = `${userId}_${name}`; // Custom ID
@@ -122,3 +122,56 @@ export const updateTag = async (tagId: string, name: string) => {
         console.error("Error updating reservation:", error);
     }
 }
+
+export const addNote = async( userId: string, formData: NoteFormData) => {
+  try {
+    const noteId = `${userId}_${formData.title}`; // Custom ID
+    const docRef = doc(db, NOTES_COLLECTION, noteId);
+
+    const note = {
+      noteId: noteId,
+      userId: userId,
+      ...formData,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    await setDoc(docRef, note);
+    revalidatePath(`/notes`); // Revalidate destination page
+    return { id: noteId, ...note };
+  } catch (error) {
+    console.error("Error adding reservation:", error);
+    throw error;
+  }
+}
+
+
+export const fetchNotesByUser = async (userId: string): Promise<Note[]> => {
+  try {
+    const notesRef = collection(db, NOTES_COLLECTION);
+    const q = query(notesRef, where("userId", "==", userId));
+    const querySnapshot = await getDocs(q);
+
+    const notes: Note[] = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: data.noteId,
+        userId: data.userId,
+        title: data.title,
+        content: data.content,
+        image: data.image,
+        tags: data.tags,
+        status: data.status,
+        newsAttached: data.newsAttached,
+        isFavorite: data.isFavorite,
+        createdAt: data.createdAt,
+        updatedAt: data.updatedAt,
+      };
+    });
+
+    return notes;
+  } catch (error) {
+    console.error("Error fetching notes:", error);
+    return [];
+  }
+};
