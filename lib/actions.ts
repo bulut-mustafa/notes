@@ -175,3 +175,35 @@ export const fetchNotesByUser = async (userId: string): Promise<Note[]> => {
     return [];
   }
 };
+
+export const fetchNotesByFolder = async (userId: string, folder: string): Promise<Note[]> => {
+  try {
+    const notesRef = collection(db, NOTES_COLLECTION);
+
+    let q;
+    switch (folder) {
+      case "favorites":
+        q = query(notesRef, where("userId", "==", userId), where("isFavorite", "==", true));
+        break;
+      case "archived":
+        q = query(notesRef, where("userId", "==", userId), where("status", "==", "archived"));
+        break;
+      case "deleted":
+        q = query(notesRef, where("userId", "==", userId), where("status", "==", "deleted"));
+        break;
+      default: // Default to "Notes"
+        q = query(notesRef, where("userId", "==", userId), where("status", "==", "notes"));
+    }
+
+    const querySnapshot = await getDocs(q);
+    const notes: Note[] = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Note[];
+
+    return notes;
+  } catch (error) {
+    console.error("Error fetching notes:", error);
+    return [];
+  }
+};

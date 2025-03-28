@@ -9,17 +9,11 @@ const sidebarItems = [
   { name: "Recently Deleted", link: "/deleted" },
 ];
 
-export default function FolderLayout({
-  children,
-  params,
-}: {
-  children: ReactNode;
-  params: { folder: string };
-}) {
+export default function FolderLayout({ children,params,}: {children: ReactNode;params: { folder: string };  }) {
   const currentFolder = sidebarItems.find((item) =>
     item.link.includes(params.folder)
   )?.name;
-
+  
   return (
     <div className="flex w-full h-full">
       {/* Sidebar */}
@@ -31,7 +25,7 @@ export default function FolderLayout({
           {currentFolder}
         </h1>
 
-        <CardList />
+        <CardList folder={params.folder} />
       </aside>
 
       {/* Main Content */}
