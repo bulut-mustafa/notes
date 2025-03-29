@@ -10,10 +10,9 @@ import { auth } from "@/firebase";
 import { useTags } from "@/context/tag-context";
 
 const sidebarItems = [
-  { name: "Notes", icon: "📄", link: "/notes", count: 24 },
-  { name: "Favorites", icon: "⭐", link: "/favorites", count: 24 },
-  { name: "Archived", icon: "📂", link: "/archived" },
-  { name: "Recently Deleted", icon: "🗑️", link: "/deleted" },
+  { name: "Notes", link: "/notes"},
+  { name: "Archived", link: "/archived" },
+  { name: "Recently Deleted", link: "/deleted" },
 ];
 
 export default function Sidebar() {
@@ -163,7 +162,14 @@ export default function Sidebar() {
                 key={tag.id}
                 className="flex items-center gap-2 p-2 text-gray-500"
               >
-                🏷️ {isOpen && <span className="text-nowrap">{tag.name}</span>}
+                <Image
+                  src={`/tag.svg`}
+                  width={28}
+                  height={28}
+                  alt="sidebar"
+                  className="min-w-[28px] min-h-[28px]"
+                />
+                 {isOpen && <span className="text-nowrap">{tag.name}</span>}
               </li>
             ))}
       </ul>

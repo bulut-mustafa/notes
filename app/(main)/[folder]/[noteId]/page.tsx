@@ -1,14 +1,26 @@
-'use client';
+"use client";
 import { useParams } from "next/navigation";
+import { useNotes } from "@/context/notes-context";
 import ButtonBar from "@/components/note/button-bar";
+
 export default function NotePage() {
     const { noteId } = useParams();
+    const { notes } = useNotes();
+
+    // Find the note with the given noteId
+    const note = notes.find((n) => n.id === noteId);
+
+    if (!note) {
+        return <p className="text-red-500 font-semibold">Note not found.</p>;
+    }
 
     return (
         <div className="p-2">
-            <ButtonBar />
-            <h1 className="text-2xl font-bold">Note {noteId}</h1>
-            <p className="text-[#856559]">Here is the content of note {noteId}...</p>
+            <ButtonBar note={note}/>
+            <div className="p-4">
+                <h1 className="text-2xl font-bold text-black mb-4">{note.title}</h1>
+                <p className="text-[#818181] leading-relaxed">{note.content}</p>
+            </div>
         </div>
     );
 }

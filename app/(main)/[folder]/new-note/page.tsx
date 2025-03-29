@@ -5,11 +5,13 @@ import ButtonBar from "@/components/new-note/button-bar";
 import NoteTag from "@/components/new-note/note-tag";
 import { useState  } from "react";
 import { useTags } from "@/context/tag-context";
-import { useAuth } from "@/context/auth-context";
-import { addNote } from "@/lib/actions";
+import { useNotes } from "@/context/notes-context";
+import { useRouter } from "next/navigation";
+
 export default function NewNotePage() {
     const { tags } = useTags();
-    const {user} = useAuth();
+    const router = useRouter();
+    const { addNote } = useNotes();
     const [noteFormData, setNoteFormData] = useState({
         title: "",
         content: "",
@@ -20,15 +22,13 @@ export default function NewNotePage() {
         isFavorite: false,
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(noteFormData); // Here you'll get title, content, image, tags
-        if (user?.uid) {
-            addNote(user.uid, noteFormData);
-        } else {
-            console.error("User ID is undefined");
-        }
-    };
+        await addNote(noteFormData);
+        setNoteFormData({ title: "", content: "", image: "", tags: [], status: "notes", newsAttached: [], isFavorite: false });
+        router.push("/notes");
+      };
+    
 
     const handleTagChange = (selectedTags: string[]) => {
         setNoteFormData((prev) => ({

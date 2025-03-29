@@ -1,6 +1,6 @@
 'use server';
 import { db } from '../firebase';
-import { collection, setDoc, getDoc,deleteDoc ,getDocs, doc, query, where, updateDoc } from "firebase/firestore"; 
+import { collection, setDoc, getDoc,deleteDoc ,getDocs, doc, query, where, updateDoc, addDoc } from "firebase/firestore"; 
 import type { Tag, NoteFormData, Note } from "@/lib/types";
 import { revalidatePath } from 'next/cache';
 
@@ -123,27 +123,25 @@ export const updateTag = async (tagId: string, name: string) => {
     }
 }
 
-export const addNote = async( userId: string, formData: NoteFormData) => {
+export const addNoteToDB = async (userId: string, formData: NoteFormData) => {
   try {
-    const noteId = `${userId}_${formData.title}`; // Custom ID
-    const docRef = doc(db, NOTES_COLLECTION, noteId);
-
     const note = {
-      noteId: noteId,
-      userId: userId,
+      userId,
       ...formData,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
 
-    await setDoc(docRef, note);
-    revalidatePath(`/notes`); // Revalidate destination page
-    return { id: noteId, ...note };
+    // Firestore generates a unique ID automatically
+    const docRef = await addDoc(collection(db, NOTES_COLLECTION), note);
+    
+    revalidatePath(`/notes`); // Refresh notes list
+    return { id: docRef.id, ...note }; // Return the Firestore-generated ID
   } catch (error) {
-    console.error("Error adding reservation:", error);
+    console.error("Error adding note:", error);
     throw error;
   }
-}
+};
 
 
 export const fetchNotesByUser = async (userId: string): Promise<Note[]> => {
@@ -180,20 +178,8 @@ export const fetchNotesByFolder = async (userId: string, folder: string): Promis
   try {
     const notesRef = collection(db, NOTES_COLLECTION);
 
-    let q;
-    switch (folder) {
-      case "favorites":
-        q = query(notesRef, where("userId", "==", userId), where("isFavorite", "==", true));
-        break;
-      case "archived":
-        q = query(notesRef, where("userId", "==", userId), where("status", "==", "archived"));
-        break;
-      case "deleted":
-        q = query(notesRef, where("userId", "==", userId), where("status", "==", "deleted"));
-        break;
-      default: // Default to "Notes"
-        q = query(notesRef, where("userId", "==", userId), where("status", "==", "notes"));
-    }
+    const  q = query(notesRef, where("userId", "==", userId), where("status", "==", folder));
+   
 
     const querySnapshot = await getDocs(q);
     const notes: Note[] = querySnapshot.docs.map((doc) => ({
@@ -205,5 +191,62 @@ export const fetchNotesByFolder = async (userId: string, folder: string): Promis
   } catch (error) {
     console.error("Error fetching notes:", error);
     return [];
+  }
+};
+
+
+export const fetchNotesByNoteId = async (noteId: string): Promise<Note[]> => {
+  try {
+    const notesRef = collection(db, NOTES_COLLECTION);
+    
+    const q = query(notesRef, where("noteId", "==", noteId));
+    const querySnapshot = await getDocs(q);
+    const notes: Note[] = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Note[];
+
+    return notes;
+  } catch (error) {
+    console.error("Error fetching notes:", error);
+    return [];
+  }
+};
+
+
+export const updateNote = async (noteId: string, formData: Partial<NoteFormData>) => {
+  const docRef = doc(db, NOTES_COLLECTION, noteId);
+  try {
+    await updateDoc(docRef, {
+      ...formData,
+      updatedAt: new Date().toISOString(),
+    });
+    console.log("Note updated successfully!");
+  } catch (error) {
+    console.error("Error updating note:", error);
+  }
+};
+
+export const addNoteToFav = async (noteId: string, isFavorite: boolean) => {
+  const docRef = doc(db, NOTES_COLLECTION, noteId);
+  try {
+    await updateDoc(docRef, {
+      isFavorite: !isFavorite,
+      updatedAt: new Date().toISOString(),
+    });
+    console.log("Note added to favorites!");
+  } catch (error) {
+    console.error("Error updating note:", error);
+  }
+};
+
+export const deleteNote = async (noteId: string) => {
+  const noteRef = doc(db, "notes", noteId);
+
+  try {
+      await deleteDoc(noteRef);
+      revalidatePath('/notes', 'layout')
+  } catch (error) {
+      console.error("Error deleting reservation:", error);
   }
 };

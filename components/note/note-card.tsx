@@ -3,15 +3,13 @@
 import { useRouter, usePathname } from "next/navigation";
 import DateTag from "./date-tag";
 import FavoriteTag from "./favorite-tag";
-
+import { Note } from "@/lib/types";
 export default function NoteCard({
   id,
-  title,
-  description,
+  note,
 }: {
   id: string;
-  title: string;
-  description: string;
+  note: Note;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -35,7 +33,7 @@ export default function NoteCard({
             isActive && "text-[#8f756f]"
           }`}
         >
-          {title}
+          {note.title}
         </p>
       </div>
       <p
@@ -43,11 +41,11 @@ export default function NoteCard({
           isActive ? "text-[#4b4744]" : "text-[#a9a9a9]"
         }`}
       >
-        {description}
+        {note.content}
       </p>
       <div className="flex gap-2 ">
-        <DateTag isActive={isActive} />
-        <FavoriteTag isActive={isActive} />
+        <DateTag isActive={isActive} date={note.updatedAt}  />
+        {note.isFavorite && <FavoriteTag isActive={isActive}/>}
       </div>
     </div>
   );

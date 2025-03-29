@@ -5,7 +5,7 @@ export default function Button(
     {icon: string, onClick: () => void, className: string}
 ){
     return (
-        <button className={`${className} rounded-lg border border-slate-200 active:bg-[#fff5f2] active:border-[#9f857a] rounded-lg p-1`}>
+        <button className={`${className} rounded-lg border active:bg-[#fff5f2] active:border-[#9f857a] rounded-lg p-1`}>
             <Image
                 src={`/buttons/${icon}.svg`}
                 width={28}
