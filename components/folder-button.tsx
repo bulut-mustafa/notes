@@ -6,7 +6,6 @@ import { useRouter, usePathname } from "next/navigation";
 interface FolderButtonProps {
   name: string;
   icon: string;
-  count: number;
   link: string;
   isOpen: boolean;
   onSelect: () => void;
@@ -15,7 +14,6 @@ interface FolderButtonProps {
 export default function FolderButton({
   name,
   icon,
-  count,
   link,
   isOpen,
   onSelect,
@@ -46,15 +44,6 @@ export default function FolderButton({
           className="min-w-[32px] min-h-[32px]"
         />
         {isOpen && <p className="text-nowrap">{name}</p>}
-        {isOpen && (
-          <span
-            className={`ml-auto text-xs rounded-xl px-2 py-1 transition-colors
-              ${isActive ? "bg-[#fce4dc] text-[#856559]" : "bg-[#f3f3f3] text-[#a9a9a9]"}
-            `}
-          >
-            {count}
-          </span>
-        )}
       </button>
     </li>
   );

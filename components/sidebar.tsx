@@ -107,7 +107,6 @@ export default function Sidebar() {
             key={item.link}
             name={item.name}
             icon="all-notes"
-            count={24}
             link={item.link}
             isOpen={isOpen}
             onSelect={handleSelect}
