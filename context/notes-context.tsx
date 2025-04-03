@@ -8,7 +8,7 @@ import { Note, NoteFormData } from "@/lib/types";
 interface NotesContextType {
   notes: Note[];
   loading: boolean;
-  addNote: (formData: NoteFormData) => Promise<void>;
+  addNote: (formData: NoteFormData) => Promise<Note | null>;
   refreshNotes: () => Promise<void>;
   updateNoteState: (noteId: string, updatedFields: Partial<Note>) => void; // New function
   deleteNote: (noteId: string) => void; // New function
@@ -36,7 +36,9 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
     setLoading(true);
     try {
       const fetchedNotes = await fetchNotesByFolder(user.uid, currentFolder);
-      setNotes(fetchedNotes);
+      // Sort by updatedAt in descending order (most recent first)
+      const sortedNotes = fetchedNotes.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+      setNotes(sortedNotes);
     } catch (error) {
       console.error("Error fetching notes:", error);
     } finally {
@@ -44,13 +46,17 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const addNote = async (formData: NoteFormData) => {
-    if (!user?.uid) return;
+  const addNote = async (formData: NoteFormData): Promise<Note | null> => {
+    if (!user?.uid) return null;
     try {
       const newNote = await addNoteToDB(user.uid, formData);
-      setNotes((prevNotes) => [newNote, ...prevNotes]); // Instant UI update
+      setNotes((prevNotes) =>
+        [newNote, ...prevNotes].sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+      ); // Sort after adding
+      return newNote;
     } catch (error) {
       console.error("Error adding note:", error);
+      return null;
     }
   };
   const deleteNote = (noteId: string) => {

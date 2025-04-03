@@ -10,18 +10,18 @@ export async function POST(req: Request) {
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File;
-    const userID = formData.get("userID") as string;
 
-    if (!file || !userID) {
+    if (!file) {
       return NextResponse.json({ error: "Missing file or userID" }, { status: 400 });
     }
 
 
     
 
-    const extension = file.name.split(".").pop();
+    const originalName = file.name.replace(/\.[^/.]+$/, ""); // Remove extension from original file name
+    const extension = file.name.split(".").pop(); // Get file extension
     const timestamp = Date.now();
-    const fileName = `${userID}-${timestamp}.${extension}`;
+    const fileName = `${timestamp}-${originalName}.${extension}`;
     const bufferedImage = await file.arrayBuffer();
 
    

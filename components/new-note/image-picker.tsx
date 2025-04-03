@@ -4,8 +4,8 @@ import Image from "next/image";
 
 interface ImagePickerProps {
   name: string;
-  value: string;
-  onChange: (value: string) => void;
+  value: File | null;
+  onChange: (value: File | null) => void;
 }
 
 export default function ImagePicker({ name, value, onChange }: ImagePickerProps) {
@@ -19,19 +19,19 @@ export default function ImagePicker({ name, value, onChange }: ImagePickerProps)
     const file = event.target.files?.[0];
 
     if (!file) {
-      onChange("");
+      onChange(null);
       return;
     }
 
     const reader = new FileReader();
     reader.onload = () => {
-      onChange(reader.result as string);
+      onChange(file);
     };
     reader.readAsDataURL(file);
   }
 
   function handleClearImage() {
-    onChange("");
+    onChange(null);
     if (imageInputRef.current) {
       imageInputRef.current.value = "";
     }
@@ -63,11 +63,10 @@ export default function ImagePicker({ name, value, onChange }: ImagePickerProps)
             </button>
 
             <Image
-              src={value}
+              src={URL.createObjectURL(value)}
               alt="Preview"
-              layout="intrinsic"
-              width={700}
-              height={700}
+              width={700} // ✅ Specify width
+              height={700} // ✅ Specify height
               className="w-full h-auto"
             />
           </>

@@ -2,7 +2,7 @@
 import { useParams } from "next/navigation";
 import { useNotes } from "@/context/notes-context";
 import ButtonBar from "@/components/note/button-bar";
-
+import Image from "next/image";
 export default function NotePage() {
     const { noteId } = useParams();
     const { notes } = useNotes();
@@ -16,8 +16,17 @@ export default function NotePage() {
 
     return (
         <div className="p-2">
-            <ButtonBar note={note}/>
+            <ButtonBar note={note} />
             <div className="p-4">
+                {note.image && <Image
+                    src={`https://notes-app-note-images.s3.amazonaws.com/${note.image}`}
+                    alt="Note Image"
+                    width={700}
+                    height={700}
+                    className="w-full h-auto"
+                />
+                }
+
                 <h1 className="text-2xl font-bold text-black mb-4">{note.title}</h1>
                 <p className="text-[#818181] leading-relaxed">{note.content}</p>
             </div>

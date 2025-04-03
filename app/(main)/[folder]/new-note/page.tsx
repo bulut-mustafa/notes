@@ -12,6 +12,7 @@ export default function NewNotePage() {
     const { tags } = useTags();
     const router = useRouter();
     const { addNote } = useNotes();
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [noteFormData, setNoteFormData] = useState({
         title: "",
         content: "",
@@ -24,10 +25,33 @@ export default function NewNotePage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await addNote(noteFormData);
+        let uploadedImage = "";
+    
+        if (selectedFile) {
+            const formData = new FormData();
+            formData.append("file", selectedFile);
+    
+            const response = await fetch("/api/upload", { method: "POST", body: formData });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || "Upload failed");
+    
+            uploadedImage = data.fileName; // Store uploaded image filename
+        }
+    
+        // Ensure the image is correctly set before calling addNote
+        const updatedFormData = {
+            ...noteFormData,
+            image: uploadedImage,
+        };
+    
+        const newNote = await addNote(updatedFormData);
+    
+        // Reset form state
         setNoteFormData({ title: "", content: "", image: "", tags: [], status: "notes", newsAttached: [], isFavorite: false });
-        router.push("/notes");
-      };
+        setSelectedFile(null);
+        router.push(`/notes/${newNote?.id}`);
+    };
+    
     
 
     const handleTagChange = (selectedTags: string[]) => {
@@ -49,8 +73,8 @@ export default function NewNotePage() {
                 <form className="space-y-4" onSubmit={handleSubmit}>
                     <ImagePicker
                         name="coverImage"
-                        value={noteFormData.image}
-                        onChange={(image) => setNoteFormData({ ...noteFormData, image })}
+                        value={selectedFile}
+                        onChange={setSelectedFile}
                     />
 
                     <div className="flex gap-2 flex-wrap">
