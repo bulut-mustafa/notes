@@ -1,19 +1,42 @@
 'use client';
-import Image from "next/image"
-export default function Button(
-    {icon, onClick, className}:
-    {icon: string, onClick: () => void, className: string}
-){
+import Image from "next/image";
+
+type ButtonProps = {
+  icon: string;
+  onClick?: () => void;
+  className?: string;
+  asLabel?: boolean;
+  htmlFor?: string;
+};
+
+export default function Button({ icon, onClick, className = "", asLabel = false, htmlFor }: ButtonProps) {
+  const common = (
+    <Image
+      src={`/buttons/${icon}.svg`}
+      width={28}
+      height={28}
+      alt={icon}
+      onClick={asLabel ? undefined : onClick}
+    />
+  );
+
+  if (asLabel && htmlFor) {
     return (
-        <button className={`${className} rounded-lg border active:bg-[#fff5f2] active:border-[#9f857a] rounded-lg p-1`}>
-            <Image
-                src={`/buttons/${icon}.svg`}
-                width={28}
-                height={28}
-                alt={`favorite`}
-                className={``}
-                onClick={onClick}
-            />
-        </button>
-    )
+      <label
+        htmlFor={htmlFor}
+        className={`rounded-lg border p-1 cursor-pointer ${className}`}
+      >
+        {common}
+      </label>
+    );
+  }
+
+  return (
+    <button
+      onClick={onClick}
+      className={`rounded-lg border p-1 active:bg-[#fff5f2] active:border-[#9f857a] ${className}`}
+    >
+      {common}
+    </button>
+  );
 }

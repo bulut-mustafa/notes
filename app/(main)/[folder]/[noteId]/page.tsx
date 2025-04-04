@@ -21,8 +21,8 @@ export default function NotePage() {
                 {note.image && <Image
                     src={`https://notes-app-note-images.s3.amazonaws.com/${note.image}`}
                     alt="Note Image"
-                    width={700}
-                    height={700}
+                    width={500}
+                    height={500}
                     className="w-full h-auto"
                 />
                 }
