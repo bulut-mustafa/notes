@@ -52,7 +52,7 @@ export default function NotePage() {
 
         if (images.length === 3) {
             return (
-                <div className="grid grid-cols-2 gap-2 h-[400px]">
+                <div className="grid grid-cols-2 gap-2">
                     <div className="h-full">
                         <Image
                             src={`https://notes-app-note-images.s3.amazonaws.com/${images[0]}`}
