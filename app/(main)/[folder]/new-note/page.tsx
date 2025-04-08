@@ -16,7 +16,7 @@ export default function NewNotePage() {
     const [noteFormData, setNoteFormData] = useState({
         title: "",
         content: "",
-        image: "",
+        image: [] as string[],
         tags: [] as string[],
         status: "notes",
         newsAttached: [],
@@ -41,13 +41,13 @@ export default function NewNotePage() {
         // Ensure the image is correctly set before calling addNote
         const updatedFormData = {
             ...noteFormData,
-            image: uploadedImage,
+            image: [uploadedImage],
         };
     
         const newNote = await addNote(updatedFormData);
     
         // Reset form state
-        setNoteFormData({ title: "", content: "", image: "", tags: [], status: "notes", newsAttached: [], isFavorite: false });
+        setNoteFormData({ title: "", content: "", image: [], tags: [], status: "notes", newsAttached: [], isFavorite: false });
         setSelectedFile(null);
         router.push(`/notes/${newNote?.id}`);
     };
