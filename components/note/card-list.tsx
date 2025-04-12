@@ -32,7 +32,7 @@ export default function CardList() {
           </div>
         );
       }
-    if (notes.length === 0) return <p>No notes found. Add one.</p>;
+    if (notes.length === 0) return <p>No notes found.</p>;
 
     return (
         <div className="flex flex-col gap-2">

@@ -2,7 +2,7 @@
 
 import { Note } from "@/lib/types";
 import Button from "../button";
-import { addNoteToFav, deleteNote as deleteDb } from "@/lib/actions";
+import { addNoteToFav, archiveNote, deleteNote as deleteDb } from "@/lib/actions";
 import { useNotes } from "@/context/notes-context";
 import { useRouter, usePathname } from "next/navigation";
 import { useRef, useState } from "react";
@@ -21,6 +21,19 @@ export default function ButtonBar({ note }: { note: Note }) {
         updateNoteState(note.id, { isFavorite: !isFavorite });
         console.log("Favorite toggled");
     }
+
+    function handleArchive() {
+        archiveNote(note.id, 'archived');
+        router.push("/notes"); // Trigger navigation
+        setTimeout(() => deleteNote(note.id), 100); // Delay local deletion to let routing complete
+    }
+    
+    function handleUnarchive() {
+        archiveNote(note.id, 'notes');
+        router.push("/archived");
+        setTimeout(() => deleteNote(note.id), 100);
+    }
+    
 
     function handleDelete() {
         deleteDb(note.id);
@@ -119,6 +132,11 @@ export default function ButtonBar({ note }: { note: Note }) {
                     />
                 </>
             )}
+            <Button
+                icon={note.status === 'notes' ? 'archive' : 'unarchive'}
+                onClick={note.status === 'notes' ? handleArchive : note.status === 'archived' ? handleUnarchive : () => {}}
+                className="border-slate-200"
+            />
         </div>
     );
 }

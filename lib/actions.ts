@@ -240,6 +240,19 @@ export const addNoteToFav = async (noteId: string, isFavorite: boolean) => {
   }
 };
 
+export const archiveNote = async (noteId: string, status: string) => {
+  const docRef = doc(db, NOTES_COLLECTION, noteId);
+  try {
+    await updateDoc(docRef, {
+      status: status,
+      updatedAt: new Date().toISOString(),
+    });
+    console.log("Note added to favorites!");
+  } catch (error) {
+    console.error("Error updating note:", error);
+  }
+};
+
 export const deleteNote = async (noteId: string) => {
   const noteRef = doc(db, "notes", noteId);
 
