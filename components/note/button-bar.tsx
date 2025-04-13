@@ -1,12 +1,21 @@
 'use client';
-
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Note } from "@/lib/types";
 import Button from "../button";
 import { addNoteToFav, archiveNote, deleteNote as deleteDb, moveToTrash } from "@/lib/actions";
 import { useNotes } from "@/context/notes-context";
+import { useTags } from "@/context/tag-context";
 import { useRouter, usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 import { updateNote } from "@/lib/actions";
+import Image from "next/image";
 export default function ButtonBar({ note }: { note: Note }) {
     const pathname = usePathname();
     const [uploading, setUploading] = useState(false);
@@ -15,12 +24,18 @@ export default function ButtonBar({ note }: { note: Note }) {
     const router = useRouter();
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
-
+    const { tags } = useTags();
     function handleFavorite() {
         const isFavorite = note.isFavorite;
         addNoteToFav(note.id, isFavorite);
         updateNoteState(note.id, { isFavorite: !isFavorite });
         console.log("Favorite toggled");
+    }
+
+    function handleAddTag(id:string) {
+        const newTags = [...(note.tags || []), id];
+        updateNote(note.id, { tags: newTags });
+        updateNoteState(note.id, { tags: newTags });
     }
 
     function handleArchive() {
@@ -112,6 +127,35 @@ export default function ButtonBar({ note }: { note: Note }) {
                         className={`${note.isFavorite ? "border-[#9f857a] bg-[#fff5f2]" : "border-slate-200"
                             }`}
                     />
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <button className="rounded-lg border border-slate-200 active:bg-[#fff5f2] active:border-[#9f857a] p-1">
+                                <Image
+                                    src={`/buttons/new-tag.svg`}
+                                    width={28}
+                                    height={28}
+                                    alt="add tag"
+                                />
+                            </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-56">
+                            <DropdownMenuLabel>Add Tag</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuGroup>
+                                {tags
+                                    .filter((tag) => !note.tags?.includes(tag.id))
+                                    .map((tag) => (
+                                        <div
+                                            key={tag.id}
+                                            className="flex items-center px-2 py-1 gap-2 rounded-md cursor-pointer hover:bg-[#f6f1ef]"
+                                            onClick={() => handleAddTag(tag.id)}
+                                        >
+                                            {tag.name}
+                                        </div>
+                                    ))}
+                            </DropdownMenuGroup>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                     <Button
                         icon="trash"
                         onClick={handleDelete}
