@@ -19,7 +19,8 @@ export type NoteFormData = {
   content: string;
   image: string[];
   tags: string[];
-  status: string;
+  archived: boolean;
+  isDeleted: boolean;
   newsAttached: string[];
   isFavorite: boolean;
 }
@@ -30,7 +31,8 @@ export type Note = {
   content: string;
   image: string[];
   tags: string[];
-  status: string;
+  archived: boolean;
+  isDeleted: boolean;
   newsAttached: string[];
   isFavorite: boolean;
   createdAt: string;

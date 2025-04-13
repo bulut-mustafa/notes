@@ -18,7 +18,8 @@ export default function NewNotePage() {
         content: "",
         image: [] as string[],
         tags: [] as string[],
-        status: "notes",
+        archived: false,
+        isDeleted: false,
         newsAttached: [],
         isFavorite: false,
     });
@@ -38,19 +39,20 @@ export default function NewNotePage() {
             uploadedImage = data.fileName; // Store uploaded image filename
         }
     
-        // Ensure the image is correctly set before calling addNote
+        // Only include the image field if there's an uploaded file
         const updatedFormData = {
             ...noteFormData,
-            image: [uploadedImage],
+            image: uploadedImage ? [uploadedImage] : [],
         };
     
         const newNote = await addNote(updatedFormData);
     
         // Reset form state
-        setNoteFormData({ title: "", content: "", image: [], tags: [], status: "notes", newsAttached: [], isFavorite: false });
+        setNoteFormData({ title: "", content: "", image: [], tags: [], archived: false, isDeleted: false, newsAttached: [], isFavorite: false });
         setSelectedFile(null);
         router.push(`/notes/${newNote?.id}`);
     };
+    
     
     
 

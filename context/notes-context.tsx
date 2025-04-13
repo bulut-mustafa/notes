@@ -35,9 +35,20 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
     if (!user?.uid || !currentFolder) return;
     setLoading(true);
     try {
-      const fetchedNotes = await fetchNotesByFolder(user.uid, currentFolder);
-      // Sort by updatedAt in descending order (most recent first)
-      const sortedNotes = fetchedNotes.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+      let archived = false;
+      let isDeleted = false;
+  
+      if (currentFolder === "archived") {
+        archived = true;
+        isDeleted = false;
+      } else if (currentFolder === "deleted") {
+        isDeleted = true;
+      }
+  
+      const fetchedNotes = await fetchNotesByFolder(user.uid, archived, isDeleted);
+      const sortedNotes = fetchedNotes.sort(
+        (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      );
       setNotes(sortedNotes);
     } catch (error) {
       console.error("Error fetching notes:", error);

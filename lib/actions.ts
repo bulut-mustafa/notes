@@ -159,7 +159,8 @@ export const fetchNotesByUser = async (userId: string): Promise<Note[]> => {
         content: data.content,
         image: data.image,
         tags: data.tags,
-        status: data.status,
+        archived: data.archived,
+        isDeleted: data.isDeleted,
         newsAttached: data.newsAttached,
         isFavorite: data.isFavorite,
         createdAt: data.createdAt,
@@ -174,12 +175,19 @@ export const fetchNotesByUser = async (userId: string): Promise<Note[]> => {
   }
 };
 
-export const fetchNotesByFolder = async (userId: string, folder: string): Promise<Note[]> => {
+export const fetchNotesByFolder = async (
+  userId: string,
+  archived: boolean = false,
+  isDeleted: boolean = false
+): Promise<Note[]> => {
   try {
     const notesRef = collection(db, NOTES_COLLECTION);
-
-    const  q = query(notesRef, where("userId", "==", userId), where("status", "==", folder));
-   
+    const q = query(
+      notesRef,
+      where("userId", "==", userId),
+      where("archived", "==", archived),
+      where("isDeleted", "==", isDeleted)
+    );
 
     const querySnapshot = await getDocs(q);
     const notes: Note[] = querySnapshot.docs.map((doc) => ({
@@ -240,11 +248,11 @@ export const addNoteToFav = async (noteId: string, isFavorite: boolean) => {
   }
 };
 
-export const archiveNote = async (noteId: string, status: string) => {
+export const archiveNote = async (noteId: string, archived: boolean) => {
   const docRef = doc(db, NOTES_COLLECTION, noteId);
   try {
     await updateDoc(docRef, {
-      status: status,
+      archived: archived,
       updatedAt: new Date().toISOString(),
     });
     console.log("Note added to favorites!");
@@ -263,3 +271,16 @@ export const deleteNote = async (noteId: string) => {
       console.error("Error deleting reservation:", error);
   }
 };
+
+export const moveToTrash = async (noteId: string, isDeleted: boolean) => {
+  const docRef = doc(db, NOTES_COLLECTION, noteId);
+  try {
+    await updateDoc(docRef, {
+      isDeleted: isDeleted,
+      updatedAt: new Date().toISOString(),
+    });
+    console.log("Note moved to trash!");
+  } catch (error) {
+    console.error("Error updating note:", error);
+  }
+}
