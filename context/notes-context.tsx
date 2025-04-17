@@ -7,11 +7,16 @@ import { Note, NoteFormData } from "@/lib/types";
 
 interface NotesContextType {
   notes: Note[];
+  filteredNotes: Note[];
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  selectedTag: string | null; // ✅ new
+  setSelectedTag: (tag: string | null) => void; // ✅ new
   loading: boolean;
   addNote: (formData: NoteFormData) => Promise<Note | null>;
   refreshNotes: () => Promise<void>;
-  updateNoteState: (noteId: string, updatedFields: Partial<Note>) => void; // New function
-  deleteNote: (noteId: string) => void; // New function
+  updateNoteState: (noteId: string, updatedFields: Partial<Note>) => void;
+  deleteNote: (noteId: string) => void;
 }
 
 const NotesContext = createContext<NotesContextType | undefined>(undefined);
@@ -21,6 +26,8 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   const currentFolder = pathname.split("/")[1]; // Extract folder name from URL
 
@@ -73,12 +80,25 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
   const deleteNote = (noteId: string) => {
     setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
   };
+  const filteredNotes = notes.filter((note) => {
+    const matchesSearch =
+      note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      note.content.toLowerCase().includes(searchQuery.toLowerCase());
+  
+    const matchesTag = selectedTag
+      ? note.tags?.includes(selectedTag) // assumes note.tags is a string[]
+      : true;
+  
+    return matchesSearch && matchesTag;
+  }); 
+  
   useEffect(() => {
     fetchNotes();
   }, [user?.uid, currentFolder]); // Fetch notes when user logs in or folder changes
 
+
   return (
-    <NotesContext.Provider value={{ notes, loading, addNote, refreshNotes: fetchNotes, updateNoteState, deleteNote }}>
+    <NotesContext.Provider value={{ notes, filteredNotes,selectedTag, setSelectedTag,  searchQuery, setSearchQuery, loading, addNote, refreshNotes: fetchNotes, updateNoteState, deleteNote }}>
       {children}
     </NotesContext.Provider>
   );

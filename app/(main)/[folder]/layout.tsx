@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { NotesProvider } from "@/context/notes-context";
 import SidebarVisibility from "@/components/note/sidebar-visibility";
 
 const sidebarItems = [
@@ -21,7 +20,6 @@ export default function FolderLayout({
   )?.name;
 
   return (
-    <NotesProvider>
       <div className="flex w-full h-full">
         {/* Sidebar (conditionally visible based on route) */}
         <SidebarVisibility currentFolder={currentFolder} />
@@ -29,6 +27,5 @@ export default function FolderLayout({
         {/* Main Content */}
         <main className="flex-1">{children}</main>
       </div>
-    </NotesProvider>
   );
 }

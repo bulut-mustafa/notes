@@ -3,10 +3,12 @@
 import ImagePicker from "@/components/new-note/image-picker";
 import ButtonBar from "@/components/new-note/button-bar";
 import NoteTag from "@/components/new-note/note-tag";
-import { useState  } from "react";
+import { useState } from "react";
 import { useTags } from "@/context/tag-context";
 import { useNotes } from "@/context/notes-context";
 import { useRouter } from "next/navigation";
+import RichTextEditor from "@/components/new-note/text-editor";
+
 
 export default function NewNotePage() {
     const { tags } = useTags();
@@ -27,34 +29,34 @@ export default function NewNotePage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         let uploadedImage = "";
-    
+
         if (selectedFile) {
             const formData = new FormData();
             formData.append("file", selectedFile);
-    
+
             const response = await fetch("/api/upload", { method: "POST", body: formData });
             const data = await response.json();
             if (!response.ok) throw new Error(data.error || "Upload failed");
-    
+
             uploadedImage = data.fileName; // Store uploaded image filename
         }
-    
+
         // Only include the image field if there's an uploaded file
         const updatedFormData = {
             ...noteFormData,
             image: uploadedImage ? [uploadedImage] : [],
         };
-    
+
         const newNote = await addNote(updatedFormData);
-    
+
         // Reset form state
         setNoteFormData({ title: "", content: "", image: [], tags: [], archived: false, isDeleted: false, newsAttached: [], isFavorite: false });
         setSelectedFile(null);
         router.push(`/notes/${newNote?.id}`);
     };
-    
-    
-    
+
+
+
 
     const handleTagChange = (selectedTags: string[]) => {
         setNoteFormData((prev) => ({
@@ -109,6 +111,14 @@ export default function NewNotePage() {
                             value={noteFormData.content}
                             onChange={(e) =>
                                 setNoteFormData({ ...noteFormData, content: e.target.value })
+                            }
+                        />
+                    </div>
+                    <div>
+                        <RichTextEditor
+                            content={noteFormData.content}
+                            onChange={(newContent) =>
+                                setNoteFormData((prev) => ({ ...prev, content: newContent }))
                             }
                         />
                     </div>

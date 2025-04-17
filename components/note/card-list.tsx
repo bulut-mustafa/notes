@@ -22,7 +22,7 @@ export  function NoteCardSkeleton() {
 
 
 export default function CardList() {
-    const { notes, loading } = useNotes();
+    const { filteredNotes, loading } = useNotes();
 
 
     if (loading) {
@@ -32,11 +32,11 @@ export default function CardList() {
           </div>
         );
       }
-    if (notes.length === 0) return <p>No notes found.</p>;
+    if (filteredNotes.length === 0) return <p>No notes found.</p>;
 
     return (
         <div className="flex flex-col gap-2">
-            {notes.map((note) => (
+            {filteredNotes.map((note) => (
                 <NoteCard key={note.id} id={note.id} note={note} />
             ))}
         </div>

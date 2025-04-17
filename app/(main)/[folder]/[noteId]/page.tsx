@@ -22,8 +22,8 @@ export default function NotePage() {
             <ButtonBar note={note} />
             <div className="p-4 space-y-4">
                 <ImageBar note={note}/>
-                <TagBar tags={note.tags} note={note} />
                 <h1 className="text-3xl font-bold text-black">{note.title}</h1>
+                <TagBar tags={note.tags} note={note} />
                 <p className="text-[#818181] leading-relaxed">{note.content}</p>
             </div>
         </div>

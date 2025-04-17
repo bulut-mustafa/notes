@@ -12,8 +12,8 @@ function formatDate(date: string) {
 export default function DateTag({ isActive, date }: { isActive: boolean, date: string }) {
   return (
     <div
-      className={`rounded-lg p-2 bg-[#f3f3f3] text-[#a4a4a4] group-hover:bg-[#fce4dc] group-hover:text-[#856559] flex items-center
-      ${isActive ? "bg-[#fce4dc] text-[#856559]" : ""}`}
+      className={`rounded-lg p-2 bg-[#f3f3f3]  group-hover:bg-[#fce4dc] group-hover:text-[#856559] flex items-center
+      ${isActive ? "bg-[#fce4dc] text-[#856559]" : "text-[#a4a4a4]"}`}
     >
       <Image
         src="/tags/date-active.svg"

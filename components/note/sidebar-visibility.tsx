@@ -19,7 +19,7 @@ export default function SidebarVisibility({ currentFolder }: { currentFolder?: s
       <SidebarHeader />
 
       <h1 className="text-2xl font-bold text-[#0e0e0e] p-2 m-2">
-        {currentFolder}
+        {currentFolder} 
       </h1>
 
       {/* Card List */}

@@ -8,9 +8,10 @@ import { useAuth } from "@/context/auth-context";
 import UserDropdown from "./avatar-dropdown";
 import { auth } from "@/firebase";
 import { useTags } from "@/context/tag-context";
+import { useNotes } from "@/context/notes-context";
 
 const sidebarItems = [
-  { name: "Notes", link: "/notes"},
+  { name: "Notes", link: "/notes" },
   { name: "Archived", link: "/archived" },
   { name: "Recently Deleted", link: "/deleted" },
 ];
@@ -21,7 +22,7 @@ export default function Sidebar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [newTag, setNewTag] = useState("");
   const [isSmallScreen, setIsSmallScreen] = useState(false);
-
+  const { selectedTag, setSelectedTag } = useNotes();
   const { tags, loading: tagsLoading, addTag } = useTags();
   const router = useRouter();
 
@@ -58,9 +59,8 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`h-screen p-2 bg-white border-r border-slate-200 transition-all ${
-        isOpen ? "w-full sm:w-64" : "w-16"
-      }`}
+      className={`h-screen p-2 bg-white border-r border-slate-200 transition-all ${isOpen ? "w-full sm:w-64" : "w-16"
+        }`}
     >
       {/* Header */}
       <div className="flex gap-4 items-center border-b border-slate-200 pb-3">
@@ -119,9 +119,8 @@ export default function Sidebar() {
         <h4 className="text-xs text-gray-500 py-3">TAGS</h4>
         <button
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className={`${
-            isOpen ? "flex" : "hidden"
-          } cursor-pointer rounded-lg border border-slate-200 active:bg-[#fff5f2] active:border-[#9f857a] p-1 px-2`}
+          className={`${isOpen ? "flex" : "hidden"
+            } cursor-pointer rounded-lg border border-slate-200 active:bg-[#fff5f2] active:border-[#9f857a] p-1 px-2`}
         >
           +
         </button>
@@ -148,29 +147,37 @@ export default function Sidebar() {
       <ul className="mt-2">
         {tagsLoading
           ? Array.from({ length: 5 }).map((_, index) => (
-              <li
-                key={index}
-                className="flex items-center gap-2 p-2 animate-pulse"
-              >
-                <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
-                {isOpen && <div className="w-24 h-4 bg-gray-300 rounded"></div>}
-              </li>
-            ))
+            <li
+              key={index}
+              className="flex items-center gap-2 p-2 animate-pulse"
+            >
+              <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
+              {isOpen && <div className="w-24 h-4 bg-gray-300 rounded"></div>}
+            </li>
+          ))
           : tags.map((tag) => (
-              <li
-                key={tag.id}
-                className="flex items-center gap-2 p-2 text-gray-500"
-              >
-                <Image
-                  src={`/tag.svg`}
-                  width={28}
-                  height={28}
-                  alt="sidebar"
-                  className="min-w-[28px] min-h-[28px]"
-                />
-                 {isOpen && <span className="text-nowrap">{tag.name}</span>}
-              </li>
-            ))}
+            <li
+              key={tag.id}
+              onClick={() => {
+                if (selectedTag === tag.id) {
+                  setSelectedTag(null);
+                } else {
+                  setSelectedTag(tag.id);
+                  handleSelect();
+                } // close sidebar on mobile
+              }}
+              className={`${selectedTag === tag.id && 'bg-[#fff2ee]'} flex items-center gap-2 p-2 text-gray-500 rounded-md`}
+            >
+              <Image
+                src={`/tag.svg`}
+                width={28}
+                height={28}
+                alt="sidebar"
+                className="min-w-[28px] min-h-[28px]"
+              />
+              {isOpen && <span className="text-nowrap">{tag.name}</span>}
+            </li>
+          ))}
       </ul>
     </aside>
   );
