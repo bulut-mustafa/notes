@@ -131,4 +131,10 @@
   body {
     @apply bg-background text-foreground;
   }
+  ol {
+    list-style: decimal;
+  }
+  ul{
+    list-style: disc;
+  }
 }

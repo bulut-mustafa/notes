@@ -10,10 +10,19 @@ import ListItem from '@tiptap/extension-list-item'
 import TextStyle from '@tiptap/extension-text-style'
 import Highlight from '@tiptap/extension-highlight'
 import TextAlign from '@tiptap/extension-text-align'
+import Document from '@tiptap/extension-document'
+import Paragraph from '@tiptap/extension-paragraph'
+import TaskItem from '@tiptap/extension-task-item'
+import TaskList from '@tiptap/extension-task-list'
+import BulletList from '@tiptap/extension-bullet-list'
+import Text from '@tiptap/extension-text'
 type Props = {
   content: string;
   onChange: (html: string) => void;
 };
+
+
+
 
 export default function RichTextEditor({ content, onChange }: Props) {
   const editor = useEditor({
@@ -32,7 +41,14 @@ export default function RichTextEditor({ content, onChange }: Props) {
             keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
             },
         }),
-        Highlight
+        Highlight,
+        Document,
+        Paragraph,
+        Text,
+        TaskList,
+        TaskItem,
+        ListItem,
+        BulletList
     ],
     content,
     editorProps: {
@@ -49,7 +65,7 @@ export default function RichTextEditor({ content, onChange }: Props) {
     if (editor && content !== editor.getHTML()) {
       editor.commands.setContent(content);
     }
-  }, [content]);
+  }, [content, editor]);
 
   if (!editor) return null;
 
