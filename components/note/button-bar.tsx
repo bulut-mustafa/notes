@@ -100,7 +100,7 @@ export default function ButtonBar({ note }: { note: Note }) {
 
 
     return (
-        <div className="flex gap-2 py-[6px] pl-4 border-b border-slate-200">
+        <div className="flex gap-2 py-[6px] px-4 border-b border-slate-200">
             <Button
                 icon="back"
                 onClick={() => router.push(`/${folder}`)}
@@ -211,6 +211,11 @@ export default function ButtonBar({ note }: { note: Note }) {
                         icon="trash"
                         onClick={handleDelete}
                         className="border-slate-200"
+                    />
+                    <Button
+                        icon="save"
+                        onClick={handleDelete}
+                        className="ml-auto border-slate-200"
                     />
                 </>
             )}

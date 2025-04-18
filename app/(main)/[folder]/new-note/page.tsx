@@ -68,13 +68,14 @@ export default function NewNotePage() {
     return (
         <div className="flex items-center w-full justify-center">
             <div className="w-full p-2 space-y-4">
-                <ButtonBar
-                    tags={tags}
-                    selectedTags={noteFormData.tags}
-                    setSelectedTags={handleTagChange}
-                />
+
 
                 <form className="space-y-4" onSubmit={handleSubmit}>
+                    <ButtonBar
+                        tags={tags}
+                        selectedTags={noteFormData.tags}
+                        setSelectedTags={handleTagChange}
+                    />
                     <ImagePicker
                         name="coverImage"
                         value={selectedFile}
@@ -99,6 +100,7 @@ export default function NewNotePage() {
                             onChange={(e) =>
                                 setNoteFormData({ ...noteFormData, title: e.target.value })
                             }
+                            required
                         />
                     </div>
                     <div>
@@ -108,14 +110,6 @@ export default function NewNotePage() {
                                 setNoteFormData((prev) => ({ ...prev, content: newContent }))
                             }
                         />
-                    </div>
-                    <div>
-                        <button
-                            type="submit"
-                            className="inline-flex justify-center py-2 px-4 border border-slate-200 shadow-sm text-sm font-medium rounded-md text-[#856559] active:outline-none active:ring-2 active:ring-[#956e60]"
-                        >
-                            Save
-                        </button>
                     </div>
                 </form>
             </div>

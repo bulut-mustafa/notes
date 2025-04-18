@@ -60,7 +60,7 @@ export default function RichTextEditor({ content, onChange }: Props) {
     content,
     editorProps: {
       attributes: {
-        class: "min-h-[150px] p-2 border border-slate-200 rounded-md",
+        class: "tiptap w-full max-w-full min-h-[150px] p-2 border border-slate-200 rounded-md",
       },
     },
     onUpdate: ({ editor }) => {
@@ -77,7 +77,7 @@ export default function RichTextEditor({ content, onChange }: Props) {
   if (!editor) return null;
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 w-full">
       <TextEditorToolbar editor={editor} />
       <EditorContent editor={editor} />
     </div>
