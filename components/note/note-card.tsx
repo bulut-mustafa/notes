@@ -5,6 +5,23 @@ import DateTag from "./date-tag";
 import FavoriteTag from "./favorite-tag";
 import { Note } from "@/lib/types";
 import NoteActionCard from "./note-action-card";
+
+function getFirstTagContent(html: string): string {
+  if (typeof window !== "undefined") {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+
+    const firstChild = div.firstChild as HTMLElement | null;
+    if (firstChild && firstChild.textContent) {
+      return firstChild.textContent.trim();
+    }
+
+    return div.textContent?.trim() || "";
+  }
+  return "";
+}
+
+
 export default function NoteCard({
   id,
   note,
@@ -41,7 +58,7 @@ export default function NoteCard({
         className={`text-xs truncate ${isActive ? "text-[#4b4744]" : "text-[#a9a9a9]"
           }`}
       >
-        {note.content}
+        {getFirstTagContent(note.content)}
       </p>
       <div className="flex gap-2 ">
         <DateTag isActive={isActive} date={note.updatedAt} />

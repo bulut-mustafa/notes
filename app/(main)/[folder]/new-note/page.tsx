@@ -102,19 +102,6 @@ export default function NewNotePage() {
                         />
                     </div>
                     <div>
-                        <textarea
-                            id="content"
-                            placeholder="Write your note"
-                            name="content"
-                            rows={6}
-                            className="mt-1 p-2 w-full border-b border-slate-200 focus:outline-none sm:text-sm"
-                            value={noteFormData.content}
-                            onChange={(e) =>
-                                setNoteFormData({ ...noteFormData, content: e.target.value })
-                            }
-                        />
-                    </div>
-                    <div>
                         <RichTextEditor
                             content={noteFormData.content}
                             onChange={(newContent) =>

@@ -16,6 +16,8 @@ import TaskItem from '@tiptap/extension-task-item'
 import TaskList from '@tiptap/extension-task-list'
 import BulletList from '@tiptap/extension-bullet-list'
 import Text from '@tiptap/extension-text'
+import Placeholder from '@tiptap/extension-placeholder'
+
 type Props = {
   content: string;
   onChange: (html: string) => void;
@@ -27,28 +29,33 @@ type Props = {
 export default function RichTextEditor({ content, onChange }: Props) {
   const editor = useEditor({
     extensions: [
-        Color.configure({ types: [TextStyle.name, ListItem.name] }),
-        TextAlign.configure({
-            types: ['heading', 'paragraph'],
-          }),
-        StarterKit.configure({
-            bulletList: {
-            keepMarks: true,
-            keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-            },
-            orderedList: {
-            keepMarks: true,
-            keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-            },
-        }),
-        Highlight,
-        Document,
-        Paragraph,
-        Text,
-        TaskList,
-        TaskItem,
-        ListItem,
-        BulletList
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
+      StarterKit.configure({
+        bulletList: {
+          keepMarks: true,
+          keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+        },
+        orderedList: {
+          keepMarks: true,
+          keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+        },
+      }),
+      Placeholder.configure({
+        placeholder: 'Start writing…',
+      }),
+      Highlight,
+      Document,
+      Paragraph,
+      Text,
+      TaskList,
+      TaskItem,
+      ListItem,
+      BulletList,
+      TextStyle,
+      Color,
+      
     ],
     content,
     editorProps: {
