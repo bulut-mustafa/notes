@@ -35,7 +35,7 @@ export default function CardList() {
     if (filteredNotes.length === 0) return <p>No notes found.</p>;
 
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 overflow-y-auto h-full">
             {filteredNotes.map((note) => (
                 <NoteCard key={note.id} id={note.id} note={note} />
             ))}

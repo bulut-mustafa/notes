@@ -84,7 +84,7 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   --texteditor-purple-light: #f3e8ff;
-  --texteditor-black: #0f0f0f;
+  --texteditor-black: #343434;
   --texteditor-white: #ffffff;
   --texteditor-gray-2: #e2e8f0;
   --texteditor-gray-3: #cbd5e1;
@@ -146,3 +146,5 @@
     @apply text-xl font-bold;
   }
 }
+
+

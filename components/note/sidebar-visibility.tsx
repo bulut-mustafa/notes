@@ -12,7 +12,7 @@ export default function SidebarVisibility({ currentFolder }: { currentFolder?: s
 
   return (
     <aside
-      className={`w-full md:w-2/5 lg:w-1/4 md:border-r border-slate-200 h-full p-2 overflow-y-auto bg-white 
+      className={`w-full md:w-2/5 lg:w-1/4 md:border-r border-slate-200 h-full p-2 bg-white 
       ${showSidebar ? "block" : "hidden md:block"}`}
     >
       {/* Sidebar Header (Search + Add Button) */}
