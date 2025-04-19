@@ -9,7 +9,7 @@ interface UserDropdownProps {
 export default function UserDropdown(userInfo: UserDropdownProps) {
     return (
         <div className="flex items-center gap-3">
-            <div className="min-w-10 min-h-10 rounded-full bg-gray-300"></div>
+            <div className="min-w-8 min-h-8 rounded-full bg-gray-300"></div>
             {userInfo.isOpen && (
                 <div>
                     <h3 className="text-sm font-semibold">{userInfo.user.displayName}</h3>

@@ -12,7 +12,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
 import { Tag } from "@/lib/types";
-
+import { useRouter } from "next/navigation";
 
 interface ButtonBarProps {
     tags: Tag[];
@@ -25,6 +25,7 @@ export default function ButtonBar({
     selectedTags,
     setSelectedTags,
 }: ButtonBarProps) {
+    const router = useRouter();
     const handleTagToggle = (tagId: string) => {
         if (selectedTags.includes(tagId)) {
             setSelectedTags(selectedTags.filter((id) => id !== tagId));
@@ -37,7 +38,7 @@ export default function ButtonBar({
         <div className="flex gap-2 pb-2 px-2 border-b border-slate-200">
             <Button
                 icon="back"
-                onClick={() => window.history.back()}
+                onClick={() => router.push("/notes")}
                 className=" md:hidden"
             />
 

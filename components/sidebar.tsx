@@ -59,7 +59,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`h-screen p-2 bg-white border-r border-slate-200 transition-all ${isOpen ? "w-full sm:w-58" : "w-16"
+      className={`h-screen p-2 bg-white border-r border-slate-200 transition-all ${isOpen ? "w-full sm:w-58" : "w-12"
         }`}
     >
       {/* Header */}
@@ -170,8 +170,8 @@ export default function Sidebar() {
             >
               <Image
                 src={`/tag.svg`}
-                width={20}
-                height={20}
+                width={24}
+                height={24}
                 alt="sidebar"
                 className="min-w-[20px] min-h-[20px]"
               />

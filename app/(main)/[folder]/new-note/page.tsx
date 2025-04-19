@@ -65,40 +65,38 @@ export default function NewNotePage() {
     };
 
     return (
-        <div className="flex items-center w-full justify-center">
-            <div className="w-full p-2 space-y-4">
-
-
-                <form className="space-y-2" onSubmit={handleSubmit}>
-                    <ButtonBar
-                        tags={tags}
-                        selectedTags={noteFormData.tags}
-                        setSelectedTags={handleTagChange}
-                    />
-                    <ImagePicker
-                        name="coverImage"
-                        value={selectedFile}
-                        onChange={setSelectedFile}
-                    />
-
-                    {noteFormData.tags.length > 0 && (
-                        <div className="flex gap-2 flex-wrap">
-                            {noteFormData.tags.map((tagId) => {
-                                const tag = tags.find((t) => t.id === tagId);
-                                return tag ? <NoteTag key={tag.id} name={tag.name} /> : null;
-                            })}
-                        </div>
-                    )}
-                    <div>
-                        <RichTextEditor
-                            content={noteFormData.content}
-                            onChange={(newContent) =>
-                                setNoteFormData((prev) => ({ ...prev, content: newContent }))
-                            }
-                        />
-                    </div>
-                </form>
-            </div>
+        <div className="flex flex-col  w-full h-[100dvh] overflow-hidden"> {/* Full height page */}
+          <div className="sticky top-2 mb-2 z-10 bg-white ">
+            <ButtonBar
+              tags={tags}
+              selectedTags={noteFormData.tags}
+              setSelectedTags={handleTagChange}
+            />
+          </div>
+    
+          <form className="flex-1 overflow-auto p-2 space-y-4" onSubmit={handleSubmit}>
+            <ImagePicker
+              name="coverImage"
+              value={selectedFile}
+              onChange={setSelectedFile}
+            />
+    
+            {noteFormData.tags.length > 0 && (
+              <div className="flex gap-2 flex-wrap">
+                {noteFormData.tags.map((tagId) => {
+                  const tag = tags.find((t) => t.id === tagId);
+                  return tag ? <NoteTag key={tag.id} name={tag.name} /> : null;
+                })}
+              </div>
+            )}
+    
+            <RichTextEditor
+              content={noteFormData.content}
+              onChange={(newContent) =>
+                setNoteFormData((prev) => ({ ...prev, content: newContent }))
+              }
+            />
+          </form>
         </div>
-    );
+      );
 }

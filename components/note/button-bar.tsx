@@ -17,6 +17,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 import { updateNote } from "@/lib/actions";
 import Image from "next/image";
+
 export default function ButtonBar({ note, isEditing, onEdit, onSave, onCancel }: { note: Note, onEdit: () => void, onSave: () => void, onCancel: () => void, isEditing: boolean }) {
     const pathname = usePathname();
     const [uploading, setUploading] = useState(false);
@@ -64,13 +65,14 @@ export default function ButtonBar({ note, isEditing, onEdit, onSave, onCancel }:
         setTimeout(() => deleteNote(note.id), 100);
     }
 
+    function handleDownload() {
+        console.log("Download clicked");
+    }
     function handlePermanentRemove() {
         deleteDb(note.id);
         router.push("/deleted");
         setTimeout(() => deleteNote(note.id), 100);
     }
-
-
     async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -213,11 +215,21 @@ export default function ButtonBar({ note, isEditing, onEdit, onSave, onCancel }:
                             onClick={handleDelete}
                             className="border-slate-200"
                         />
-                        {!isEditing ? (<Button
-                            icon="edit"
-                            onClick={onEdit}
-                            className="ml-auto border-slate-200"
-                        />) : (<div className="flex gap-2 ml-auto">
+                        {!isEditing ? (
+                            <div className="flex gap-2 ml-auto">
+                                <Button
+                                    icon="download"
+                                    onClick={handleDownload}
+                                    className="border-slate-200"
+                                />
+                                <Button
+                                    icon="edit"
+                                    onClick={onEdit}
+                                    className="border-slate-200"
+                                />
+                            </div>
+
+                        ) : (<div className="flex gap-2 ml-auto">
                             <Button
                                 icon="save"
                                 onClick={onSave}

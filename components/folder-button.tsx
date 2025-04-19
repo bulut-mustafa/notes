@@ -39,7 +39,7 @@ export default function FolderButton({
         <Image
           src={`/folders/${icon}${isActive ? "-active" : ""}.svg`}
           width={24}
-          height={224}
+          height={24}
           alt={name}
           className="min-w-[24px] min-h-[24px]"
         />
