@@ -15,6 +15,7 @@ import Paragraph from '@tiptap/extension-paragraph'
 import TaskItem from '@tiptap/extension-task-item'
 import TaskList from '@tiptap/extension-task-list'
 import BulletList from '@tiptap/extension-bullet-list'
+import Blockquote from '@tiptap/extension-blockquote';
 import Text from '@tiptap/extension-text'
 import Placeholder from '@tiptap/extension-placeholder'
 
@@ -55,12 +56,12 @@ export default function RichTextEditor({ content, onChange }: Props) {
       BulletList,
       TextStyle,
       Color,
-      
+      Blockquote,
     ],
     content,
     editorProps: {
       attributes: {
-        class: "tiptap w-full max-w-full min-h-[150px] max-h-[650px] overflow-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 p-2 border border-slate-200 rounded-md",
+        class: "tiptap w-full max-w-full min-h-[150px] max-h-[700px] lg:max-h-[700px] overflow-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 p-2 border-y border-slate-200 rounded-md focus:outline-none focus:ring-none",
       },
     },
     onUpdate: ({ editor }) => {

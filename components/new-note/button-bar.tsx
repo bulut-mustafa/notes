@@ -34,7 +34,7 @@ export default function ButtonBar({
     };
 
     return (
-        <div className="flex gap-2 py-[6px] px-4 border-b border-slate-200">
+        <div className="flex gap-2 pb-2 px-2 border-b border-slate-200">
             <Button
                 icon="back"
                 onClick={() => window.history.back()}
@@ -46,8 +46,8 @@ export default function ButtonBar({
                     <button className="rounded-lg border border-slate-200 active:bg-[#fff5f2] active:border-[#9f857a] p-1">
                         <Image
                             src={`/buttons/new-tag.svg`}
-                            width={28}
-                            height={28}
+                            width={20}
+                            height={20}
                             alt="add tag"
                         />
                     </button>
@@ -81,8 +81,8 @@ export default function ButtonBar({
             <button type="submit" className="ml-auto rounded-lg border border-slate-200 active:bg-[#fff5f2] active:border-[#9f857a] p-1">
                 <Image
                     src={`/buttons/save.svg`}
-                    width={28}
-                    height={28}
+                    width={20}
+                    height={20}
                     alt="add tag"
                 />
             </button>

@@ -12,13 +12,13 @@ export default function SidebarVisibility({ currentFolder }: { currentFolder?: s
 
   return (
     <aside
-      className={`w-full md:w-2/5 lg:w-1/4 md:border-r border-slate-200 h-full p-2 bg-white 
+      className={`w-full md:w-2/6 lg:w-1/4 md:border-r border-slate-200 h-full p-2 bg-white 
       ${showSidebar ? "block" : "hidden md:block"}`}
     >
       {/* Sidebar Header (Search + Add Button) */}
       <SidebarHeader />
 
-      <h1 className="text-2xl font-bold text-[#0e0e0e] p-2 m-2">
+      <h1 className="text-lg font-semibold text-[#0e0e0e] p-1 m-1">
         {currentFolder} 
       </h1>
 

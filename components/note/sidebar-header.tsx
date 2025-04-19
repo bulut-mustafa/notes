@@ -15,18 +15,18 @@ export default function SidebarHeader() {
         placeholder="Search"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)} // ✅
-        className="w-full border border-slate-200 p-2 rounded-lg focus:outline-none focus:ring focus:ring-[#956e60]"
+        className="w-full border border-slate-200 p-1 text-sm rounded-md focus:outline-none focus:ring focus:ring-[#956e60]"
       />
       <button
         onClick={() => router.push("/notes/new-note")}
-        className="rounded bg-[#956e60] p-2 border border-[#956e60] hover:opacity-90"
+        className="rounded bg-[#956e60] p-1 border border-[#956e60] hover:opacity-90"
       >
         <Image
           src="/buttons/new-note.svg"
-          width={24}
-          height={24}
+          width={20}
+          height={20}
           alt="New Note"
-          className="min-w-[24px] min-h-[24px]"
+          className="min-w-[20px] min-h-[20px]"
         />
       </button>
     </div>

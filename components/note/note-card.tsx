@@ -42,24 +42,19 @@ export default function NoteCard({
   return (
     <div
       onClick={handleClick}
-      className={`flex group rounded-lg flex-col gap-2 p-4 text-sm cursor-pointer transition-all border bg-[#fafafa] hover:bg-[#fef6f4] 
+      className={`flex group rounded-lg flex-col gap-2 p-2 text-xs cursor-pointer transition-all border bg-[#fafafa] hover:bg-[#fef6f4] 
       ${isActive ? "border-2 border-[#d6c2bc] bg-[#fef6f4]" : "border border-transparent"}`}
     >
       <div className="flex justify-between items-center justify-between">
-        <p 
-          className={`text-lg font-semibold text-[#4b4744] truncate ${isActive && "text-[#8f756f]"
+        <p
+          className={`text-base font-semibold truncate ${isActive ? "text-[#4b4744]" : "text-[#a9a9a9]"
             }`}
         >
-          {note.title}
+          {getFirstTagContent(note.content)}
         </p>
-        <NoteActionCard isActive={isActive} note={note} folder={folder}/>
+        <NoteActionCard isActive={isActive} note={note} folder={folder} />
       </div>
-      <p
-        className={`text-xs truncate ${isActive ? "text-[#4b4744]" : "text-[#a9a9a9]"
-          }`}
-      >
-        {getFirstTagContent(note.content)}
-      </p>
+
       <div className="flex gap-2 ">
         <DateTag isActive={isActive} date={note.updatedAt} />
         {note.isFavorite && <FavoriteTag isActive={isActive} />}

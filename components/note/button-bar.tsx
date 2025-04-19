@@ -101,7 +101,7 @@ export default function ButtonBar({ note, isEditing, onEdit, onSave, onCancel }:
 
     return (
         <div className="w-full overflow-x-auto no-scrollbar">
-            <div className="flex gap-2 py-[6px] px-2 md:px-4 border-b border-slate-200 w-max min-w-full">
+            <div className="flex gap-2  pb-2 px-2 md:px-4 border-b border-slate-200 w-max min-w-full">
                 <Button
                     icon="back"
                     onClick={() => router.push(`/${folder}`)}
@@ -134,8 +134,8 @@ export default function ButtonBar({ note, isEditing, onEdit, onSave, onCancel }:
                                 <button className="rounded-lg border border-slate-200 active:bg-[#fff5f2] active:border-[#9f857a] p-1">
                                     <Image
                                         src={`/buttons/new-tag.svg`}
-                                        width={28}
-                                        height={28}
+                                        width={20}
+                                        height={20}
                                         alt="add tag"
                                     />
                                 </button>

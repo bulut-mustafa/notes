@@ -13,7 +13,7 @@ import { useNotes } from "@/context/notes-context";
 const sidebarItems = [
   { name: "Notes", link: "/notes" },
   { name: "Archived", link: "/archived" },
-  { name: "Recently Deleted", link: "/deleted" },
+  { name: "Trash", link: "/deleted" },
 ];
 
 export default function Sidebar() {
@@ -59,26 +59,26 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`h-screen p-2 bg-white border-r border-slate-200 transition-all ${isOpen ? "w-full sm:w-64" : "w-16"
+      className={`h-screen p-2 bg-white border-r border-slate-200 transition-all ${isOpen ? "w-full sm:w-58" : "w-16"
         }`}
     >
       {/* Header */}
-      <div className="flex gap-4 items-center border-b border-slate-200 pb-3">
+      <div className="flex gap-4 items-center border-b border-slate-200 pb-2">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="cursor-pointer rounded-lg border border-slate-200 active:bg-[#fff5f2] active:border-[#9f857a] p-1"
         >
           <Image
             src={`/buttons/sidebar.svg`}
-            width={28}
-            height={28}
+            width={20}
+            height={20}
             alt="sidebar"
-            className="min-w-[28px] min-h-[28px]"
+            className="min-w-[20px] min-h-[20px]"
           />
         </button>
-        <h2 className={`${!isOpen && "hidden"} text-lg font-bold text-[#856559]`}>
+        <p className={`${!isOpen && "hidden"} text-base font-bold text-[#856559]`}>
           Note<span className="text-black">App</span>
-        </h2>
+        </p>
       </div>
 
       {/* User Section */}
@@ -115,36 +115,36 @@ export default function Sidebar() {
       </ul>
 
       {/* Tags */}
-      <div className="flex justify-between mt-6 items-center relative">
-        <h4 className="text-xs text-gray-500 py-3">TAGS</h4>
+      <div className="flex justify-between mt-4 items-center relative">
+        <h4 className="text-xs text-gray-500 py-2">TAGS</h4>
         <button
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           className={`${isOpen ? "flex" : "hidden"
-            } cursor-pointer rounded-lg border border-slate-200 active:bg-[#fff5f2] active:border-[#9f857a] p-1 px-2`}
+            } cursor-pointer rounded-lg text-xs border border-slate-200 active:bg-[#fff5f2] active:border-[#9f857a] p-1 px-2`}
         >
           +
         </button>
       </div>
 
       {isDropdownOpen && (
-        <div className="absolute bg-white shadow-lg rounded-lg p-2 mt-2 w-full sm:w-60 border border-gray-200">
+        <div className="absolute bg-white shadow-lg rounded-lg p-2 mt-1 w-full sm:w-58 border border-gray-200">
           <input
             type="text"
             value={newTag}
             onChange={(e) => setNewTag(e.target.value)}
             placeholder="Enter tag name"
-            className="w-full p-1 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#9f857a]"
+            className="w-full text-xs p-1 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#9f857a]"
           />
           <button
             onClick={handleAddTag}
-            className="w-full mt-2 p-1 bg-[#9f857a] text-white rounded-md"
+            className="w-full mt-1 p-1 bg-[#9f857a] text-xs text-white rounded-md"
           >
             Add
           </button>
         </div>
       )}
 
-      <ul className="mt-2">
+      <ul className="mt-1">
         {tagsLoading
           ? Array.from({ length: 5 }).map((_, index) => (
             <li
@@ -166,16 +166,16 @@ export default function Sidebar() {
                   handleSelect();
                 } // close sidebar on mobile
               }}
-              className={`${selectedTag === tag.id && 'bg-[#fff2ee]'} flex items-center gap-2 p-2 text-gray-500 rounded-md`}
+              className={`${selectedTag === tag.id && 'bg-[#fff2ee]'} flex items-center gap-2 p-1 text-gray-500 rounded-md`}
             >
               <Image
                 src={`/tag.svg`}
-                width={28}
-                height={28}
+                width={20}
+                height={20}
                 alt="sidebar"
-                className="min-w-[28px] min-h-[28px]"
+                className="min-w-[20px] min-h-[20px]"
               />
-              {isOpen && <span className="text-nowrap">{tag.name}</span>}
+              {isOpen && <span className="text-sm text-nowrap">{tag.name}</span>}
             </li>
           ))}
       </ul>

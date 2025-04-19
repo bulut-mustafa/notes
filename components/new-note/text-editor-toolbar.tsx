@@ -15,7 +15,8 @@ import {
     AlignLeft,
     AlignRight,
     Highlighter,
-    ListTodo
+    ListTodo,
+    MessageSquareQuote
 } from "lucide-react";
 import clsx from "clsx";
 import { Editor } from "@tiptap/react";
@@ -82,6 +83,12 @@ export default function TextEditorToolbar({ editor }: Props) {
                 onClick={() => editor.chain().focus().toggleCodeBlock().run()}
             >
                 <Code size={16} />
+            </ToolbarButton>
+            <ToolbarButton
+                isActive={editor.isActive("blockquote")}
+                onClick={() => editor.chain().focus().toggleBlockquote().run()}
+            >
+                <MessageSquareQuote size={16} />
             </ToolbarButton>
             <ToolbarButton
                 isActive={editor.isActive("taskList")}

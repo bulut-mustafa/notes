@@ -20,7 +20,7 @@ export default function FolderLayout({
   )?.name;
 
   return (
-      <div className="flex w-full h-screen  overflow-hidden">
+      <div className="flex w-full h-screen overflow-hidden">
         {/* Sidebar (conditionally visible based on route) */}
         <SidebarVisibility currentFolder={currentFolder} />
 

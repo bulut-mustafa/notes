@@ -155,7 +155,6 @@ export const fetchNotesByUser = async (userId: string): Promise<Note[]> => {
       return {
         id: data.noteId,
         userId: data.userId,
-        title: data.title,
         content: data.content,
         image: data.image,
         tags: data.tags,

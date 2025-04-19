@@ -16,7 +16,6 @@ export default function NewNotePage() {
     const { addNote } = useNotes();
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [noteFormData, setNoteFormData] = useState({
-        title: "",
         content: "",
         image: [] as string[],
         tags: [] as string[],
@@ -50,7 +49,7 @@ export default function NewNotePage() {
         const newNote = await addNote(updatedFormData);
 
         // Reset form state
-        setNoteFormData({ title: "", content: "", image: [], tags: [], archived: false, isDeleted: false, newsAttached: [], isFavorite: false });
+        setNoteFormData({ content: "", image: [], tags: [], archived: false, isDeleted: false, newsAttached: [], isFavorite: false });
         setSelectedFile(null);
         router.push(`/notes/${newNote?.id}`);
     };
@@ -70,7 +69,7 @@ export default function NewNotePage() {
             <div className="w-full p-2 space-y-4">
 
 
-                <form className="space-y-4" onSubmit={handleSubmit}>
+                <form className="space-y-2" onSubmit={handleSubmit}>
                     <ButtonBar
                         tags={tags}
                         selectedTags={noteFormData.tags}
@@ -82,27 +81,14 @@ export default function NewNotePage() {
                         onChange={setSelectedFile}
                     />
 
-                    <div className="flex gap-2 flex-wrap">
-                        {noteFormData.tags.map((tagId) => {
-                            const tag = tags.find((t) => t.id === tagId);
-                            return tag ? <NoteTag key={tag.id} name={tag.name} /> : null;
-                        })}
-                    </div>
-
-                    <div>
-                        <input
-                            type="text"
-                            id="title"
-                            placeholder="Title"
-                            name="title"
-                            className="w-full border-b border-slate-200 p-2 focus:outline-none"
-                            value={noteFormData.title}
-                            onChange={(e) =>
-                                setNoteFormData({ ...noteFormData, title: e.target.value })
-                            }
-                            required
-                        />
-                    </div>
+                    {noteFormData.tags.length > 0 && (
+                        <div className="flex gap-2 flex-wrap">
+                            {noteFormData.tags.map((tagId) => {
+                                const tag = tags.find((t) => t.id === tagId);
+                                return tag ? <NoteTag key={tag.id} name={tag.name} /> : null;
+                            })}
+                        </div>
+                    )}
                     <div>
                         <RichTextEditor
                             content={noteFormData.content}

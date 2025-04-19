@@ -13,8 +13,8 @@ export default function Button({ icon, onClick, className = "", asLabel = false,
   const common = (
     <Image
       src={`/buttons/${icon}.svg`}
-      width={28}
-      height={28}
+      width={20}
+      height={20}
       alt={icon}
       onClick={asLabel ? undefined : onClick}
     />
@@ -34,7 +34,7 @@ export default function Button({ icon, onClick, className = "", asLabel = false,
   return (
     <button
       onClick={onClick}
-      className={`rounded-lg border p-1 active:bg-[#fff5f2] active:border-[#9f857a] ${className}`}
+      className={`rounded-md border p-1 active:bg-[#fff5f2] active:border-[#9f857a] ${className}`}
     >
       {common}
     </button>

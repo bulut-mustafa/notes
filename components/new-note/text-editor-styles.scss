@@ -1,120 +1,129 @@
-    /* Basic editor styles */
-    .tiptap {
-        :first-child {
-            margin-top: 0;
-        }
-        word-break: break-word;
-        overflow-wrap: break-word;
-        /* List styles */
-        ul,
-        ol {
-            padding: 0 1rem;
-            margin: 1.25rem 1rem 1.25rem 0.4rem;
-            li p {
-                margin-top: 0.25em;
-                margin-bottom: 0.25em;
-            }
-        }
-
-        /* Heading styles */
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            line-height: 1.1;
-            margin-top: 2.5rem;
-            text-wrap: pretty;
-        }
-
-        h1,
-        h2 {
-            margin-top: 3.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        h1 {
-            font-size: 1.4rem;
-        }
-
-        h2 {
-            font-size: 1.2rem;
-        }
-
-        h3 {
-            font-size: 1.1rem;
-        }
-
-        h4,
-        h5,
-        h6 {
-            font-size: 1rem;
-        }
-
-        /* Code and preformatted text styles */
-        code {
-            background-color: var(--texteditor-purple-light);
-            border-radius: 0.4rem;
-            color: var(--texteditor-black);
-            font-size: 0.85rem;
-            padding: 0.25em 0.3em;
-        }
-
-        pre {
-            background: var(--texteditor-black);
-            border-radius: 0.5rem;
-            color: var(--texteditor-white);
-            font-family: 'JetBrainsMono', monospace;
-            margin: 1.5rem 0;
-            padding: 0.75rem 1rem;
-
-            code {
-                background: none;
-                color: inherit;
-                font-size: 0.8rem;
-                padding: 0;
-                white-space: pre-wrap;
-                word-break: break-word;
-            }
-        }
-
-        blockquote {
-            border-left: 3px solid var(--texteditor-gray-3);
-            margin: 1.5rem 0;
-            padding-left: 1rem;
-        }
-
-        hr {
-            border: none;
-            border-top: 1px solid var(--texteditor-gray-2);
-            margin: 2rem 0;
-        }
-
-        /* Task list specific styles */
-        ul[data-type="taskList"] {
-            list-style: none;
-            margin-left: 0;
-            padding: 0;
-
-            li {
-                align-items: center;
-                display: flex;
-
-                >label {
-                    flex: 0 0 auto;
-                    margin-right: 0.5rem;
-                    user-select: none;
-                }
-
-                >div {
-                    flex: 1 1 auto;
-                }
-            }
-
-            input[type="checkbox"] {
-                cursor: pointer;
-            }
-        }
-
+/* Notion-like editor styles */
+.tiptap {
+    :first-child {
+      margin-top: 0;
     }
+  
+    word-break: break-word;
+    overflow-wrap: break-word;
+  
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 16px;
+    line-height: 1.6;
+  
+    /* Paragraphs */
+    p {
+      margin: 0.5rem 0;
+    }
+  
+    /* List styles */
+    ul,
+    ol {
+      padding-left: 1.5rem;
+      margin: 1rem 0;
+      li p {
+        margin: 0.2rem 0;
+      }
+    }
+  
+    /* Heading styles */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      line-height: 1.3;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+      text-wrap: pretty;
+    }
+  
+    h1 {
+      font-size: 1.875rem;
+    }
+  
+    h2 {
+      font-size: 1.5rem;
+    }
+  
+    h3 {
+      font-size: 1.25rem;
+    }
+  
+    h4 {
+      font-size: 1.125rem;
+    }
+  
+    h5,
+    h6 {
+      font-size: 1rem;
+    }
+  
+    /* Inline code */
+    code {
+      background-color: #f6f6f6;
+      border-radius: 4px;
+      padding: 0.2em 0.4em;
+      font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+        monospace;
+      font-size: 0.875rem;
+    }
+  
+    /* Code blocks */
+    pre {
+      background: #f6f6f6;
+      border-radius: 6px;
+      padding: 1rem;
+      overflow-x: auto;
+      font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+        monospace;
+      font-size: 0.875rem;
+    }
+  
+    /* Blockquotes */
+    blockquote {
+      border-left: 4px solid #ddd;
+      color: #555;
+      padding-left: 1rem;
+      margin: 1.5rem 0;
+      font-style: italic;
+    }
+  
+    /* Horizontal rule */
+    hr {
+      border: none;
+      border-top: 1px solid #e0e0e0;
+      margin: 2rem 0;
+    }
+  
+    /* Task list */
+    ul[data-type="taskList"] {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0;
+  
+      li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 0.25rem 0;
+  
+        > label {
+          user-select: none;
+        }
+  
+        > div {
+          flex: 1;
+        }
+      }
+  
+      input[type="checkbox"] {
+        cursor: pointer;
+      }
+    }
+  }
+  

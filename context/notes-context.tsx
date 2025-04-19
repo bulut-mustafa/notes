@@ -82,7 +82,6 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
   };
   const filteredNotes = notes.filter((note) => {
     const matchesSearch =
-      note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       note.content.toLowerCase().includes(searchQuery.toLowerCase());
   
     const matchesTag = selectedTag

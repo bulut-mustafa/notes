@@ -15,7 +15,6 @@ export type Tag = {
 
 
 export type NoteFormData = {
-  title: string;
   content: string;
   image: string[];
   tags: string[];
@@ -27,7 +26,6 @@ export type NoteFormData = {
 export type Note = {
   id: string;
   userId: string;
-  title: string;
   content: string;
   image: string[];
   tags: string[];

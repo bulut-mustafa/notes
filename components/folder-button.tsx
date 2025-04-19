@@ -32,18 +32,18 @@ export default function FolderButton({
     <li>
       <button
         onClick={handleClick}
-        className={`group flex w-full items-center gap-2 p-2 rounded-xl text-sm transition-colors
+        className={`group flex w-full items-center gap-2 p-1 rounded-lg text-sm transition-colors
           ${isActive ? "bg-[#fff2ee] font-semibold text-[#856559]" : "text-[#a9a9a9] hover:bg-gray-100"}
         `}
       >
         <Image
           src={`/folders/${icon}${isActive ? "-active" : ""}.svg`}
-          width={28}
-          height={28}
+          width={24}
+          height={224}
           alt={name}
-          className="min-w-[32px] min-h-[32px]"
+          className="min-w-[24px] min-h-[24px]"
         />
-        {isOpen && <p className="text-nowrap">{name}</p>}
+        {isOpen && <p className="text-nowrap text-sm">{name}</p>}
       </button>
     </li>
   );
