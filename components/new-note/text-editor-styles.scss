@@ -127,3 +127,45 @@
     }
   }
   
+  /* Bubble menu */
+  .bubble-menu {
+    background-color: var(--white);
+    border: 1px solid var(--gray-1);
+    border-radius: 0.7rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    padding: 0.2rem;
+    width: auto; /* Make the width auto to adapt to content */
+    max-width: 100%; /* Max width set to full width of its container */
+    overflow-x: hidden; /* Hide horizontal scroll */
+  }
+  
+  .tippy-content {
+    display: flex;
+    gap: 1rem; /* Add some space between buttons */
+    max-width: none; /* Allow it to stretch beyond the default max-width */
+  }
+  
+  .tippy-box {
+    max-width: none !important; /* Disable the max-width limit on the tippy box */
+  }
+  
+  .bubble-menu .flex {
+    width: auto; /* Ensure the flex container expands to fit its content */
+  }
+  
+
+  @media (max-width: 768px) {
+    .bubble-menu {
+      max-width: 90%; /* Limit the width on smaller screens */
+    }
+  }
+
+  
+.tiptap p.is-empty::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}

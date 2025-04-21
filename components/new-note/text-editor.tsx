@@ -1,9 +1,9 @@
 "use client";
 
 import './text-editor-styles.scss';
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import TextEditorToolbar from "./text-editor-toolbar";
 import { Color } from '@tiptap/extension-color'
 import ListItem from '@tiptap/extension-list-item'
@@ -18,7 +18,6 @@ import BulletList from '@tiptap/extension-bullet-list'
 import Blockquote from '@tiptap/extension-blockquote';
 import Text from '@tiptap/extension-text'
 import Placeholder from '@tiptap/extension-placeholder'
-
 type Props = {
   content: string;
   onChange: (html: string) => void;
@@ -44,7 +43,7 @@ export default function RichTextEditor({ content, onChange }: Props) {
         },
       }),
       Placeholder.configure({
-        placeholder: 'Start writing…',
+        placeholder: "Start writing, press '/' for commands…",
       }),
       Highlight,
       Document,
@@ -68,6 +67,7 @@ export default function RichTextEditor({ content, onChange }: Props) {
       onChange(editor.getHTML());
     },
   });
+  const [isSlashTriggerActive, setIsSlashTriggerActive] = useState(false);
 
   useEffect(() => {
     if (editor && content !== editor.getHTML()) {
@@ -76,11 +76,54 @@ export default function RichTextEditor({ content, onChange }: Props) {
   }, [content, editor]);
 
   if (!editor) return null;
+  const removeSlashTrigger = () => {
+    const { from } = editor.state.selection;
+    const node = editor.state.doc.resolve(from).parent;
 
+    if (node.textContent === '/') {
+      editor.commands.command(({ tr }) => {
+        tr.delete(from - 1, from); // Remove the slash
+        return true;
+      });
+    }
+  };
   return (
     <div className="space-y-2 w-full">
-      <TextEditorToolbar editor={editor} />
-      <EditorContent editor={editor} />
+      <BubbleMenu
+        editor={editor}
+        tippyOptions={{ duration: 100 }}
+        shouldShow={({ state }) => {
+          const { from, to } = state.selection;
+          const node = state.doc.resolve(from).parent;
+          const text = node.textContent;
+
+          const isSlashTrigger = text === '/' && from === to;
+          const isTextSelected = from !== to;
+
+          setIsSlashTriggerActive(isSlashTrigger); // <-- Set state here
+
+          return isSlashTrigger || isTextSelected;
+        }}
+      >
+        <TextEditorToolbar onAction={() => {
+          if (isSlashTriggerActive) {
+            removeSlashTrigger();
+            setIsSlashTriggerActive(false);
+          }
+        }} editor={editor} />
+      </BubbleMenu>
+      <div
+        onKeyDown={(e) => {
+          if (e.key === '/') {
+            // Give it a slight delay so state updates
+            setTimeout(() => {
+              editor?.commands.focus()
+            }, 0)
+          }
+        }}
+      >
+        <EditorContent editor={editor} />
+      </div>
     </div>
   );
 }

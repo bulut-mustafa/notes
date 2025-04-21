@@ -11,7 +11,6 @@ function formatDate(date: string) {
   
   const formatted = new Date(date).toLocaleDateString("en-US", options);
   const parts = formatted.split(", ");
-  console.log(formatted)
   // Combine into a tighter format: Apr 18, 2025 - 7:30 PM
   const datePart = parts[0]?.trim();
   const timePart = parts[1]?.trim();

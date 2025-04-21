@@ -8,6 +8,8 @@ import TagBar from "@/components/note/tag-bar";
 import '@/components/new-note/text-editor-styles.scss';
 import RichTextEditor from "@/components/new-note/text-editor";
 import { updateNote } from "@/lib/actions";
+import AIAssistant from "@/components/note/ai-assistant";
+
 
 export default function NotePage() {
     const { noteId } = useParams();
@@ -15,7 +17,7 @@ export default function NotePage() {
     const note = notes.find((n) => n.id === noteId);
     const [isEditing, setIsEditing] = useState(false);
     const [newContent, setNewContent] = useState<string>(note?.content || "");
-
+    const [aiOpen, setAiOpen] = useState(true);
     if (!note) {
         return <p className="text-red-500 font-semibold">Note not found.</p>;
     }
@@ -33,11 +35,21 @@ export default function NotePage() {
         setIsEditing(false);
         setNewContent(note.content);
     }
-
+    const handleAIOpen = () => {
+        setAiOpen(!aiOpen);
+    }
 
     return (
         <div className="p-2 w-full h-full flex flex-col">
-            <ButtonBar note={note} isEditing={isEditing} onEdit={handleEditClick} onSave={handleSaveClick} onCancel={handleCancelClick} />
+            <ButtonBar note={note} isEditing={isEditing} onEdit={handleEditClick} onSave={handleSaveClick} onCancel={handleCancelClick} onToggleAI={handleAIOpen} />
+            {/* Accordion AI Section */}
+            {aiOpen && (
+                <AIAssistant
+                    onClose={() => setAiOpen(false)}
+                    noteContent={note.content}
+                    notes= {notes.map((n, i) => `Note ${i + 1}:\n${n.content}`).join("\n\n")}
+                />
+            )}
             <div className="flex-1 p-2 md:p-4 space-y-4 overflow-auto h-full">
                 <ImageBar note={note} />
                 <TagBar tags={note.tags} note={note} />
@@ -50,7 +62,7 @@ export default function NotePage() {
                             }
                         />
                     </div>
-                ) : (<div
+                ) : (<div id="note-content"
                     className="tiptap prose prose-sm sm:prose lg:prose-lg max-w-none"
                     dangerouslySetInnerHTML={{ __html: note.content }}
                 />)}
