@@ -28,6 +28,7 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [notesCache, setNotesCache] = useState<Record<string, Note[]>>({});
 
   const currentFolder = pathname.split("/")[1]; // Extract folder name from URL
 
@@ -40,6 +41,14 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
   };
   const fetchNotes = async () => {
     if (!user?.uid || !currentFolder) return;
+  
+    const cachedNotes = notesCache[currentFolder];
+    if (cachedNotes) {
+      setNotes(cachedNotes);
+      setLoading(false);
+      return;
+    }
+  
     setLoading(true);
     try {
       let archived = false;
@@ -56,6 +65,13 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
       const sortedNotes = fetchedNotes.sort(
         (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
       );
+  
+      // Cache notes for this folder
+      setNotesCache((prev) => ({
+        ...prev,
+        [currentFolder]: sortedNotes,
+      }));
+  
       setNotes(sortedNotes);
     } catch (error) {
       console.error("Error fetching notes:", error);
@@ -68,9 +84,18 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
     if (!user?.uid) return null;
     try {
       const newNote = await addNoteToDB(user.uid, formData);
-      setNotes((prevNotes) =>
-        [newNote, ...prevNotes].sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-      ); // Sort after adding
+      const updatedNotes = [newNote, ...notes].sort(
+        (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      );
+  
+      setNotes(updatedNotes);
+  
+      // Update cache
+      setNotesCache((prev) => ({
+        ...prev,
+        [currentFolder]: updatedNotes,
+      }));
+  
       return newNote;
     } catch (error) {
       console.error("Error adding note:", error);

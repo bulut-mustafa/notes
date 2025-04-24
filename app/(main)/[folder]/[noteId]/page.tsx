@@ -17,7 +17,7 @@ export default function NotePage() {
     const note = notes.find((n) => n.id === noteId);
     const [isEditing, setIsEditing] = useState(false);
     const [newContent, setNewContent] = useState<string>(note?.content || "");
-    const [aiOpen, setAiOpen] = useState(true);
+    const [aiOpen, setAiOpen] = useState(false);
     if (!note) {
         return <p className="text-red-500 font-semibold">Note not found.</p>;
     }
@@ -40,12 +40,11 @@ export default function NotePage() {
     }
 
     return (
-        <div className="p-2 w-full h-full flex flex-col">
+        <div className="p-2 w-full h-full flex flex-col overflow-x-hidden">
             <ButtonBar note={note} isEditing={isEditing} onEdit={handleEditClick} onSave={handleSaveClick} onCancel={handleCancelClick} onToggleAI={handleAIOpen} />
             {/* Accordion AI Section */}
             {aiOpen && (
                 <AIAssistant
-                    onClose={() => setAiOpen(false)}
                     noteContent={note.content}
                     notes= {notes.map((n, i) => `Note ${i + 1}:\n${n.content}`).join("\n\n")}
                 />

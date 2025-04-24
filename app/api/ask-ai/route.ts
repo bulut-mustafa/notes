@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { question, context, notes } = body;
+  const { question, allNotes, context, notes } = body;
 
   if (!question || !context) {
     return NextResponse.json(
@@ -12,6 +12,61 @@ export async function POST(req: Request) {
   }
 
   try {
+    const messages = [
+      {
+        role: "system",
+        content: `
+You are a helpful, intelligent assistant.
+
+You must format all of your responses using **only HTML**, not Markdown or plain text. Do not escape characters. Use HTML elements such as:
+
+- <p> for paragraphs
+- <ul>, <li> for bullet points
+- <h2>, <h3> for headings
+- <b> or <strong> for emphasis
+- <code> or <pre> for code
+
+Example output:
+<h2>Key Points</h2>
+<ul>
+  <li><b>Topic:</b> Explanation of the main idea.</li>
+  <li><b>Tip:</b> Use structured formatting for clarity.</li>
+</ul>
+<p>This is a simple paragraph of text.</p>
+
+----
+
+When answering:
+${allNotes
+  ? "- Use all notes as your main reference context if relevant."
+  : "- Use only the current note as reference. Ignore other notes."}
+
+If the question is general and not related to the note context (e.g. travel, tech, advice), answer based on your knowledge.
+
+Respond in a way that is:
+- Easy to read and well-structured
+- Fully formatted using HTML
+- Professional, clean, and helpful
+        `.trim(),
+      },
+      {
+        role: "user",
+        content: `Current Note:\n"""\n${context}\n"""`,
+      },
+      ...(allNotes
+        ? [
+            {
+              role: "user",
+              content: `All Notes:\n"""\n${notes}\n"""`,
+            },
+          ]
+        : []),
+      {
+        role: "user",
+        content: `Question:\n"${question}"`,
+      },
+    ];
+
     const response = await fetch(
       "https://api.groq.com/openai/v1/chat/completions",
       {
@@ -22,46 +77,7 @@ export async function POST(req: Request) {
         },
         body: JSON.stringify({
           model: "llama3-70b-8192",
-          messages: [
-            {
-              role: "system",
-              content: `
-You are an intelligent, context-aware assistant. You can answer questions based on the user's notes, but you're also capable of responding to general questions that are not related to notes.
-
-Use the provided note context *only* if it’s relevant to the user's question. Otherwise, rely on your general knowledge.
-
-- If the question involves comparing or analyzing notes, use the note context provided.
-- If the question is unrelated (e.g., travel, programming, advice), treat it like a normal chatbot query.
-- Format all answers using HTML for clarity, including <p>, <ul>, <li>, <b>, <h2>, etc.
-- Keep responses helpful, clean, and easy to read.
-            `.trim(),
-            },
-            {
-              role: "user",
-              content: `
-Current note content:
-"""
-${context}
-"""
-            `.trim(),
-            },
-            {
-              role: "user",
-              content: `
-All other notes:
-"""
-${notes}
-"""
-            `.trim(),
-            },
-            {
-              role: "user",
-              content: `
-My question:
-"${question}"
-            `.trim(),
-            },
-          ],
+          messages,
         }),
       }
     );
