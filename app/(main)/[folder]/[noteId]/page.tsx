@@ -13,11 +13,14 @@ import AIAssistant from "@/components/note/ai-assistant";
 
 export default function NotePage() {
     const { noteId } = useParams();
-    const { notes, updateNoteState } = useNotes();
+    const { notes, updateNoteState, loading } = useNotes();
     const note = notes.find((n) => n.id === noteId);
     const [isEditing, setIsEditing] = useState(false);
     const [newContent, setNewContent] = useState<string>(note?.content || "");
     const [aiOpen, setAiOpen] = useState(false);
+    if(loading) {
+        return <p className="text-red-500 font-semibold">Loading...</p>;
+    }
     if (!note) {
         return <p className="text-red-500 font-semibold">Note not found.</p>;
     }
@@ -39,6 +42,7 @@ export default function NotePage() {
         setAiOpen(!aiOpen);
     }
 
+   
     return (
         <div className="p-2 w-full h-full flex flex-col overflow-x-hidden">
             <ButtonBar note={note} isEditing={isEditing} onEdit={handleEditClick} onSave={handleSaveClick} onCancel={handleCancelClick} onToggleAI={handleAIOpen} />
