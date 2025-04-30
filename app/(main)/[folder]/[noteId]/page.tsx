@@ -19,7 +19,7 @@ export default function NotePage() {
     const [newContent, setNewContent] = useState<string>(note?.content || "");
     const [aiOpen, setAiOpen] = useState(false);
     if(loading) {
-        return <p className="text-red-500 font-semibold">Loading...</p>;
+        return <div className="flex align-center items-center"><p className="text-red-500 font-semibold">Loading...</p></div>;
     }
     if (!note) {
         return <p className="text-red-500 font-semibold">Note not found.</p>;
