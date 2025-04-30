@@ -1,7 +1,7 @@
 "use client";
 import NoteCard from "./note-card"; 
 import { useNotes } from "@/context/notes-context";
-
+import Image from "next/image";
 export  function NoteCardSkeleton() {
     return (
       <div className="flex flex-col gap-2 p-4 text-sm border rounded-lg bg-[#fafafa] animate-pulse">
@@ -32,7 +32,10 @@ export default function CardList() {
           </div>
         );
       }
-    if (filteredNotes.length === 0) return <p>No notes found.</p>;
+    if (filteredNotes.length === 0) return <div className="flex flex-col items-center justify-center h-full space-y-4 text-center">
+    <Image src="/add-note.svg" alt="Add note" className="opacity-80" width={200} height={200} />
+    <h1 className="text-gray-400 text-lg">You don&apos;t have any notes.</h1>
+  </div>;
 
     return (
         <div className="flex flex-col gap-2 overflow-y-auto h-full">

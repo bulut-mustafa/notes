@@ -9,7 +9,7 @@ import '@/components/new-note/text-editor-styles.scss';
 import RichTextEditor from "@/components/new-note/text-editor";
 import { updateNote } from "@/lib/actions";
 import AIAssistant from "@/components/note/ai-assistant";
-
+import Image from "next/image";
 
 export default function NotePage() {
     const { noteId } = useParams();
@@ -19,11 +19,25 @@ export default function NotePage() {
     const [newContent, setNewContent] = useState<string>(note?.content || "");
     const [aiOpen, setAiOpen] = useState(false);
     if(loading) {
-        return <div className="flex align-center items-center"><p className="text-red-500 font-semibold">Loading...</p></div>;
+        return <div className="flex flex-col items-center justify-center h-full space-y-4">
+        <div className="flex space-x-2">
+          <div className="w-3 h-3 bg-[#d6c2bc] rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+          <div className="w-3 h-3 bg-[#d6c2bc] rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+          <div className="w-3 h-3 bg-[#d6c2bc] rounded-full animate-bounce"></div>
+        </div>
+        <p className="text-gray-600 font-medium">Loading your note…</p>
+      </div>
+      
+      ;
     }
     if (!note) {
-        return <p className="text-red-500 font-semibold">Note not found.</p>;
-    }
+        return (
+          <div className="flex flex-col items-center justify-center h-full space-y-4">
+            <Image src="/note-not-found.svg" alt="Note not found" width={200} height={200} />
+            <p className="text-gray-600 font-medium">Oops! We couldn’t find this note.</p>
+          </div>
+        );
+      }
     const handleEditClick = () => {
         setIsEditing(true);
     }
@@ -44,13 +58,14 @@ export default function NotePage() {
 
    
     return (
-        <div className="p-2 w-full h-full flex flex-col overflow-x-hidden">
+        <div className="relative p-2 w-full h-full flex flex-col overflow-x-hidden">
             <ButtonBar note={note} isEditing={isEditing} onEdit={handleEditClick} onSave={handleSaveClick} onCancel={handleCancelClick} onToggleAI={handleAIOpen} />
             {/* Accordion AI Section */}
             {aiOpen && (
                 <AIAssistant
                     noteContent={note.content}
                     notes= {notes.map((n, i) => `Note ${i + 1}:\n${n.content}`).join("\n\n")}
+                    onClose={() => setAiOpen(false)}
                 />
             )}
             <div className="flex-1 p-2 md:p-4 space-y-4 overflow-auto h-full">
