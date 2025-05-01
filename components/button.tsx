@@ -7,16 +7,16 @@ type ButtonProps = {
   className?: string;
   asLabel?: boolean;
   htmlFor?: string;
+  type?: "button" | "submit" | "reset";
 };
 
-export default function Button({ icon, onClick, className = "", asLabel = false, htmlFor }: ButtonProps) {
+export default function Button({ icon, onClick, className = "", asLabel = false, htmlFor, type }: ButtonProps) {
   const common = (
     <Image
       src={`/buttons/${icon}.svg`}
       width={20}
       height={20}
       alt={icon}
-      onClick={asLabel ? undefined : onClick}
     />
   );
 
@@ -35,6 +35,7 @@ export default function Button({ icon, onClick, className = "", asLabel = false,
     <button
       onClick={onClick}
       className={`rounded-md border p-1 active:bg-[#fff5f2] active:border-[#9f857a] ${className}`}
+      type={type}
     >
       {common}
     </button>

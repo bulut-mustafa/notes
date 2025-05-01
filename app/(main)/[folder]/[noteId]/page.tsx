@@ -1,6 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNotes } from "@/context/notes-context";
 import ButtonBar from "@/components/note/button-bar";
 import ImageBar from "@/components/note/image-bar";
@@ -11,6 +11,7 @@ import { updateNote } from "@/lib/actions";
 import AIAssistant from "@/components/note/ai-assistant";
 import Image from "next/image";
 import DOMPurify from "dompurify";
+import toast from "react-hot-toast";
 export default function NotePage() {
     const { noteId } = useParams();
     const { notes, updateNoteState, loading } = useNotes();
@@ -18,6 +19,26 @@ export default function NotePage() {
     const [isEditing, setIsEditing] = useState(false);
     const [newContent, setNewContent] = useState<string>(note?.content || "");
     const [aiOpen, setAiOpen] = useState(false);
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+          if (!isEditing) return; 
+      
+          if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            e.preventDefault();  
+            handleSaveClick();
+          }
+      
+          if (e.key === 'Escape') {
+            e.preventDefault();
+            handleCancelClick();
+          }
+        };
+      
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+          document.removeEventListener('keydown', handleKeyDown);
+        };
+      }, [isEditing, newContent]);  
     if(loading) {
         return <div className="flex flex-col items-center justify-center h-full space-y-4">
         <div className="flex space-x-2">
@@ -41,16 +62,19 @@ export default function NotePage() {
     const handleEditClick = () => {
         setIsEditing(true);
     }
-
+    
     const handleSaveClick = async () => {
         updateNote(note.id, { content: newContent });
         updateNoteState(note.id, { content: newContent });
         setIsEditing(false);
         setNewContent(note.content);
+        toast.success('Saved!'); // Displays a success message
+        console.log('why')
     }
     const handleCancelClick = () => {
         setIsEditing(false);
         setNewContent(note.content);
+        toast.error('Cancelled!'); // Displays an error message
     }
     const handleAIOpen = () => {
         setAiOpen(!aiOpen);

@@ -245,12 +245,16 @@ export default function ButtonBar({
                                 <Button
                                     icon="save"
                                     onClick={onSave}
+                                    type="button"
                                     className="border-slate-200"
+                                    asLabel={false}
                                 />
                                 <Button
                                     icon="cancel"
                                     onClick={onCancel}
+                                    type="button"
                                     className="border-slate-200"
+                                    asLabel={false}
                                 />
                             </>)}
                         </div>

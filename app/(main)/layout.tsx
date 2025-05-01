@@ -2,6 +2,7 @@ import Sidebar from "@/components/sidebar";
 import { TagsProvider } from "@/context/tag-context";
 import { AuthProvider } from "@/context/auth-context";
 import { NotesProvider } from "@/context/notes-context";
+import { Toaster } from "react-hot-toast";
 
 export default function MainLayout({
   children,
@@ -15,6 +16,7 @@ export default function MainLayout({
           <div className="flex h-screen">
             <Sidebar />
             <div className="flex-1 overflow-auto">
+              <Toaster position="top-center" />
               {children}
             </div>
           </div>
