@@ -49,7 +49,7 @@ const SignUpForm: React.FC = () => {
     
         try {   
             await registerNewUser(formData.email, formData.password, formData.name, formData.lastname);
-            router.push('/notes'); // 🔹 Redirect from the client side
+            router.push('/notes');
         } catch (e) {
             setError((e as Error).message);
         }

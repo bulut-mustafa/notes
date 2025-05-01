@@ -29,7 +29,7 @@ const LoginForm: React.FC = () => {
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
-                router.replace('/notes'); // ✅ Use `replace` to prevent navigating back to /login
+                router.replace('/notes');
             } else {
                 setLoading(false);
             }

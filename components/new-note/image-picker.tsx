@@ -65,8 +65,8 @@ export default function ImagePicker({ name, value, onChange }: ImagePickerProps)
             <Image
               src={URL.createObjectURL(value)}
               alt="Preview"
-              width={700} // ✅ Specify width
-              height={700} // ✅ Specify height
+              width={700}  
+              height={700} 
               className="w-full h-auto"
             />
           </>

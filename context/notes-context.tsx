@@ -10,8 +10,8 @@ interface NotesContextType {
   filteredNotes: Note[];
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  selectedTag: string | null; // ✅ new
-  setSelectedTag: (tag: string | null) => void; // ✅ new
+  selectedTag: string | null; 
+  setSelectedTag: (tag: string | null) => void; 
   loading: boolean;
   addNote: (formData: NoteFormData) => Promise<Note | null>;
   refreshNotes: () => Promise<void>;
@@ -66,7 +66,6 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
         (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
       );
   
-      // Cache notes for this folder
       setNotesCache((prev) => ({
         ...prev,
         [currentFolder]: sortedNotes,
@@ -90,7 +89,6 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
   
       setNotes(updatedNotes);
   
-      // Update cache
       setNotesCache((prev) => ({
         ...prev,
         [currentFolder]: updatedNotes,
@@ -110,7 +108,7 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
       note.content.toLowerCase().includes(searchQuery.toLowerCase());
   
     const matchesTag = selectedTag
-      ? note.tags?.includes(selectedTag) // assumes note.tags is a string[]
+      ? note.tags?.includes(selectedTag) 
       : true;
   
     return matchesSearch && matchesTag;
@@ -118,7 +116,7 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
   
   useEffect(() => {
     fetchNotes();
-  }, [user?.uid, currentFolder]); // Fetch notes when user logs in or folder changes
+  }, [user?.uid, currentFolder]);
 
 
   return (

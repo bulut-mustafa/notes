@@ -27,7 +27,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "S3 Delete failed" }, { status: 500 });
     }
 
-    // Revalidate profile page
     revalidatePath(`/notes`, "layout");
 
     return NextResponse.json({ success: true, fileName });

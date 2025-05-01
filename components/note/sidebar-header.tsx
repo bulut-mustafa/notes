@@ -14,7 +14,7 @@ export default function SidebarHeader() {
         type="text"
         placeholder="Search"
         value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)} // ✅
+        onChange={(e) => setSearchQuery(e.target.value)} 
         className="w-full border border-slate-200 p-1 text-sm rounded-md focus:outline-none focus:ring focus:ring-[#956e60]"
       />
       <button

@@ -35,11 +35,11 @@ export default function RichTextEditor({ content, onChange }: Props) {
       StarterKit.configure({
         bulletList: {
           keepMarks: true,
-          keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+          keepAttributes: false, 
         },
         orderedList: {
           keepMarks: true,
-          keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+          keepAttributes: false, 
         },
       }),
       Placeholder.configure({
@@ -82,7 +82,7 @@ export default function RichTextEditor({ content, onChange }: Props) {
 
     if (node.textContent === '/') {
       editor.commands.command(({ tr }) => {
-        tr.delete(from - 1, from); // Remove the slash
+        tr.delete(from - 1, from);
         return true;
       });
     }
@@ -100,7 +100,7 @@ export default function RichTextEditor({ content, onChange }: Props) {
           const isSlashTrigger = text === '/' && from === to;
           const isTextSelected = from !== to;
 
-          setIsSlashTriggerActive(isSlashTrigger); // <-- Set state here
+          setIsSlashTriggerActive(isSlashTrigger); 
 
           return isSlashTrigger || isTextSelected;
         }}
@@ -115,7 +115,7 @@ export default function RichTextEditor({ content, onChange }: Props) {
       <div
         onKeyDown={(e) => {
           if (e.key === '/') {
-            // Give it a slight delay so state updates
+            
             setTimeout(() => {
               editor?.commands.focus()
             }, 0)

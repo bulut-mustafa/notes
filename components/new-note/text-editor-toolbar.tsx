@@ -1,4 +1,3 @@
-// components/TextEditorToolbar.tsx
 "use client";
 
 import {

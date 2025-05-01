@@ -8,7 +8,7 @@ const TAGS_COLLECTION = "tags";
 const NOTES_COLLECTION = "notes";
 export const addTag = async (userId: string, name: string) => {
   try {
-    const tagId = `${userId}_${name}`; // Custom ID
+    const tagId = `${userId}_${name}`;
     const docRef = doc(db, TAGS_COLLECTION, tagId);
 
     const tag = {
@@ -19,7 +19,7 @@ export const addTag = async (userId: string, name: string) => {
     };
 
     await setDoc(docRef, tag);
-    revalidatePath(`/notes`); // Revalidate destination page
+    revalidatePath(`/notes`); 
     return { id: tagId, ...tag };
   } catch (error) {
     console.error("Error adding reservation:", error);
@@ -51,8 +51,8 @@ export const getTags = async (
   try {
     const querySnapshot = await getDocs(q);
     const tags: Tag[] = querySnapshot.docs.map((doc) => {
-      const data = doc.data() as Omit<Tag, "id">; // Ensure "id" is not in data
-      return { id: doc.id, ...data }; // Merge doc.id separately
+      const data = doc.data() as Omit<Tag, "id">; 
+      return { id: doc.id, ...data }; 
     });
     return tags;
   } catch (error) {
@@ -67,8 +67,8 @@ export const getAllTags = async (): Promise<Tag[]> => {
   try {
     const querySnapshot = await getDocs(tagsRef);
     const tags: Tag[] = querySnapshot.docs.map((doc) => {
-      const data = doc.data() as Omit<Tag, "id">; // Ensure "id" is not in data
-      return { id: doc.id, ...data }; // Merge doc.id separately
+      const data = doc.data() as Omit<Tag, "id">; 
+      return { id: doc.id, ...data }; 
     });
     return tags;
   } catch (error) {
@@ -98,8 +98,8 @@ export const getTagsByNotes = async (
     try {
       const querySnapshot = await getDocs(q);
       const tags: Tag[] = querySnapshot.docs.map((doc) => {
-        const data = doc.data() as Omit<Tag, "id">; // Ensure "id" is not in data
-        return { id: doc.id, ...data }; // Merge doc.id separately
+        const data = doc.data() as Omit<Tag, "id">; 
+        return { id: doc.id, ...data }; 
       });
       return tags;
     } catch (error) {
@@ -132,11 +132,11 @@ export const addNoteToDB = async (userId: string, formData: NoteFormData) => {
       updatedAt: new Date().toISOString(),
     };
 
-    // Firestore generates a unique ID automatically
+  
     const docRef = await addDoc(collection(db, NOTES_COLLECTION), note);
     
-    revalidatePath(`/notes`); // Refresh notes list
-    return { id: docRef.id, ...note }; // Return the Firestore-generated ID
+    revalidatePath(`/notes`);
+    return { id: docRef.id, ...note };
   } catch (error) {
     console.error("Error adding note:", error);
     throw error;

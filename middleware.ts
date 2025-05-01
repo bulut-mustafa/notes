@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/",
-    "/((?!_next|api/login|.*\\.).*)", // Exclude /api/login from being protected
+    "/((?!_next|api/login|.*\\.).*)",
     "/api/logout",
   ],
 };

@@ -38,7 +38,7 @@ export const loginUser = async (email: string, password: string) => {
   try {
     const credential = await signInWithEmailAndPassword(auth, email, password);
     const user = credential.user;
-    // Convert user instance to plain object
+   
     return {
       uid: user.uid,
       email: user.email,
@@ -56,6 +56,5 @@ export async function uploadPicture(imageUrl: string) {
   const user = auth.currentUser;
   if (!user) throw new Error("User not authenticated");
 
-  // 🔹 Update Firebase Auth profile with new image URL
   await updateProfile(user, { photoURL: imageUrl });
 }

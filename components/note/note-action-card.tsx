@@ -25,29 +25,29 @@ export default function NoteActionCard({ isActive, note, folder }: { isActive: b
     function handleArchive() {
         const isArchived = note.archived;
         archiveNote(note.id, !isArchived);
-        if (isActive) { router.push(isArchived ? "/archived" : "/notes"); } // Trigger navigation
+        if (isActive) { router.push(isArchived ? "/archived" : "/notes"); } 
         setTimeout(() => deleteNote(note.id), 100);
     }
 
     function handleDelete() {
         moveToTrash(note.id, true);
-        if (isActive) { router.push("/notes"); } // Trigger navigation
+        if (isActive) { router.push("/notes"); } 
         setTimeout(() => deleteNote(note.id), 200);
     }
 
     function handleRestore() {
         moveToTrash(note.id, false);
-        if (isActive) { router.push("/deleted"); } // Trigger navigation
+        if (isActive) { router.push("/deleted"); } 
         setTimeout(() => deleteNote(note.id), 100);
     }
 
     function handlePermanentRemove() {
         deleteDb(note.id);
-        if (isActive) { router.push("/deleted"); } // Trigger navigation
+        if (isActive) { router.push("/deleted"); } 
         setTimeout(() => deleteNote(note.id), 100);
     }
     return (
-        <div onClick={(e) => e.stopPropagation()}> {/* <- 🛑 blocks bubbling to NoteCard */}
+        <div onClick={(e) => e.stopPropagation()}> 
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <button
@@ -57,7 +57,7 @@ export default function NoteActionCard({ isActive, note, folder }: { isActive: b
                             viewBox="0 0 24 24"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
-                            className="w-5 h-5" // 20x20
+                            className="w-5 h-5"
                         >
                             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                             <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>

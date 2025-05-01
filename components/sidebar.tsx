@@ -33,7 +33,7 @@ export default function Sidebar() {
     }
   }, [user, loading, router]);
 
-  // Track screen size on client to avoid hydration issues
+  
   useEffect(() => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 640);

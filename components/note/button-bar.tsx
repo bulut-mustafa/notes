@@ -34,7 +34,7 @@ export default function ButtonBar({
 }) {
     const pathname = usePathname();
     const [uploading, setUploading] = useState(false);
-    const folder = pathname.split("/")[1]; // "notes", "archived", etc.
+    const folder = pathname.split("/")[1];
     const { updateNoteState, deleteNote } = useNotes();
     const router = useRouter();
     const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -55,7 +55,7 @@ export default function ButtonBar({
 
     function handleArchive() {
         archiveNote(note.id, true);
-        router.push("/notes"); // Trigger navigation
+        router.push("/notes"); 
         setTimeout(() => deleteNote(note.id), 100);
     }
 
@@ -87,7 +87,7 @@ export default function ButtonBar({
         const file = e.target.files?.[0];
         if (!file) return;
 
-        setUploading(true); // Start loading
+        setUploading(true);
 
         try {
             const formData = new FormData();
@@ -106,7 +106,7 @@ export default function ButtonBar({
         } catch (error) {
             console.error("Upload failed:", error);
         } finally {
-            setUploading(false); // End loading
+            setUploading(false);
         }
     }
 
@@ -128,7 +128,7 @@ export default function ButtonBar({
                             className="border-slate-200"
                         />
                         <Button
-                            icon="restore" // use same icon
+                            icon="restore" 
                             onClick={handleRestore}
                             className="border-slate-200"
                         />

@@ -3,13 +3,13 @@ import LoginForm from '@/components/login-page/login-form';
 import { Montserrat, Nunito_Sans } from 'next/font/google';
 const montserrat = Montserrat({
     subsets: ['latin'],
-    weight: ['400', '700'], // Include only necessary font weights
-    variable: '--font-montserrat', // CSS variable for easy usage
+    weight: ['400', '700'], 
+    variable: '--font-montserrat', 
 });
 
 const nunitoSans = Nunito_Sans({
     subsets: ['latin'],
-    weight: ['400', '600'], // Include only necessary font weights
+    weight: ['400', '600'], 
     variable: '--font-nunito-sans',
 });
 

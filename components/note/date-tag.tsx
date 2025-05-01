@@ -2,16 +2,16 @@ import Image from "next/image";
 function formatDate(date: string) {
   const options: Intl.DateTimeFormatOptions = {
     day: "numeric",
-    month: "short", // "Apr" instead of "April"
+    month: "short",
     hour: "numeric",
     minute: "numeric",
-    hour12: true, // 7:30 PM instead of 19:30
+    hour12: true, 
   };
 
   
   const formatted = new Date(date).toLocaleDateString("en-US", options);
   const parts = formatted.split(", ");
-  // Combine into a tighter format: Apr 18, 2025 - 7:30 PM
+  
   const datePart = parts[0]?.trim();
   const timePart = parts[1]?.trim();
   

@@ -1,4 +1,3 @@
-// components/note/ai-assistant.tsx
 "use client";
 import { useState } from "react";
 import Image from "next/image";
@@ -86,7 +85,7 @@ export default function AIAssistant({
                                 onKeyDown={(e) => {
                                     if (e.key === "Enter" && !e.shiftKey) {
                                         e.preventDefault(); // Prevent newline
-                                        handleSubmit(e);    // Trigger submit
+                                        handleSubmit(e); 
                                     }
                                 }}
                             />

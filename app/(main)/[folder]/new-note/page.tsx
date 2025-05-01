@@ -37,10 +37,10 @@ export default function NewNotePage() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Upload failed");
 
-      uploadedImage = data.fileName; // Store uploaded image filename
+      uploadedImage = data.fileName;
     }
 
-    // Only include the image field if there's an uploaded file
+    
     const updatedFormData = {
       ...noteFormData,
       image: uploadedImage ? [uploadedImage] : [],
@@ -48,7 +48,7 @@ export default function NewNotePage() {
 
     const newNote = await addNote(updatedFormData);
 
-    // Reset form state
+  
     setNoteFormData({ content: "", image: [], tags: [], archived: false, isDeleted: false, newsAttached: [], isFavorite: false });
     setSelectedFile(null);
     router.push(`/notes/${newNote?.id}`);
@@ -65,7 +65,7 @@ export default function NewNotePage() {
   };
 
   return (
-    <div className="flex flex-col  w-full h-[100dvh] overflow-hidden"> {/* Full height page */}
+    <div className="flex flex-col  w-full h-[100dvh] overflow-hidden">
 
 
       <form className="flex-1 overflow-auto p-2 space-y-4" onSubmit={handleSubmit}>

@@ -7,11 +7,11 @@ export default function LoginBack() {
       <Image
         src={loginBackground}
         alt="Login background"
-        layout="fill" // Makes it cover the whole div
-        objectFit="cover" // Ensures it scales correctly
-        quality={75} // Reduces file size while keeping quality
-        priority // Loads faster, improving LCP
-        placeholder="blur" // Shows a blurred version first
+        layout="fill"
+        objectFit="cover" 
+        quality={75} 
+        priority 
+        placeholder="blur"
       />
     </div>
   );

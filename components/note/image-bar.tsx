@@ -51,7 +51,6 @@ export default function ImageBar({ note }: { note: Note }) {
   return (
     <>
       <div className="mb-4">
-        {/* Small screens: horizontal scroll carousel */}
         <div className="flex md:hidden gap-2 overflow-x-auto scrollbar-hide snap-x snap-mandatory">
           {note.image.map((img, i) => (
             <div
@@ -76,7 +75,6 @@ export default function ImageBar({ note }: { note: Note }) {
           ))}
         </div>
 
-        {/* Medium and up: grid layout */}
         <div
           className="hidden md:grid gap-2"
           style={{
