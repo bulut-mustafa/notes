@@ -9,6 +9,7 @@ import {
     DropdownMenuTrigger,
     DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import DOMPurify from "dompurify";
 export default function AIAssistant({
     noteContent,
     notes,
@@ -65,8 +66,8 @@ export default function AIAssistant({
                 {answer && (
                     <div
                         className="text-sm p-2 ml-4 max-h-80 rounded tiptap overflow-auto"
-                        dangerouslySetInnerHTML={{ __html: answer }}
-                    />
+                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(answer),  }}
+                        />
                 )}
 
                 <div className="flex items-center gap-2">

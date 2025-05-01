@@ -18,7 +18,7 @@ const sidebarItems = [
 
 export default function Sidebar() {
   const { user, loading } = useAuth();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [newTag, setNewTag] = useState("");
   const [isSmallScreen, setIsSmallScreen] = useState(false);

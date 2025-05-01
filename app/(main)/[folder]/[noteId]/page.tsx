@@ -10,7 +10,7 @@ import RichTextEditor from "@/components/new-note/text-editor";
 import { updateNote } from "@/lib/actions";
 import AIAssistant from "@/components/note/ai-assistant";
 import Image from "next/image";
-
+import DOMPurify from "dompurify";
 export default function NotePage() {
     const { noteId } = useParams();
     const { notes, updateNoteState, loading } = useNotes();
@@ -82,8 +82,8 @@ export default function NotePage() {
                     </div>
                 ) : (<div id="note-content"
                     className="tiptap prose prose-sm sm:prose lg:prose-lg max-w-none"
-                    dangerouslySetInnerHTML={{ __html: note.content }}
-                />)}
+                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(note.content) }}
+                    />)}
             </div>
         </div>
     );
