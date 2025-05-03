@@ -41,38 +41,57 @@ export default function ButtonBar({
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const { tags } = useTags();
-    function handleFavorite() {
+    async function handleFavorite() {
         const isFavorite = note.isFavorite;
-        addNoteToFav(note.id, isFavorite);
-        updateNoteState(note.id, { isFavorite: !isFavorite });
-        toast.success(
+        
+        const result = await addNoteToFav(note.id, isFavorite);
+      
+        if (result.success) {
+          updateNoteState(note.id, { isFavorite: !isFavorite });
+          toast.success(
             isFavorite ? "Removed from favorites" : "Added to favorites",
             {
-                icon: isFavorite ? "❌" : "✅",
+              icon: isFavorite ? "❌" : "✅",
+              duration: 2000,
+              position: "top-right",
+              style: {
+                background: isFavorite ? "#f8d7da" : "#d4edda",
+                color: isFavorite ? "#721c24" : "#155724",
+              },
+            }
+          );
+          console.log("Favorite toggled");
+        } else {
+          toast.error(result.message || "An error occurred", {
+            duration: 2000,
+            position: "top-right",
+          });
+          console.error("Failed to toggle favorite");
+        }
+      }
+
+    async function handleAddTag(id: string) {
+        const newTags = [...(note.tags || []), id];
+        const result = await updateNote(note.id, { tags: newTags });
+        if(result.success) {
+            updateNoteState(note.id, { tags: newTags });
+            toast.success("Tag added", {
                 duration: 2000,
                 position: "top-right",
                 style: {
-                    background: isFavorite ? "#f8d7da" : "#d4edda",
-                    color: isFavorite ? "#721c24" : "#155724",
-
+                    background: "#d4edda",
+                    color: "#155724",
                 },
-            }
-        );
-        console.log("Favorite toggled");
-    }
-
-    function handleAddTag(id: string) {
-        const newTags = [...(note.tags || []), id];
-        updateNote(note.id, { tags: newTags });
-        updateNoteState(note.id, { tags: newTags });
-        toast.success("Tag added", {
-            duration: 2000,
-            position: "top-right",
-            style: {
-                background: "#d4edda",
-                color: "#155724",
-            },
-        });
+            });
+        }
+        else{
+            toast.error(result.message || "An error occurred", {
+                duration: 2000,
+                position: "top-right",
+            });
+            console.error("Failed to add tag");
+        }
+        
     }
 
     function handleArchive() {
@@ -163,8 +182,9 @@ export default function ButtonBar({
             uploadedImage = data.fileName;
             const newImages = [...(note.image || []), uploadedImage];
 
-            await updateNote(note.id, { image: newImages });
-            updateNoteState(note.id, { image: newImages });
+            const result = await updateNote(note.id, { image: newImages });
+            if(result.success) {
+                updateNoteState(note.id, { image: newImages });
             toast.success("Image uploaded successfully", {
                 duration: 2000,
                 position: "top-right",
@@ -173,6 +193,14 @@ export default function ButtonBar({
                     color: "#155724",
                 },
             });
+            }
+            else{
+                toast.error(result.message || "An error occurred", {
+                    duration: 2000,
+                    position: "top-right",
+                });
+                console.error("Failed to add image");
+            }
         } catch (error) {
             console.error("Upload failed:", error);
         } finally {

@@ -18,79 +18,109 @@ export default function NoteActionCard({ isActive, note, folder }: { isActive: b
     const { updateNoteState, deleteNote } = useNotes();
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const router = useRouter();
-    function handleFavorite() {
+    async function handleFavorite() {
         const isFavorite = note.isFavorite;
-        addNoteToFav(note.id, isFavorite);
-        updateNoteState(note.id, { isFavorite: !isFavorite });
-        toast.success(
-            isFavorite ? "Removed from favorites" : "Added to favorites",
-            {
-                icon: isFavorite ? "❌" : "✅",
+        const result = await addNoteToFav(note.id, isFavorite);
+        if(result.success) {
+            updateNoteState(note.id, { isFavorite: !isFavorite });
+            toast.success(
+                isFavorite ? "Removed from favorites" : "Added to favorites",
+                {
+                    icon: isFavorite ? "❌" : "✅",
+                    duration: 2000,
+                    position: "top-right",
+                    style: {
+                        background: isFavorite ? "#f8d7da" : "#d4edda",
+                        color: isFavorite ? "#721c24" : "#155724",
+    
+                    },
+                }
+            );
+        }
+        else{
+            toast.error("Failed to update note.")
+        }
+    }
+    async function handleArchive() {
+        const isArchived = note.archived;
+
+        const result = await archiveNote(note.id, !isArchived);
+        if(result.success) {
+            toast.success(
+                isArchived ? "Unarchived" : "Archived",
+                {
+                    duration: 2000,
+                    position: "top-right",
+                }
+            );
+            if (isActive) { router.push(isArchived ? "/archived" : "/notes"); } 
+            setTimeout(() => deleteNote(note.id), 100);
+        }
+        else{
+            toast.error("Failed to update note.")
+        }
+
+    }
+
+    async function handleDelete() {
+
+        const result = await moveToTrash(note.id, true);
+        if(result.success) {
+            toast.success("Moved to Trash", {
                 duration: 2000,
                 position: "top-right",
                 style: {
-                    background: isFavorite ? "#f8d7da" : "#d4edda",
-                    color: isFavorite ? "#721c24" : "#155724",
-
+                    background: "#d4edda",
+                    color: "#155724",
                 },
-            }
-        );
+            });
+            if (isActive) { router.push("/notes"); } 
+            setTimeout(() => deleteNote(note.id), 200);
+        }
+        else{
+            toast.error("Failed to update note.")
+        }
+        
     }
-    function handleArchive() {
-        const isArchived = note.archived;
-        archiveNote(note.id, !isArchived);
-        toast.success(
-            isArchived ? "Unarchived" : "Archived",
-            {
+
+    async function handleRestore() {
+        const result = await moveToTrash(note.id, false);
+        if(result.success) {
+
+            toast.success("Note Restored", {
                 duration: 2000,
                 position: "top-right",
-            }
-        );
-        if (isActive) { router.push(isArchived ? "/archived" : "/notes"); } 
-        setTimeout(() => deleteNote(note.id), 100);
-
+                style: {
+                    background: "#d4edda",
+                    color: "#155724",
+                },
+            });
+            if (isActive) { router.push("/deleted"); } 
+            setTimeout(() => deleteNote(note.id), 100);
+        }
+        else{
+            toast.error("Failed to update note.")
+        }
     }
 
-    function handleDelete() {
-        moveToTrash(note.id, true);
-        toast.success("Moved to Trash", {
-            duration: 2000,
-            position: "top-right",
-            style: {
-                background: "#d4edda",
-                color: "#155724",
-            },
-        });
-        if (isActive) { router.push("/notes"); } 
-        setTimeout(() => deleteNote(note.id), 200);
-    }
-
-    function handleRestore() {
-        moveToTrash(note.id, false);
-        toast.success("Note Restored", {
-            duration: 2000,
-            position: "top-right",
-            style: {
-                background: "#d4edda",
-                color: "#155724",
-            },
-        });
-        if (isActive) { router.push("/deleted"); } 
-        setTimeout(() => deleteNote(note.id), 100);
-    }
-
-    function handlePermanentRemove() {
-        deleteDb(note.id);
-        toast.success("Note Deleted Permanently", {
-            duration: 2000,
-            position: "top-right",
-            style: {
-                background: "#d4edda",
-                color: "#155724",
-            },
-        });
-        if (isActive) { router.push("/deleted"); } 
-        setTimeout(() => deleteNote(note.id), 100);
+    async function handlePermanentRemove() {
+        
+        const result = await deleteDb(note.id);
+        if(result.success) {
+            toast.success("Note Deleted Permanently", {
+                duration: 2000,
+                position: "top-right",
+                style: {
+                    background: "#d4edda",
+                    color: "#155724",
+                },
+            });
+            if (isActive) { router.push("/deleted"); } 
+            setTimeout(() => deleteNote(note.id), 100);
+        }
+        else{
+            toast.error("Failed to remove note")
+        }
     }
     return (
         <div onClick={(e) => e.stopPropagation()}> 

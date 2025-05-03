@@ -84,15 +84,17 @@ export const deleteTag = async (tagID: string) => {
     try {
         await deleteDoc(tagsRef);
         revalidatePath('/', 'layout')
+        return { success: true };
     } catch (error) {
         console.error("Error deleting reservation:", error);
+        return { success: false, message: "Failed to delete tag" };
     }
 };
 export const getTagsByNotes = async (
     userId: string,
     noteId: string
   ): Promise<Tag[]> => {
-    const reservationsRef = collection(db, "reservations");
+    const reservationsRef = collection(db, "notes");
     const q = query(reservationsRef, where("userId", "==", userId), where("noteId", "==", noteId));
   
     try {
@@ -117,9 +119,11 @@ export const updateTag = async (tagId: string, name: string) => {
       };
         await updateDoc(docRef, reservation);
         revalidatePath('/', 'layout')
-        console.log("Reservation updated successfully!");
+        console.log("Tag updated successfully!");
+        return { success: true };
     } catch (error) {
-        console.error("Error updating reservation:", error);
+        console.error("Error updating tag:", error);
+        return { success: false, message: "Failed to update tag" };
     }
 }
 
@@ -136,10 +140,10 @@ export const addNoteToDB = async (userId: string, formData: NoteFormData) => {
     const docRef = await addDoc(collection(db, NOTES_COLLECTION), note);
     
     revalidatePath(`/notes`);
-    return { id: docRef.id, ...note };
+    return {success: true, id: docRef.id, ...note };
   } catch (error) {
     console.error("Error adding note:", error);
-    throw error;
+    return { success: false, message: "Failed to add note" };
   }
 };
 
@@ -228,9 +232,10 @@ export const updateNote = async (noteId: string, formData: Partial<NoteFormData>
       ...formData,
       updatedAt: new Date().toISOString(),
     });
-    console.log("Note updated successfully!");
+    return { success: true };
   } catch (error) {
     console.error("Error updating note:", error);
+    return { success: false, message: "Failed to update note" };
   }
 };
 
@@ -241,9 +246,10 @@ export const addNoteToFav = async (noteId: string, isFavorite: boolean) => {
       isFavorite: !isFavorite,
       updatedAt: new Date().toISOString(),
     });
-    console.log("Note added to favorites!");
+    return { success: true };
   } catch (error) {
     console.error("Error updating note:", error);
+    return { success: false, message: "Failed to update note" };
   }
 };
 export const addTagToNote = async (noteId: string, tags: string[]) => {
@@ -254,8 +260,10 @@ export const addTagToNote = async (noteId: string, tags: string[]) => {
       updatedAt: new Date().toISOString(),
     });
     console.log("Note added to favorites!");
+    return { success: true };
   } catch (error) {
     console.error("Error updating note:", error);
+    return { success: false, message: "Failed to add Tag" };
   }
 };
 
@@ -267,8 +275,10 @@ export const archiveNote = async (noteId: string, archived: boolean) => {
       updatedAt: new Date().toISOString(),
     });
     console.log("Note added to favorites!");
+    return { success: true };
   } catch (error) {
     console.error("Error updating note:", error);
+    return { success: false, message: "Failed to archive/unarchive note" };
   }
 };
 
@@ -278,8 +288,10 @@ export const deleteNote = async (noteId: string) => {
   try {
       await deleteDoc(noteRef);
       revalidatePath('/notes', 'layout')
+      return { success: true };
   } catch (error) {
       console.error("Error deleting reservation:", error);
+      return { success: false, message: "Failed to delete note" };
   }
 };
 
@@ -291,7 +303,9 @@ export const moveToTrash = async (noteId: string, isDeleted: boolean) => {
       updatedAt: new Date().toISOString(),
     });
     console.log("Note moved to trash!");
+    return { success: true };
   } catch (error) {
     console.error("Error updating note:", error);
+    return { success: false, message: "Failed to move note to trash" };
   }
 }

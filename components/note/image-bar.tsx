@@ -31,9 +31,14 @@ export default function ImageBar({ note }: { note: Note }) {
         }
 
         const updatedImages = note.image.filter((img) => img !== image);
-        updateNote(note.id, { image: updatedImages });
-        updateNoteState(note.id, { image: updatedImages });
-        toast.success("Image deleted!");
+        const result = await updateNote(note.id, { image: updatedImages });
+        if(result.success) {
+          updateNoteState(note.id, { image: updatedImages });
+          toast.success("Image deleted!");
+        }
+        else{
+          toast.error("Failed to delete image");
+        }
     } catch (error) {
         console.error("Upload failed:", error);
     }
