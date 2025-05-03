@@ -1,5 +1,4 @@
 import { authUser } from '@/lib/types';
-
 interface UserDropdownProps {
     loading: boolean;
     isOpen: boolean;
@@ -12,7 +11,10 @@ export default function UserDropdown(userInfo: UserDropdownProps) {
             <div className="min-w-8 min-h-8 rounded-full bg-gray-300"></div>
             {userInfo.isOpen && (
                 <div>
+                    <div className='flex gap-2'>
                     <h3 className="text-sm font-semibold">{userInfo.user.displayName}</h3>
+                    <button onClick={userInfo.logOut}>Logout</button>
+                    </div>
                     <p className="text-xs text-gray-500">{userInfo.user.email}</p>
                 </div>
             )}

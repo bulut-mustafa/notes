@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import FolderButton from "./folder-button";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import UserDropdown from "./avatar-dropdown";
 import { auth } from "@/firebase";
@@ -24,14 +23,8 @@ export default function Sidebar() {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const { selectedTag, setSelectedTag } = useNotes();
   const { tags, loading: tagsLoading, addTag } = useTags();
-  const router = useRouter();
 
-  // Redirect to login if user is not authenticated
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push("/login");
-    }
-  }, [user, loading, router]);
+  
 
   
   useEffect(() => {

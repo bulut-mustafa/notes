@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { app } from "../../firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
@@ -25,17 +25,18 @@ const LoginForm: React.FC = () => {
     const router = useRouter();
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
-
+    const searchParams = useSearchParams();
+    const redirectPath = searchParams.get("redirect") || "/notes";
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
-                router.replace('/notes');
+                router.replace(redirectPath);
             } else {
                 setLoading(false);
             }
         });
         return () => unsubscribe();
-    }, [router]);
+    }, [router, redirectPath]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -57,6 +58,8 @@ const LoginForm: React.FC = () => {
                     Authorization: `Bearer ${idToken}`,
                 },
             });
+            router.replace(redirectPath);
+
         } catch (e) {
             setError((e as Error).message);
         }
