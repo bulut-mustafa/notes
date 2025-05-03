@@ -5,6 +5,7 @@ import { useAuth } from "./auth-context";
 import { usePathname } from "next/navigation";
 import { Note, NoteFormData } from "@/lib/types";
 
+type UpdateAction = "archive" | "unarchive" | "trash" | "restore" | "permanent-delete";
 interface NotesContextType {
   notes: Note[];
   filteredNotes: Note[];
@@ -17,6 +18,7 @@ interface NotesContextType {
   refreshNotes: () => Promise<void>;
   updateNoteState: (noteId: string, updatedFields: Partial<Note>) => void;
   deleteNote: (noteId: string) => void;
+  moveNoteBetweenCaches: (noteId: string, action: UpdateAction) => void;
 }
 
 const NotesContext = createContext<NotesContextType | undefined>(undefined);
@@ -39,6 +41,74 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
       )
     );
   };
+
+const moveNoteBetweenCaches = (noteId: string, action: UpdateAction) => {
+  setNotesCache((prevCache) => {
+    const folders = ["notes", "archived", "deleted"];
+
+    // Find the note from any folder
+    let targetNote: Note | undefined;
+    for (const folder of folders) {
+      const notesInFolder = prevCache[folder] || [];
+      const found = notesInFolder.find((n) => n.id === noteId);
+      if (found) {
+        targetNote = found;
+        break;
+      }
+    }
+    if (!targetNote) return prevCache; // If note not found, do nothing
+
+    // Prepare new states
+    const updatedNote = { ...targetNote, updatedAt: new Date().toISOString() };
+
+    let removeFrom: string[] = [];
+    let addTo: string | null = null;
+
+    if (action === "archive") {
+      updatedNote.archived = true;
+      updatedNote.isDeleted = false;
+      removeFrom = ["notes"];
+      addTo = "archived";
+    } else if (action === "unarchive") {
+      updatedNote.archived = false;
+      updatedNote.isDeleted = false;
+      removeFrom = ["archived"];
+      addTo = "notes";
+    } else if (action === "trash") {
+      updatedNote.isDeleted = true;
+      updatedNote.archived = false;
+      removeFrom = ["notes", "archived"];
+      addTo = "deleted";
+    } else if (action === "restore") {
+      updatedNote.isDeleted = false;
+      updatedNote.archived = false;
+      removeFrom = ["deleted"];
+      addTo = "notes";
+    } else if (action === "permanent-delete") {
+      removeFrom = ["deleted"];
+      addTo = null;
+    }
+
+    const newCache = { ...prevCache };
+
+    // Remove note from relevant folders
+    for (const folder of removeFrom) {
+      newCache[folder] = (newCache[folder] || []).filter((n) => n.id !== noteId);
+    }
+
+    // Add to destination folder (if any)
+    if (addTo) {
+      const existing = newCache[addTo] || [];
+      newCache[addTo] = [updatedNote, ...existing];
+    }
+
+    return newCache;
+  });
+
+  // Also remove from visible notes state
+  setNotes((prevNotes) => prevNotes.filter((n) => n.id !== noteId));
+};
+
   const fetchNotes = async () => {
     if (!user?.uid || !currentFolder) return;
   
@@ -82,7 +152,15 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
   const addNote = async (formData: NoteFormData): Promise<Note | null> => {
     if (!user?.uid) return null;
     try {
-      const newNote = await addNoteToDB(user.uid, formData);
+      const result = await addNoteToDB(user.uid, formData);
+  
+      if (!result.success || !result.note) {
+        console.error(result.message || "Unknown error adding note");
+        return null;
+      }
+  
+      const newNote = result.note;
+  
       const updatedNotes = [newNote, ...notes].sort(
         (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
       );
@@ -100,6 +178,7 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
       return null;
     }
   };
+  
   const deleteNote = (noteId: string) => {
     setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
   };
@@ -120,7 +199,7 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
 
 
   return (
-    <NotesContext.Provider value={{ notes, filteredNotes,selectedTag, setSelectedTag,  searchQuery, setSearchQuery, loading, addNote, refreshNotes: fetchNotes, updateNoteState, deleteNote }}>
+    <NotesContext.Provider value={{ notes, filteredNotes,selectedTag, setSelectedTag,  searchQuery, setSearchQuery, loading, addNote, refreshNotes: fetchNotes, updateNoteState, deleteNote,moveNoteBetweenCaches }}>
       {children}
     </NotesContext.Provider>
   );

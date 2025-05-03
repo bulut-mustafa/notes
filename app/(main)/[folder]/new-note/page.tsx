@@ -15,6 +15,7 @@ export default function NewNotePage() {
   const router = useRouter();
   const { addNote } = useNotes();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [noteFormData, setNoteFormData] = useState({
     content: "",
     image: [] as string[],
@@ -27,31 +28,50 @@ export default function NewNotePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    let uploadedImage = "";
-
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-
-      const response = await fetch("/api/upload", { method: "POST", body: formData });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Upload failed");
-
-      uploadedImage = data.fileName;
-    }
-
-    
-    const updatedFormData = {
-      ...noteFormData,
-      image: uploadedImage ? [uploadedImage] : [],
-    };
-
-    const newNote = await addNote(updatedFormData);
-    toast.success("Note created successfully!");
+    setIsSubmitting(true);
   
-    setNoteFormData({ content: "", image: [], tags: [], archived: false, isDeleted: false, newsAttached: [], isFavorite: false });
-    setSelectedFile(null);
-    router.push(`/notes/${newNote?.id}`);
+    try {
+      let uploadedImage = "";
+  
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+  
+        const response = await fetch("/api/upload", { method: "POST", body: formData });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Image upload failed");
+  
+        uploadedImage = data.fileName;
+      }
+  
+      const updatedFormData = {
+        ...noteFormData,
+        image: uploadedImage ? [uploadedImage] : [],
+      };
+  
+      const newNote = await addNote(updatedFormData);
+  
+      if (!newNote) {
+        toast.error("Failed to create note. Please try again.");
+        return;
+      }
+  
+      toast.success("Note created successfully!");
+  
+      setNoteFormData({ content: "", image: [], tags: [], archived: false, isDeleted: false, newsAttached: [], isFavorite: false });
+      setSelectedFile(null);
+      router.push(`/notes/${newNote.id}`);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Error submitting form:", error);
+        toast.error(error.message || "Something went wrong. Please try again.");
+      } else {
+        console.error("Unknown error submitting form:", error);
+        toast.error("Something went wrong. Please try again.");
+      }
+    }finally {
+      setIsSubmitting(false);
+    }
   };
 
 
@@ -74,6 +94,7 @@ export default function NewNotePage() {
             tags={tags}
             selectedTags={noteFormData.tags}
             setSelectedTags={handleTagChange}
+            isSubmitting={isSubmitting}
           />
         </div>
         <ImagePicker

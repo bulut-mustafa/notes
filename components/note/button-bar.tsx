@@ -36,7 +36,7 @@ export default function ButtonBar({
     const pathname = usePathname();
     const [uploading, setUploading] = useState(false);
     const folder = pathname.split("/")[1];
-    const { updateNoteState, deleteNote } = useNotes();
+    const { updateNoteState, moveNoteBetweenCaches } = useNotes();
     const router = useRouter();
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -95,7 +95,8 @@ export default function ButtonBar({
     }
 
     function handleArchive() {
-        archiveNote(note.id, true);
+        archiveNote(note.id, true); // DB call
+        moveNoteBetweenCaches(note.id, "archive"); // UI + cache sync
         toast.success("Moved to Archive", {
             duration: 2000,
             position: "top-right",
@@ -104,12 +105,12 @@ export default function ButtonBar({
                 color: "#155724",
             },
         });
-        router.push("/notes"); 
-        setTimeout(() => deleteNote(note.id), 100);
-    }
-
-    function handleUnarchive() {
+        router.push("/notes");
+      }
+      
+      function handleUnarchive() {
         archiveNote(note.id, false);
+        moveNoteBetweenCaches(note.id, "unarchive");
         toast.success("Moved to Notes", {
             duration: 2000,
             position: "top-right",
@@ -119,12 +120,11 @@ export default function ButtonBar({
             },
         });
         router.push("/archived");
-        setTimeout(() => deleteNote(note.id), 100);
-    }
-
-
-    function handleDelete() {
+      }
+      
+      function handleDelete() {
         moveToTrash(note.id, true);
+        moveNoteBetweenCaches(note.id, "trash");
         toast.success("Moved to Trash", {
             duration: 2000,
             position: "top-right",
@@ -134,11 +134,11 @@ export default function ButtonBar({
             },
         });
         router.push("/notes");
-        setTimeout(() => deleteNote(note.id), 100);
-    }
-
-    function handleRestore() {
+      }
+      
+      function handleRestore() {
         moveToTrash(note.id, false);
+        moveNoteBetweenCaches(note.id, "restore");
         toast.success("Note Restored", {
             duration: 2000,
             position: "top-right",
@@ -148,11 +148,11 @@ export default function ButtonBar({
             },
         });
         router.push("/deleted");
-        setTimeout(() => deleteNote(note.id), 100);
-    }
-
-    function handlePermanentRemove() {
+      }
+      
+      function handlePermanentRemove() {
         deleteDb(note.id);
+        moveNoteBetweenCaches(note.id, "permanent-delete");
         toast.success("Note Deleted Permanently", {
             duration: 2000,
             position: "top-right",
@@ -162,8 +162,7 @@ export default function ButtonBar({
             },
         });
         router.push("/deleted");
-        setTimeout(() => deleteNote(note.id), 100);
-    }
+      }
     async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
         if (!file) return;

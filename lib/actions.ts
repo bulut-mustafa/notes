@@ -140,7 +140,7 @@ export const addNoteToDB = async (userId: string, formData: NoteFormData) => {
     const docRef = await addDoc(collection(db, NOTES_COLLECTION), note);
     
     revalidatePath(`/notes`);
-    return {success: true, id: docRef.id, ...note };
+    return {success: true, note: {id: docRef.id, ...note }};
   } catch (error) {
     console.error("Error adding note:", error);
     return { success: false, message: "Failed to add note" };

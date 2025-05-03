@@ -10,7 +10,7 @@ export default function TagBar({ tags, note }: { tags: string[], note: Note }) {
     const handleRemoveTag = async (tagId: string) => {
         const updatedTags = tags.filter((id) => id !== tagId);
         const result = await updateNote(note.id, { tags: updatedTags });
-        if (!result.success) {
+        if (result.success) {
             updateNoteState(note.id, { tags: updatedTags });
             toast.success("Tag removed", {
                 duration: 2000,

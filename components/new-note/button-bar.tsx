@@ -18,12 +18,14 @@ interface ButtonBarProps {
     tags: Tag[];
     selectedTags: string[];
     setSelectedTags: (tags: string[]) => void;
+    isSubmitting: boolean;
 }
 
 export default function ButtonBar({
     tags,
     selectedTags,
     setSelectedTags,
+    isSubmitting
 }: ButtonBarProps) {
     const router = useRouter();
     const handleTagToggle = (tagId: string) => {
@@ -79,7 +81,7 @@ export default function ButtonBar({
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            <button type="submit" className="ml-auto rounded-lg border border-slate-200 active:bg-[#fff5f2] active:border-[#9f857a] p-1">
+            <button type="submit" disabled={isSubmitting}  className="ml-auto rounded-lg border border-slate-200 active:bg-[#fff5f2] active:border-[#9f857a] p-1">
                 <Image
                     src={`/buttons/save.svg`}
                     width={20}
