@@ -9,7 +9,7 @@ import UserDropdown from "./avatar-dropdown";
 import { auth } from "@/firebase";
 import { useTags } from "@/context/tag-context";
 import { useNotes } from "@/context/notes-context";
-
+import toast from "react-hot-toast";
 const sidebarItems = [
   { name: "Notes", link: "/notes" },
   { name: "Archived", link: "/archived" },
@@ -52,6 +52,7 @@ export default function Sidebar() {
   const handleAddTag = () => {
     if (newTag.trim()) {
       addTag(newTag);
+      toast.success("Tag added successfully!");
       setNewTag("");
       setIsDropdownOpen(false);
     }

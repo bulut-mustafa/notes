@@ -13,6 +13,7 @@ import { useNotes } from "@/context/notes-context";
 import { addNoteToFav, archiveNote, deleteNote as deleteDb, moveToTrash } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 import ConfirmationModal from "../confirmation-modal";
+import toast from "react-hot-toast";
 export default function NoteActionCard({ isActive, note, folder }: { isActive: boolean, note: Note, folder: string }) {
     const { updateNoteState, deleteNote } = useNotes();
     const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -21,28 +22,73 @@ export default function NoteActionCard({ isActive, note, folder }: { isActive: b
         const isFavorite = note.isFavorite;
         addNoteToFav(note.id, isFavorite);
         updateNoteState(note.id, { isFavorite: !isFavorite });
+        toast.success(
+            isFavorite ? "Removed from favorites" : "Added to favorites",
+            {
+                icon: isFavorite ? "❌" : "✅",
+                duration: 2000,
+                position: "top-right",
+                style: {
+                    background: isFavorite ? "#f8d7da" : "#d4edda",
+                    color: isFavorite ? "#721c24" : "#155724",
+
+                },
+            }
+        );
     }
     function handleArchive() {
         const isArchived = note.archived;
         archiveNote(note.id, !isArchived);
+        toast.success(
+            isArchived ? "Unarchived" : "Archived",
+            {
+                duration: 2000,
+                position: "top-right",
+            }
+        );
         if (isActive) { router.push(isArchived ? "/archived" : "/notes"); } 
         setTimeout(() => deleteNote(note.id), 100);
+
     }
 
     function handleDelete() {
         moveToTrash(note.id, true);
+        toast.success("Moved to Trash", {
+            duration: 2000,
+            position: "top-right",
+            style: {
+                background: "#d4edda",
+                color: "#155724",
+            },
+        });
         if (isActive) { router.push("/notes"); } 
         setTimeout(() => deleteNote(note.id), 200);
     }
 
     function handleRestore() {
         moveToTrash(note.id, false);
+        toast.success("Note Restored", {
+            duration: 2000,
+            position: "top-right",
+            style: {
+                background: "#d4edda",
+                color: "#155724",
+            },
+        });
         if (isActive) { router.push("/deleted"); } 
         setTimeout(() => deleteNote(note.id), 100);
     }
 
     function handlePermanentRemove() {
         deleteDb(note.id);
+        toast.success("Note Deleted Permanently", {
+            duration: 2000,
+            position: "top-right",
+            style: {
+                background: "#d4edda",
+                color: "#155724",
+            },
+        });
         if (isActive) { router.push("/deleted"); } 
         setTimeout(() => deleteNote(note.id), 100);
     }

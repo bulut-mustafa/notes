@@ -5,6 +5,7 @@ import { X, ArrowLeft, ArrowRight } from "lucide-react";
 import { Note } from "@/lib/types";
 import { useNotes } from "@/context/notes-context";
 import { updateNote } from "@/lib/actions";
+import toast from "react-hot-toast";
 export default function ImageBar({ note }: { note: Note }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -32,6 +33,7 @@ export default function ImageBar({ note }: { note: Note }) {
         const updatedImages = note.image.filter((img) => img !== image);
         updateNote(note.id, { image: updatedImages });
         updateNoteState(note.id, { image: updatedImages });
+        toast.success("Image deleted!");
     } catch (error) {
         console.error("Upload failed:", error);
     }

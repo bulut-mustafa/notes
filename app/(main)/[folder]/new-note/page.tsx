@@ -8,7 +8,7 @@ import { useTags } from "@/context/tag-context";
 import { useNotes } from "@/context/notes-context";
 import { useRouter } from "next/navigation";
 import RichTextEditor from "@/components/new-note/text-editor";
-
+import toast from "react-hot-toast";
 
 export default function NewNotePage() {
   const { tags } = useTags();
@@ -47,7 +47,7 @@ export default function NewNotePage() {
     };
 
     const newNote = await addNote(updatedFormData);
-
+    toast.success("Note created successfully!");
   
     setNoteFormData({ content: "", image: [], tags: [], archived: false, isDeleted: false, newsAttached: [], isFavorite: false });
     setSelectedFile(null);
