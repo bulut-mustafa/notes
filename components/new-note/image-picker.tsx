@@ -1,7 +1,9 @@
 "use client";
 import { useRef } from "react";
 import Image from "next/image";
-
+import toast from "react-hot-toast";
+const MAX_FILE_SIZE_MB = 5;
+const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 interface ImagePickerProps {
   name: string;
   value: File | null;
@@ -17,12 +19,33 @@ export default function ImagePicker({ name, value, onChange }: ImagePickerProps)
 
   function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
-
+  
     if (!file) {
       onChange(null);
       return;
     }
-
+  
+    // ======  VALIDATION START ======
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      toast.error("Invalid file type. Please upload a JPG or PNG image.", {
+        duration: 2000,
+        position: "top-right",
+      });
+      onChange(null);
+      return;
+    }
+  
+    const fileSizeMB = file.size / (1024 * 1024);
+    if (fileSizeMB > MAX_FILE_SIZE_MB) {
+      toast.error(`Image size exceeds ${MAX_FILE_SIZE_MB} MB. Please choose a smaller file.`, {
+        duration: 2000,
+        position: "top-right",
+      });
+      onChange(null);
+      return;
+    }
+    // ======  VALIDATION END ======
+  
     const reader = new FileReader();
     reader.onload = () => {
       onChange(file);

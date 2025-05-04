@@ -28,6 +28,21 @@ export default function NewNotePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+  
+    // =======  VALIDATION START =======
+    const trimmedContent = noteFormData.content.trim();
+  
+    if (trimmedContent.length === 0) {
+      toast.error("Note content cannot be empty.");
+      return;
+    }
+  
+    const invalidTags = noteFormData.tags.filter(tagId => !tags.find(t => t.id === tagId));
+    if (invalidTags.length > 0) {
+      toast.error("Some selected tags are invalid.");
+      return;
+    }
+    // ====== END =====
     setIsSubmitting(true);
   
     try {
@@ -46,6 +61,7 @@ export default function NewNotePage() {
   
       const updatedFormData = {
         ...noteFormData,
+        content: trimmedContent,  // use trimmed version
         image: uploadedImage ? [uploadedImage] : [],
       };
   
@@ -58,7 +74,15 @@ export default function NewNotePage() {
   
       toast.success("Note created successfully!");
   
-      setNoteFormData({ content: "", image: [], tags: [], archived: false, isDeleted: false, newsAttached: [], isFavorite: false });
+      setNoteFormData({
+        content: "",
+        image: [],
+        tags: [],
+        archived: false,
+        isDeleted: false,
+        newsAttached: [],
+        isFavorite: false,
+      });
       setSelectedFile(null);
       router.push(`/notes/${newNote.id}`);
     } catch (error) {
@@ -69,10 +93,11 @@ export default function NewNotePage() {
         console.error("Unknown error submitting form:", error);
         toast.error("Something went wrong. Please try again.");
       }
-    }finally {
+    } finally {
       setIsSubmitting(false);
     }
   };
+  
 
 
 

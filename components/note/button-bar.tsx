@@ -18,6 +18,9 @@ import { useRef, useState } from "react";
 import { updateNote } from "@/lib/actions";
 import Image from "next/image";
 import toast from "react-hot-toast";
+
+const MAX_FILE_SIZE_MB = 5;
+const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 export default function ButtonBar({
     note,
     isEditing,
@@ -163,49 +166,68 @@ export default function ButtonBar({
         });
         router.push("/deleted");
       }
-    async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+      async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
         if (!file) return;
-
-        setUploading(true);
-
-        try {
-            const formData = new FormData();
-            formData.append("file", file);
-            let uploadedImage = "";
-
-            const response = await fetch("/api/upload", { method: "POST", body: formData });
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.error || "Upload failed");
-
-            uploadedImage = data.fileName;
-            const newImages = [...(note.image || []), uploadedImage];
-
-            const result = await updateNote(note.id, { image: newImages });
-            if(result.success) {
-                updateNoteState(note.id, { image: newImages });
-            toast.success("Image uploaded successfully", {
-                duration: 2000,
-                position: "top-right",
-                style: {
-                    background: "#d4edda",
-                    color: "#155724",
-                },
-            });
-            }
-            else{
-                toast.error(result.message || "An error occurred", {
-                    duration: 2000,
-                    position: "top-right",
-                });
-                console.error("Failed to add image");
-            }
-        } catch (error) {
-            console.error("Upload failed:", error);
-        } finally {
-            setUploading(false);
+      
+        // =====  VALIDATION START =====
+        if (!ALLOWED_TYPES.includes(file.type)) {
+          toast.error("Invalid file type. Please upload a JPG or PNG image.", {
+            duration: 3000,
+            position: "top-right",
+          });
+          return;
         }
-    }
+      
+        const fileSizeMB = file.size / (1024 * 1024);
+        if (fileSizeMB > MAX_FILE_SIZE_MB) {
+          toast.error(`Image size exceeds ${MAX_FILE_SIZE_MB} MB. Please choose a smaller file.`, {
+            duration: 3000,
+            position: "top-right",
+          });
+          return;
+        }
+        // =====  VALIDATION END =====
+      
+        setUploading(true);
+      
+        try {
+          const formData = new FormData();
+          formData.append("file", file);
+          let uploadedImage = "";
+      
+          const response = await fetch("/api/upload", { method: "POST", body: formData });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.error || "Upload failed");
+      
+          uploadedImage = data.fileName;
+          const newImages = [...(note.image || []), uploadedImage];
+      
+          const result = await updateNote(note.id, { image: newImages });
+          if (result.success) {
+            updateNoteState(note.id, { image: newImages });
+            toast.success("Image uploaded successfully", {
+              duration: 2000,
+              position: "top-right",
+              style: { background: "#d4edda", color: "#155724" },
+            });
+          } else {
+            toast.error(result.message || "An error occurred", {
+              duration: 2000,
+              position: "top-right",
+            });
+            console.error("Failed to add image");
+          }
+        } catch (error) {
+          console.error("Upload failed:", error);
+          toast.error("Failed to upload image. Please try again.", {
+            duration: 2000,
+            position: "top-right",
+          });
+        } finally {
+          setUploading(false);
+        }
+      }
 
 
     return (
