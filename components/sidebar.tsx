@@ -93,16 +93,19 @@ export default function Sidebar() {
           </div>
         </div>
       )}
-          
-      {/* Folder Buttons */}
-      <ul className="mt-2">
-          <FolderButton
+      <ul className="py-2 border-b border-slate-200">
+        <FolderButton
             name={"NEWS"}
             icon="all-notes"
             link={"/news"}
             isOpen={isOpen}
             onSelect={handleSelect}
           />
+      </ul>
+          
+      {/* Folder Buttons */}
+      <ul className="mt-2">
+          
         {sidebarItems.map((item) => (
           <FolderButton
             key={item.link}

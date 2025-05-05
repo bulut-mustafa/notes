@@ -36,3 +36,17 @@ export type Note = {
   createdAt: string;
   updatedAt: string;
 }
+
+export type New = {
+  id: string; 
+  author: string;
+  title: string;
+  description: string;
+  url: string;
+  source: string;
+  image: string;
+  category: string;
+  language: string;
+  country: string;
+  publishedAt: string;
+}
