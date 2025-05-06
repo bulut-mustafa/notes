@@ -37,7 +37,7 @@ export type Note = {
   updatedAt: string;
 }
 
-export type New = {
+export type NewsItem = {
   id: string; 
   author: string;
   title: string;
