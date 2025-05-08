@@ -50,3 +50,17 @@ export type NewsItem = {
   country: string;
   publishedAt: string;
 }
+
+export type SavedNews = {
+  id: string;
+  userId: string;
+  newsId: string;
+  noteId: string;
+  title: string;
+  description: string;
+  source: string;
+  image: string;
+  url: string;
+  publishedAt: string;
+  createdAt: string;
+}
