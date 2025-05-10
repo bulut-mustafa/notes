@@ -24,9 +24,9 @@ export default function Sidebar() {
   const { selectedTag, setSelectedTag } = useNotes();
   const { tags, loading: tagsLoading, addTag } = useTags();
 
-  
 
-  
+
+
   useEffect(() => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 640);
@@ -43,6 +43,15 @@ export default function Sidebar() {
   };
 
   const handleAddTag = () => {
+    if (newTag.trim()) {
+      addTag(newTag);
+      toast.success("Tag added successfully!");
+      setNewTag("");
+      setIsDropdownOpen(false);
+    }
+  };
+
+  const handleRemoveTag = () => {
     if (newTag.trim()) {
       addTag(newTag);
       toast.success("Tag added successfully!");
@@ -93,19 +102,10 @@ export default function Sidebar() {
           </div>
         </div>
       )}
-      <ul className="py-2 border-b border-slate-200">
-        <FolderButton
-            name={"NEWS"}
-            icon="all-notes"
-            link={"/news"}
-            isOpen={isOpen}
-            onSelect={handleSelect}
-          />
-      </ul>
-          
+
       {/* Folder Buttons */}
       <ul className="mt-2">
-          
+
         {sidebarItems.map((item) => (
           <FolderButton
             key={item.link}
@@ -179,7 +179,18 @@ export default function Sidebar() {
                 alt="sidebar"
                 className="min-w-[20px] min-h-[20px]"
               />
-              {isOpen && <span className="text-sm text-nowrap">{tag.name}</span>}
+              {isOpen &&
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-sm text-nowrap">{tag.name}</span>
+                  <button
+                    onClick={handleRemoveTag}
+                    className={`${isOpen ? "flex" : "hidden"
+                      } cursor-pointer rounded-lg text-xs border border-slate-200 hover:bg-[#fff5f2] active:border-[#9f857a] p-1 px-2`}
+                  >
+                    -
+                  </button>
+                </div>}
+
             </li>
           ))}
       </ul>
