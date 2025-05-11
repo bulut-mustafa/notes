@@ -10,6 +10,7 @@
   import { useNotes } from "@/context/notes-context";
   import toast from "react-hot-toast";
   import { deleteTagAndRemoveFromNotes } from "@/lib/actions";
+  import ConfirmationModal from "./confirmation-modal";
   const sidebarItems = [
     { name: "Notes", link: "/notes" },
     { name: "Archived", link: "/archived" },
@@ -24,8 +25,8 @@
     const [isSmallScreen, setIsSmallScreen] = useState(false);
     const { selectedTag, setSelectedTag } = useNotes();
     const { tags, loading: tagsLoading, addTag,fetchTags } = useTags();
-
-
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [removingTag, setRemovingTag] = useState<string | null>(null);
 
 
     useEffect(() => {
@@ -190,7 +191,7 @@
                     handleSelect();
                   } // close sidebar on mobile
                 }}
-                className={`${selectedTag === tag.id && 'bg-[#fff2ee]'} flex items-center gap-2 p-1 text-gray-500 rounded-md`}
+                className={`${selectedTag === tag.id && 'bg-[#fff2ee]'} group flex items-center gap-2 p-1 text-gray-500 rounded-md`}
               >
                 <Image
                   src={`/tag.svg`}
@@ -206,9 +207,9 @@
                       onClick={(e: React.MouseEvent<HTMLButtonElement>) => 
                         {
                           e.stopPropagation();
-                          handleRemoveTag(tag.id)}}
-                      className={`${isOpen ? "flex" : "hidden"
-                        } cursor-pointer rounded-lg text-xs border border-slate-200 hover:bg-[#fff5f2] active:border-[#9f857a] p-1 px-2`}
+                          setRemovingTag(tag.id);
+                          setShowConfirmModal(true);}}
+                      className={`hidden group-hover:flex cursor-pointer rounded-md text-xs border border-slate-200 hover:bg-[#fff5f2] active:border-[#9f857a]  px-2`}
                     >
                       -
                     </button>
@@ -217,6 +218,20 @@
               </li>
             ))}
         </ul>
+        {showConfirmModal && <ConfirmationModal
+          onClose={() => {setShowConfirmModal(false);
+            setRemovingTag(null);
+          }}
+          onConfirm={() => {
+            if (removingTag) {
+              handleRemoveTag(removingTag);
+            }
+            setSelectedTag(null);
+          }
+          }
+          text="Are you sure you want to delete this tag? This action will remove the tag from all notes."
+        />}
+        
       </aside>
     );
   }
