@@ -15,7 +15,7 @@ import { useNotes } from "@/context/notes-context";
 import { useTags } from "@/context/tag-context";
 import { useRouter, usePathname } from "next/navigation";
 import { useRef, useState } from "react";
-import { updateNote } from "@/lib/actions";
+import { updateNote, addTagToNote } from "@/lib/actions";
 import Image from "next/image";
 import toast from "react-hot-toast";
 
@@ -43,7 +43,7 @@ export default function ButtonBar({
     const router = useRouter();
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
-    const { tags } = useTags();
+    const { tags, updateTagState } = useTags();
     async function handleFavorite() {
         const isFavorite = note.isFavorite;
         
@@ -75,9 +75,10 @@ export default function ButtonBar({
 
     async function handleAddTag(id: string) {
         const newTags = [...(note.tags || []), id];
-        const result = await updateNote(note.id, { tags: newTags });
+        const result = await addTagToNote(note.id, id, newTags);
         if(result.success) {
             updateNoteState(note.id, { tags: newTags });
+            updateTagState(id, { count: (tags.find((tag) => tag.id === id)?.count || 0) + 1 });
             toast.success("Tag added", {
                 duration: 2000,
                 position: "top-right",

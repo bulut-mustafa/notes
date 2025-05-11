@@ -11,6 +11,7 @@ export type Tag = {
     name: string;
     createdAt: string;
     updatedAt: string;
+    count: number;
   };
 
 

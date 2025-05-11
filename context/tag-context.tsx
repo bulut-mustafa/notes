@@ -10,6 +10,7 @@ interface TagsContextProps {
   loading: boolean;
   fetchTags: () => void;
   addTag: (name: string) => void;
+  updateTagState: (tagId: string, updatedFields: Partial<Tag>) => void;
 }
 
 const TagsContext = createContext<TagsContextProps | undefined>(undefined);
@@ -30,19 +31,27 @@ export const TagsProvider = ({ children }: { children: React.ReactNode }) => {
       setLoading(false);
     }
   }, [user]);
-
+  const updateTagState = (tagId: string, updatedFields: Partial<Tag>) => {
+    setTags((prevTags) =>
+      prevTags.map((tag) =>
+        tag.id === tagId ? { ...tag, ...updatedFields } : tag
+      )
+    );
+  };
   const addTag = async (name: string) => {
     if (!user) return;
     await addTagToDB(user.uid, name);
     fetchTags(); // Refresh
   };
 
+
+
   useEffect(() => {
     fetchTags();
   }, [user, fetchTags]);
 
   return (
-    <TagsContext.Provider value={{ tags, loading, fetchTags, addTag }}>
+    <TagsContext.Provider value={{ tags, loading, fetchTags, addTag ,updateTagState}}>
       {children}
     </TagsContext.Provider>
   );

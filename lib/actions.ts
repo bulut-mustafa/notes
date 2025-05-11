@@ -1,6 +1,6 @@
 'use server';
 import { db } from '../firebase';
-import { collection, setDoc, getDoc,deleteDoc ,getDocs, doc, query, where, updateDoc, addDoc } from "firebase/firestore"; 
+import { collection, setDoc, getDoc,deleteDoc ,getDocs, doc, query, where, updateDoc, addDoc, increment,writeBatch  } from "firebase/firestore"; 
 import type { Tag, NoteFormData, Note } from "@/lib/types";
 import { revalidatePath } from 'next/cache';
 
@@ -77,18 +77,40 @@ export const getAllTags = async (): Promise<Tag[]> => {
   }
 };
 
-export const deleteTag = async (tagID: string) => {
-    const tagId = `${tagID}`;
-    const tagsRef = doc(db, "tags", tagId);
+export const deleteTagAndRemoveFromNotes = async (tagId: string) => {
+  const notesRef = collection(db, "notes");
+  
+  // 1️⃣ Query all notes where tags array contains tagId
+  const q = query(notesRef, where("tags", "array-contains", tagId));
+  
+  try {
+    const snapshot = await getDocs(q);
 
-    try {
-        await deleteDoc(tagsRef);
-        revalidatePath('/', 'layout')
-        return { success: true };
-    } catch (error) {
-        console.error("Error deleting reservation:", error);
-        return { success: false, message: "Failed to delete tag" };
-    }
+    // 2️⃣ Prepare a Firestore batch
+    const batch = writeBatch(db);
+
+    snapshot.forEach((docSnap) => {
+      const noteData = docSnap.data();
+      const updatedTags = (noteData.tags || []).filter((id: string) => id !== tagId);
+
+      const noteRef = doc(db, "notes", docSnap.id);
+      batch.update(noteRef, { tags: updatedTags });
+    });
+
+    // 3️⃣ Delete the tag document
+    const tagRef = doc(db, "tags", tagId);
+    batch.delete(tagRef);
+
+    // 4️⃣ Commit the batch
+    await batch.commit();
+
+
+    console.log("Tag deleted and removed from all notes!");
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting tag and updating notes:", error);
+    return { success: false, message: "Failed to delete tag and update notes" };
+  }
 };
 export const getTagsByNotes = async (
     userId: string,
@@ -252,18 +274,51 @@ export const addNoteToFav = async (noteId: string, isFavorite: boolean) => {
     return { success: false, message: "Failed to update note" };
   }
 };
-export const addTagToNote = async (noteId: string, tags: string[]) => {
-  const docRef = doc(db, NOTES_COLLECTION, noteId);
+export const addTagToNote = async (noteId: string, tagId: string, tags: string[]) => {
+  const noteRef = doc(db, NOTES_COLLECTION, noteId);
+  const tagRef = doc(db, TAGS_COLLECTION, tagId); // Reference to the tag document
+
   try {
-    await updateDoc(docRef, {
+    // 1️⃣ Update the note document
+    await updateDoc(noteRef, {
       tags: tags,
       updatedAt: new Date().toISOString(),
     });
-    console.log("Note added to favorites!");
+
+    // 2️⃣ Increment the tag count in the tags collection
+    await updateDoc(tagRef, {
+      count: increment(1),
+    });
+
+    console.log("Tag added to note and tag count incremented!");
     return { success: true };
   } catch (error) {
-    console.error("Error updating note:", error);
-    return { success: false, message: "Failed to add Tag" };
+    console.error("Error updating note or tag count:", error);
+    return { success: false, message: "Failed to add tag and update count" };
+  }
+};
+
+export const RemoveTagToNote = async (noteId: string, tagId: string, tags: string[]) => {
+  const noteRef = doc(db, NOTES_COLLECTION, noteId);
+  const tagRef = doc(db, TAGS_COLLECTION, tagId); // Reference to the tag document
+
+  try {
+    // 1️⃣ Update the note document
+    await updateDoc(noteRef, {
+      tags: tags,
+      updatedAt: new Date().toISOString(),
+    });
+
+    // 2️⃣ Increment the tag count in the tags collection
+    await updateDoc(tagRef, {
+      count: increment(-1),
+    });
+
+    console.log("Tag added to note and tag count incremented!");
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating note or tag count:", error);
+    return { success: false, message: "Failed to add tag and update count" };
   }
 };
 
