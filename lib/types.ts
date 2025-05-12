@@ -32,6 +32,7 @@ export type Note = {
   tags: string[];
   archived: boolean;
   isDeleted: boolean;
+  isPinned: boolean;
   newsAttached: string[];
   isFavorite: boolean;
   createdAt: string;

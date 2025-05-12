@@ -5,7 +5,7 @@ import DateTag from "./date-tag";
 import FavoriteTag from "./favorite-tag";
 import { Note } from "@/lib/types";
 import NoteActionCard from "./note-action-card";
-
+import PinTag from "./pinned-tag";
 function getFirstTagContent(html: string): string {
   if (typeof window !== "undefined") {
     const div = document.createElement("div");
@@ -56,6 +56,7 @@ export default function NoteCard({
       </div>
 
       <div className="flex gap-2 ">
+        {note.isPinned && <PinTag isActive={isActive} />}
         <DateTag isActive={isActive} date={note.updatedAt} />
         {note.isFavorite && <FavoriteTag isActive={isActive} />}
       </div>

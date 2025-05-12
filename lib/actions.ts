@@ -154,6 +154,7 @@ export const addNoteToDB = async (userId: string, formData: NoteFormData) => {
     const note = {
       userId,
       ...formData,
+      isPinned: false,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -186,6 +187,7 @@ export const fetchNotesByUser = async (userId: string): Promise<Note[]> => {
         tags: data.tags,
         archived: data.archived,
         isDeleted: data.isDeleted,
+        isPinned: data.pinned,
         newsAttached: data.newsAttached,
         isFavorite: data.isFavorite,
         createdAt: data.createdAt,
@@ -266,7 +268,18 @@ export const addNoteToFav = async (noteId: string, isFavorite: boolean) => {
   try {
     await updateDoc(docRef, {
       isFavorite: !isFavorite,
-      updatedAt: new Date().toISOString(),
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating note:", error);
+    return { success: false, message: "Failed to update note" };
+  }
+};
+export const pinNote = async (noteId: string, isPinned: boolean) => {
+  const docRef = doc(db, NOTES_COLLECTION, noteId);
+  try {
+    await updateDoc(docRef, {
+      isPinned: !isPinned,
     });
     return { success: true };
   } catch (error) {
@@ -327,7 +340,6 @@ export const archiveNote = async (noteId: string, archived: boolean) => {
   try {
     await updateDoc(docRef, {
       archived: archived,
-      updatedAt: new Date().toISOString(),
     });
     console.log("Note added to favorites!");
     return { success: true };
@@ -355,7 +367,6 @@ export const moveToTrash = async (noteId: string, isDeleted: boolean) => {
   try {
     await updateDoc(docRef, {
       isDeleted: isDeleted,
-      updatedAt: new Date().toISOString(),
     });
     console.log("Note moved to trash!");
     return { success: true };

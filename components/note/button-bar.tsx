@@ -10,7 +10,7 @@ import {
 import ConfirmationModal from "../confirmation-modal";
 import { Note } from "@/lib/types";
 import Button from "../button";
-import { addNoteToFav, archiveNote, deleteNote as deleteDb, moveToTrash } from "@/lib/actions";
+import { addNoteToFav, archiveNote, deleteNote as deleteDb, moveToTrash, pinNote } from "@/lib/actions";
 import { useNotes } from "@/context/notes-context";
 import { useTags } from "@/context/tag-context";
 import { useRouter, usePathname } from "next/navigation";
@@ -39,7 +39,7 @@ export default function ButtonBar({
     const pathname = usePathname();
     const [uploading, setUploading] = useState(false);
     const folder = pathname.split("/")[1];
-    const { updateNoteState, moveNoteBetweenCaches } = useNotes();
+    const { updateNoteState, moveNoteBetweenCaches, sortNotes } = useNotes();
     const router = useRouter();
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -72,7 +72,35 @@ export default function ButtonBar({
           console.error("Failed to toggle favorite");
         }
       }
-
+    async function handlePin() {
+        const isPinned = note.isPinned;
+        
+        const result = await pinNote(note.id, isPinned);
+      
+        if (result.success) {
+          updateNoteState(note.id, { isPinned: !isPinned });
+          toast.success(
+            isPinned ? "Pin removed" : "Note pinned",
+            {
+              icon: isPinned ? "❌" : "✅",
+              duration: 2000,
+              position: "top-right",
+              style: {
+                background: isPinned ? "#f8d7da" : "#d4edda",
+                color: isPinned ? "#721c24" : "#155724",
+              },
+            }
+          );
+          sortNotes();
+          console.log("Pin toggled");
+        } else {
+          toast.error(result.message || "An error occurred", {
+            duration: 2000,
+            position: "top-right",
+          });
+          console.error("Failed to toggle pin");
+        }
+      }
     async function handleAddTag(id: string) {
         const newTags = [...(note.tags || []), id];
         const result = await addTagToNote(note.id, id, newTags);
@@ -259,6 +287,12 @@ export default function ButtonBar({
                             icon="heart"
                             onClick={handleFavorite}
                             className={`${note.isFavorite ? "border-[#9f857a] bg-[#fff5f2]" : "border-slate-200"
+                                }`}
+                        />
+                        <Button
+                            icon="pinned"
+                            onClick={handlePin}
+                            className={`${note.isPinned ? "border-[#9f857a] bg-[#fff5f2]" : "border-slate-200"
                                 }`}
                         />
                         <DropdownMenu>

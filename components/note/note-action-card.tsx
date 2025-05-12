@@ -10,12 +10,12 @@ import {
 import { useState } from "react";
 import { Note } from "@/lib/types";
 import { useNotes } from "@/context/notes-context";
-import { addNoteToFav, archiveNote, deleteNote as deleteDb, moveToTrash } from "@/lib/actions";
+import { addNoteToFav, archiveNote, deleteNote as deleteDb, moveToTrash, pinNote } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 import ConfirmationModal from "../confirmation-modal";
 import toast from "react-hot-toast";
 export default function NoteActionCard({ isActive, note, folder }: { isActive: boolean, note: Note, folder: string }) {
-    const { updateNoteState, deleteNote } = useNotes();
+    const { updateNoteState, deleteNote, sortNotes } = useNotes();
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const router = useRouter();
     async function handleFavorite() {
@@ -41,6 +41,35 @@ export default function NoteActionCard({ isActive, note, folder }: { isActive: b
             toast.error("Failed to update note.")
         }
     }
+   async function handlePin() {
+        const isPinned = note.isPinned;
+        
+        const result = await pinNote(note.id, isPinned);
+      
+        if (result.success) {
+          updateNoteState(note.id, { isPinned: !isPinned });
+          toast.success(
+            isPinned ? "Pin removed" : "Note pinned",
+            {
+              icon: isPinned ? "❌" : "✅",
+              duration: 2000,
+              position: "top-right",
+              style: {
+                background: isPinned ? "#f8d7da" : "#d4edda",
+                color: isPinned ? "#721c24" : "#155724",
+              },
+            }
+          );
+          sortNotes();
+          console.log("Pin toggled");
+        } else {
+          toast.error(result.message || "An error occurred", {
+            duration: 2000,
+            position: "top-right",
+          });
+          console.error("Failed to toggle pin");
+        }
+      }
     async function handleArchive() {
         const isArchived = note.archived;
 
@@ -172,6 +201,9 @@ export default function NoteActionCard({ isActive, note, folder }: { isActive: b
                             <>
                                 <DropdownMenuItem className="text-xs" onSelect={handleFavorite}>
                                     {note.isFavorite ? 'Unfavorite' : 'Favorite'}
+                                </DropdownMenuItem>
+                                <DropdownMenuItem className="text-xs" onSelect={handlePin}>
+                                    {note.isPinned ? 'Unpin' : 'Pin'}
                                 </DropdownMenuItem>
                                 <DropdownMenuItem className="text-xs" onSelect={handleArchive}>
                                     {note.archived ? 'Unarchive' : 'Archive'}

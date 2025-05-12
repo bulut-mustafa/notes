@@ -19,6 +19,7 @@ interface NotesContextType {
   updateNoteState: (noteId: string, updatedFields: Partial<Note>) => void;
   deleteNote: (noteId: string) => void;
   moveNoteBetweenCaches: (noteId: string, action: UpdateAction) => void;
+  sortNotes: () => void;
 }
 
 const NotesContext = createContext<NotesContextType | undefined>(undefined);
@@ -132,9 +133,14 @@ const moveNoteBetweenCaches = (noteId: string, action: UpdateAction) => {
       }
   
       const fetchedNotes = await fetchNotesByFolder(user.uid, archived, isDeleted);
-      const sortedNotes = fetchedNotes.sort(
-        (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-      );
+      const sortedNotes = fetchedNotes.sort((a, b) => {
+        // 1. Pinned first
+        if (a.isPinned && !b.isPinned) return -1;
+        if (!a.isPinned && b.isPinned) return 1;
+
+        // 2. Inside group → Newest updated first
+        return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+      });
   
       setNotesCache((prev) => ({
         ...prev,
@@ -148,7 +154,18 @@ const moveNoteBetweenCaches = (noteId: string, action: UpdateAction) => {
       setLoading(false);
     }
   };
-
+  const sortNotes = () => {
+    setNotes((prevNotes) => {
+      prevNotes.sort((a, b) => {
+        if (a.isPinned && !b.isPinned) return -1;
+        if (!a.isPinned && b.isPinned) return 1;
+        // Both pinned or both unpinned → sort by updatedAt desc
+        return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+      }
+      );
+      return [...prevNotes];
+    });
+  };
   const addNote = async (formData: NoteFormData): Promise<Note | null> => {
     if (!user?.uid) return null;
     try {
@@ -199,7 +216,7 @@ const moveNoteBetweenCaches = (noteId: string, action: UpdateAction) => {
 
 
   return (
-    <NotesContext.Provider value={{ notes, filteredNotes,selectedTag, setSelectedTag,  searchQuery, setSearchQuery, loading, addNote, refreshNotes: fetchNotes, updateNoteState, deleteNote,moveNoteBetweenCaches }}>
+    <NotesContext.Provider value={{ notes, filteredNotes,selectedTag, setSelectedTag,  searchQuery, setSearchQuery, loading, addNote, refreshNotes: fetchNotes, updateNoteState, deleteNote,moveNoteBetweenCaches,sortNotes }}>
       {children}
     </NotesContext.Provider>
   );
