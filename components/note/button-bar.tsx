@@ -362,6 +362,11 @@ export default function ButtonBar({
                                 </>
 
                             ) : (<>
+                                     <Button
+                                        icon="sparkles"
+                                        onClick={onToggleAI}
+                                        className="border-slate-200"
+                                    />
                                 <Button
                                     icon="save"
                                     onClick={onSave}

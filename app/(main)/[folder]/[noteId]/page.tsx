@@ -39,6 +39,13 @@ export default function NotePage() {
           document.removeEventListener('keydown', handleKeyDown);
         };
       }, [isEditing, newContent]);  
+
+      // Sync newContent when note.content changes
+      useEffect(() => {
+        if (note?.content) {
+          setNewContent(note.content);
+        }
+      }, [note?.content]);
     if(loading) {
         return <div className="flex flex-col items-center justify-center h-full space-y-4">
         <div className="flex space-x-2">
@@ -64,12 +71,16 @@ export default function NotePage() {
     }
     
     const handleSaveClick = async () => {
-        updateNote(note.id, { content: newContent });
-        updateNoteState(note.id, { content: newContent });
-        setIsEditing(false);
-        setNewContent(note.content);
-        toast.success('Saved!'); // Displays a success message
-        console.log('why')
+        const result = await updateNote(note.id, { content: newContent });
+        if(result.success){
+          updateNoteState(note.id, { content: newContent });
+          setIsEditing(false);
+          setNewContent(note.content);
+          toast.success('Saved!'); // Displays a success message
+        }else{
+          toast.error('Failed to save your note!'); // Displays an error message
+        }
+        
     }
     const handleCancelClick = () => {
         setIsEditing(false);
@@ -79,7 +90,21 @@ export default function NotePage() {
     const handleAIOpen = () => {
         setAiOpen(!aiOpen);
     }
-
+    const handleAIUpdate = async (newContent: string) => {
+        if(isEditing){
+          setNewContent(newContent);
+        }
+        else{
+          const result = await updateNote(note.id, { content: newContent });
+          if(result.success){
+            updateNoteState(note.id, { content: newContent });
+            toast.success('AI updated your note!'); // Displays a success message
+          }else{
+            toast.error('AI failed to update your note!'); // Displays an error message
+          }
+        }
+        
+    }
    
     return (
         <div className="relative p-2 w-full h-full flex flex-col overflow-x-hidden">
@@ -90,6 +115,8 @@ export default function NotePage() {
                     noteContent={note.content}
                     notes= {notes.map((n, i) => `Note ${i + 1}:\n${n.content}`).join("\n\n")}
                     onClose={() => setAiOpen(false)}
+                    onUpdateNote={(newContent) => handleAIUpdate(newContent)}
+
                 />
             )}
             <div className="flex-1 p-2 md:p-4 space-y-4 overflow-auto h-full">
@@ -97,12 +124,7 @@ export default function NotePage() {
                 <TagBar tags={note.tags} note={note} />
                 {isEditing ? (
                     <div className="w-full">
-                        <RichTextEditor
-                            content={note.content}
-                            onChange={(newContent) =>
-                                setNewContent(newContent)
-                            }
-                        />
+                        <RichTextEditor content={newContent} onChange={setNewContent} />
                     </div>
                 ) : (<div id="note-content"
                     className="tiptap prose prose-sm sm:prose lg:prose-lg max-w-none"
