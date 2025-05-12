@@ -12,6 +12,25 @@ import AIAssistant from "@/components/note/ai-assistant";
 import Image from "next/image";
 import DOMPurify from "dompurify";
 import toast from "react-hot-toast";
+
+function formatDate(date: string) {
+  const options: Intl.DateTimeFormatOptions = {
+    day: "numeric",
+    month: "short",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true, 
+  };
+
+  
+  const formatted = new Date(date).toLocaleDateString("en-US", options);
+  const parts = formatted.split(", ");
+  
+  const datePart = parts[0]?.trim();
+  const timePart = parts[1]?.trim();
+  
+  return `${datePart}, ${timePart}`;
+}
 export default function NotePage() {
     const { noteId } = useParams();
     const { notes, updateNoteState, loading } = useNotes();
@@ -120,6 +139,8 @@ export default function NotePage() {
                 />
             )}
             <div className="flex-1 p-2 md:p-4 space-y-4 overflow-auto h-full">
+                <p className="text-xs text-gray-500 m-0">Last edited {formatDate(note.updatedAt)}</p>
+
                 <ImageBar note={note} />
                 <TagBar tags={note.tags} note={note} />
                 {isEditing ? (
