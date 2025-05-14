@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Image from 'next/image';
 import Link from 'next/link';
+import { useTheme } from '@/context/theme-context';
 interface UserDropdownProps {
     loading: boolean;
     isOpen: boolean;
@@ -18,6 +19,7 @@ interface UserDropdownProps {
 }
 
 export default function UserDropdown(userInfo: UserDropdownProps) {
+    const { theme, toggleTheme } = useTheme();
     return (
         <div className="flex items-center gap-3">
 
@@ -58,15 +60,15 @@ export default function UserDropdown(userInfo: UserDropdownProps) {
                             </div>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
-                            <div className='flex items-center gap-2'>
+                            <div onClick={toggleTheme} className='flex items-center gap-2'>
                                 <Image
-                                    src="/buttons/settings.svg"
-                                    alt="Settings"
+                                    src="/buttons/theme.svg"
+                                    alt="Theme"
                                     width={20}
                                     height={20}
                                     className="mr-2"
                                 />
-                                <Link href={'/settings'} className="">Settings</Link>
+                                <p>Theme: {theme}</p>
                             </div>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={userInfo.logOut}>

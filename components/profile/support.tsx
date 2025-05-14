@@ -9,7 +9,8 @@ export default function Support() {
     const [isDeleting, setIsDeleting] = useState(false);
     const [isEmailing, setIsEmailing] = useState(false);
     const [emailForm, setEmailForm] = useState({ email: "", subject: "", message: "" });
-
+    const [isSending, setIsSending] = useState(false);
+    const [deleteLoading, setDeleteLoading] = useState(false);
     const handleAuthPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAuthPassword(e.target.value);
     };
@@ -30,6 +31,7 @@ export default function Support() {
             toast("Please enter your password.");
             return;
         }
+        setDeleteLoading(true);
         try {
             const auth = getAuth();
             const user = auth.currentUser;
@@ -62,7 +64,7 @@ export default function Support() {
             toast("Please fill in all fields.");
             return;
         }
-
+        setIsSending(true);
         try {
             const res = await fetch("/api/send-email", {
                 method: "POST",
@@ -75,6 +77,7 @@ export default function Support() {
             }
 
             toast.success("Email sent successfully!");
+            setIsDeleting(false);
             closeModal();
         } catch (err) {
             console.error(err);
@@ -86,6 +89,7 @@ export default function Support() {
     const renderDeleteModal = () => (
         <Modal
             isOpen={isDeleting}
+            isProcessing={deleteLoading}
             onClose={closeModal}
             onPrimary={handleDelete}
             primaryLabel="Delete"
@@ -104,10 +108,11 @@ export default function Support() {
     const renderEmailModal = () => (
         <Modal
             isOpen={isEmailing}
+            isProcessing={isSending}
             onClose={closeModal}
             onPrimary={handleSendEmail}
-            primaryLabel="Send"
-            title="Send Support Email"
+            primaryLabel={isSending ? "Sending..." : "Send"}
+            title="Reach Out"
         >
             <div className="flex flex-col gap-3">
                 <input

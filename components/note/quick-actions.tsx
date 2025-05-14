@@ -17,11 +17,10 @@ export default function QuickActionButton({
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`text-xs rounded-full px-3 py-1 shadow-lg border border-slate-200 transition ${
-        disabled
-          ? "bg-gray-200 text-gray-400 cursor-not-allowed opacity-60"
-          : "bg-white hover:bg-gray-100 text-black"
-      }`}
+      className={`text-xs rounded-full px-3 py-1 shadow-lg border border-slate-200 dark:border-[#444] transition ${disabled
+          ? "bg-gray-200 dark:bg-[#333] text-gray-400 cursor-not-allowed opacity-60"
+          : "bg-white dark:bg-[#222] hover:bg-gray-100 dark:hover:bg-[#333] text-black dark:text-gray-100"
+        }`}
     >
       {children}
     </button>

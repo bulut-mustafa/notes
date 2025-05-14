@@ -33,7 +33,11 @@ export default function FolderButton({
       <button
         onClick={handleClick}
         className={`group flex w-full items-center gap-2 p-1 rounded-lg text-sm transition-colors
-          ${isActive ? "bg-[#fff2ee] font-semibold text-[#856559]" : "text-[#a9a9a9] hover:bg-gray-100"}
+          ${
+            isActive
+              ? "bg-[#fff2ee] font-semibold text-[#856559] dark:bg-[#2f2422] dark:text-[#e6d4cb]"
+              : "text-[#a9a9a9] hover:bg-gray-100 dark:text-[#888888] dark:hover:bg-[#1e1e1e]"
+          }
         `}
       >
         <Image
@@ -48,3 +52,4 @@ export default function FolderButton({
     </li>
   );
 }
+  

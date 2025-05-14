@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 
 interface ModalProps {
   isOpen: boolean;
+  isProcessing?: boolean;
   onClose: () => void;
   onPrimary: () => void;
   primaryLabel: string;
@@ -10,7 +11,7 @@ interface ModalProps {
   children: ReactNode;
 }
 
-export default function Modal({ isOpen, onClose, onPrimary, primaryLabel, title, children }: ModalProps) {
+export default function Modal({ isOpen, isProcessing, onClose, onPrimary, primaryLabel, title, children }: ModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -22,7 +23,7 @@ export default function Modal({ isOpen, onClose, onPrimary, primaryLabel, title,
           <button onClick={onClose} className="px-4 py-2 text-sm border border-gray-300 rounded hover:bg-gray-100">
             Cancel
           </button>
-          <button onClick={onPrimary} className="px-4 py-2 text-sm bg-[#937b70] text-white rounded hover:bg-[#7f685f]">
+          <button disabled={isProcessing} onClick={onPrimary} className="px-4 py-2 text-sm bg-[#937b70] text-white rounded hover:bg-[#7f685f]">
             {primaryLabel}
           </button>
         </div>

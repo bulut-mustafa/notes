@@ -7,6 +7,7 @@ import { NotesProvider } from "@/context/notes-context";
 import { Toaster } from "react-hot-toast";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { ThemeProvider } from '@/context/theme-context'; // adjust path
 
 function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -41,7 +42,9 @@ export default function MainLayout({
     <AuthProvider>
       <NotesProvider>
         <TagsProvider>
-          <ProtectedLayout>{children}</ProtectedLayout>
+          <ThemeProvider>
+            <ProtectedLayout>{children}</ProtectedLayout>
+          </ThemeProvider>
         </TagsProvider>
       </NotesProvider>
     </AuthProvider>

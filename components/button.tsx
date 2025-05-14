@@ -10,7 +10,14 @@ type ButtonProps = {
   type?: "button" | "submit" | "reset";
 };
 
-export default function Button({ icon, onClick, className = "", asLabel = false, htmlFor, type }: ButtonProps) {
+export default function Button({
+  icon,
+  onClick,
+  className = "",
+  asLabel = false,
+  htmlFor,
+  type,
+}: ButtonProps) {
   const common = (
     <Image
       src={`/buttons/${icon}.svg`}
@@ -20,12 +27,11 @@ export default function Button({ icon, onClick, className = "", asLabel = false,
     />
   );
 
+  const baseClasses = "rounded-md border p-1";
+
   if (asLabel && htmlFor) {
     return (
-      <label
-        htmlFor={htmlFor}
-        className={`rounded-lg border p-1 cursor-pointer ${className}`}
-      >
+      <label htmlFor={htmlFor} className={`${baseClasses} cursor-pointer ${className}`}>
         {common}
       </label>
     );
@@ -34,7 +40,7 @@ export default function Button({ icon, onClick, className = "", asLabel = false,
   return (
     <button
       onClick={onClick}
-      className={`rounded-md border p-1 active:bg-[#fff5f2] active:border-[#9f857a] ${className}`}
+      className={`${baseClasses} ${className}`}
       type={type}
     >
       {common}

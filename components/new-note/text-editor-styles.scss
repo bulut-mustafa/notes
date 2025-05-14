@@ -169,3 +169,12 @@
   height: 0;
   pointer-events: none;
 }
+.dark .tiptap code {
+  background-color: #2d2d2d;
+  color: #f8f8f2;
+}
+
+.dark .tiptap pre {
+  background-color: #2d2d2d;
+  color: #f8f8f2;
+}

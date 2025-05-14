@@ -9,13 +9,16 @@ export default function SidebarHeader() {
   const { searchQuery, setSearchQuery } = useNotes();
 
   return (
-    <div className="flex gap-2 items-center border-b border-slate-200 pb-2">
+    <div className="flex gap-2 items-center border-b border-slate-200 dark:border-border pb-2">
       <input
         type="text"
         placeholder="Search"
         value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)} 
-        className="w-full border border-slate-200 p-1 text-sm rounded-md focus:outline-none focus:ring focus:ring-[#956e60]"
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="w-full border border-slate-200 dark:border-border p-1 text-sm rounded-md 
+                   bg-white dark:bg-muted text-black dark:text-foreground 
+                   placeholder-gray-400 dark:placeholder-gray-500
+                   focus:outline-none focus:ring focus:ring-[#956e60]/40"
       />
       <button
         onClick={() => router.push("/notes/new-note")}

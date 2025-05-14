@@ -21,7 +21,7 @@ export default function NoteActionCard({ isActive, note, folder }: { isActive: b
     async function handleFavorite() {
         const isFavorite = note.isFavorite;
         const result = await addNoteToFav(note.id, isFavorite);
-        if(result.success) {
+        if (result.success) {
             updateNoteState(note.id, { isFavorite: !isFavorite });
             toast.success(
                 isFavorite ? "Removed from favorites" : "Added to favorites",
@@ -32,49 +32,49 @@ export default function NoteActionCard({ isActive, note, folder }: { isActive: b
                     style: {
                         background: isFavorite ? "#f8d7da" : "#d4edda",
                         color: isFavorite ? "#721c24" : "#155724",
-    
+
                     },
                 }
             );
         }
-        else{
+        else {
             toast.error("Failed to update note.")
         }
     }
-   async function handlePin() {
+    async function handlePin() {
         const isPinned = note.isPinned;
-        
+
         const result = await pinNote(note.id, isPinned);
-      
+
         if (result.success) {
-          updateNoteState(note.id, { isPinned: !isPinned });
-          toast.success(
-            isPinned ? "Pin removed" : "Note pinned",
-            {
-              icon: isPinned ? "❌" : "✅",
-              duration: 2000,
-              position: "top-right",
-              style: {
-                background: isPinned ? "#f8d7da" : "#d4edda",
-                color: isPinned ? "#721c24" : "#155724",
-              },
-            }
-          );
-          sortNotes();
-          console.log("Pin toggled");
+            updateNoteState(note.id, { isPinned: !isPinned });
+            toast.success(
+                isPinned ? "Pin removed" : "Note pinned",
+                {
+                    icon: isPinned ? "❌" : "✅",
+                    duration: 2000,
+                    position: "top-right",
+                    style: {
+                        background: isPinned ? "#f8d7da" : "#d4edda",
+                        color: isPinned ? "#721c24" : "#155724",
+                    },
+                }
+            );
+            sortNotes();
+            console.log("Pin toggled");
         } else {
-          toast.error(result.message || "An error occurred", {
-            duration: 2000,
-            position: "top-right",
-          });
-          console.error("Failed to toggle pin");
+            toast.error(result.message || "An error occurred", {
+                duration: 2000,
+                position: "top-right",
+            });
+            console.error("Failed to toggle pin");
         }
-      }
+    }
     async function handleArchive() {
         const isArchived = note.archived;
 
         const result = await archiveNote(note.id, !isArchived);
-        if(result.success) {
+        if (result.success) {
             toast.success(
                 isArchived ? "Unarchived" : "Archived",
                 {
@@ -82,10 +82,10 @@ export default function NoteActionCard({ isActive, note, folder }: { isActive: b
                     position: "top-right",
                 }
             );
-            if (isActive) { router.push(isArchived ? "/archived" : "/notes"); } 
+            if (isActive) { router.push(isArchived ? "/archived" : "/notes"); }
             setTimeout(() => deleteNote(note.id), 100);
         }
-        else{
+        else {
             toast.error("Failed to update note.")
         }
 
@@ -94,7 +94,7 @@ export default function NoteActionCard({ isActive, note, folder }: { isActive: b
     async function handleDelete() {
 
         const result = await moveToTrash(note.id, true);
-        if(result.success) {
+        if (result.success) {
             toast.success("Moved to Trash", {
                 duration: 2000,
                 position: "top-right",
@@ -103,18 +103,18 @@ export default function NoteActionCard({ isActive, note, folder }: { isActive: b
                     color: "#155724",
                 },
             });
-            if (isActive) { router.push("/notes"); } 
+            if (isActive) { router.push("/notes"); }
             setTimeout(() => deleteNote(note.id), 200);
         }
-        else{
+        else {
             toast.error("Failed to update note.")
         }
-        
+
     }
 
     async function handleRestore() {
         const result = await moveToTrash(note.id, false);
-        if(result.success) {
+        if (result.success) {
 
             toast.success("Note Restored", {
                 duration: 2000,
@@ -124,18 +124,18 @@ export default function NoteActionCard({ isActive, note, folder }: { isActive: b
                     color: "#155724",
                 },
             });
-            if (isActive) { router.push("/deleted"); } 
+            if (isActive) { router.push("/deleted"); }
             setTimeout(() => deleteNote(note.id), 100);
         }
-        else{
+        else {
             toast.error("Failed to update note.")
         }
     }
 
     async function handlePermanentRemove() {
-        
+
         const result = await deleteDb(note.id);
-        if(result.success) {
+        if (result.success) {
             toast.success("Note Deleted Permanently", {
                 duration: 2000,
                 position: "top-right",
@@ -144,19 +144,21 @@ export default function NoteActionCard({ isActive, note, folder }: { isActive: b
                     color: "#155724",
                 },
             });
-            if (isActive) { router.push("/deleted"); } 
+            if (isActive) { router.push("/deleted"); }
             setTimeout(() => deleteNote(note.id), 100);
         }
-        else{
+        else {
             toast.error("Failed to remove note")
         }
     }
     return (
-        <div onClick={(e) => e.stopPropagation()}> 
+        <div onClick={(e) => e.stopPropagation()}>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <button
-                        className={`rounded-full group-hover:bg-[#fce4dc] ${isActive ? "bg-[#fce4dc]" : "bg-[#f3f3f3]"}`}
+                        className={`rounded-full group-hover:bg-[#fce4dc] ${isActive ? "bg-[#fce4dc]" : "bg-[#f3f3f3]"} 
+    dark:group-hover:bg-[#3a2721] dark:${isActive ? "bg-[#5c3e44]" : "bg-[#3a2721]"}
+    dark:text-[#e6d4cb]`}
                     >
                         <svg
                             viewBox="0 0 24 24"
@@ -188,6 +190,7 @@ export default function NoteActionCard({ isActive, note, folder }: { isActive: b
                             </g>
                         </svg>
                     </button>
+
 
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-24" side="bottom" align="start">
