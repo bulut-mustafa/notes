@@ -56,7 +56,7 @@ export default function UserDropdown(userInfo: UserDropdownProps) {
                                     height={20}
                                     className="mr-2"
                                 />
-                                <Link href={'/profile'} className="">Profile</Link>
+                                <Link href={'/profile'} className="">Account</Link>
                             </div>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
@@ -68,7 +68,7 @@ export default function UserDropdown(userInfo: UserDropdownProps) {
                                     height={20}
                                     className="mr-2"
                                 />
-                                <p>Theme: {theme}</p>
+                                <p>Theme: <span className='capitalize'>{theme}</span></p>
                             </div>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={userInfo.logOut}>

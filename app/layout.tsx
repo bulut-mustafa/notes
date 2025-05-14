@@ -1,11 +1,9 @@
-import type { Metadata } from "next";
+import { Metadata } from "next";
 import "./globals.css";
-import { Inter } from 'next/font/google'
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "NoteMaster - AI-Powered Notes App",
-  description: "Organize, write, and get real-time insights with NoteMaster.",
+  title: "Wrytrai - AI-Powered Notes App",
+  description: "Write, organize, and get smarter with Wrytrai.",
 };
 
 export default function RootLayout({
@@ -15,11 +13,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Importing Poppins font from Google Fonts */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body>
-        <main className={inter.className}>
-
-          {children}
-        </main>
+        <main>{children}</main>
       </body>
     </html>
   );

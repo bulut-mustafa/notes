@@ -22,6 +22,7 @@ const LoginForm: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [error, setError] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
@@ -45,6 +46,9 @@ const LoginForm: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setIsSubmitting(true);
+        setError(null);
+
         try {
             const credential = await signInWithEmailAndPassword(
                 getAuth(app),
@@ -59,11 +63,36 @@ const LoginForm: React.FC = () => {
                 },
             });
             router.replace(redirectPath);
+        } catch (e: unknown) {
+            const errorCode = (e as { code?: string }).code;
+            let errorMessage = "An unexpected error occurred.";
 
-        } catch (e) {
-            setError((e as Error).message);
+            switch (errorCode) {
+                case "auth/invalid-email":
+                    errorMessage = "Please enter a valid email address.";
+                    break;
+                case "auth/user-disabled":
+                    errorMessage = "This account has been disabled.";
+                    break;
+                case "auth/user-not-found":
+                    errorMessage = "No account found with this email.";
+                    break;
+                case "auth/wrong-password":
+                    errorMessage = "Incorrect password. Please try again.";
+                    break;
+                case "auth/too-many-requests":
+                    errorMessage = "Too many attempts. Try again later.";
+                    break;
+                default:
+                    errorMessage = "Login failed. Please try again.";
+            }
+
+            setError(errorMessage);
+        } finally {
+            setIsSubmitting(false);
         }
     };
+
 
     if (loading) {
         return (
@@ -75,6 +104,10 @@ const LoginForm: React.FC = () => {
 
     return (
         <form className="space-y-6" onSubmit={handleSubmit}>
+            <p className="text-4xl text-center font-bold" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                Wrytrai
+            </p>
+
             <div>
                 <label className="block text-sm font-medium text-gray-700">Email</label>
                 <input
@@ -111,8 +144,34 @@ const LoginForm: React.FC = () => {
 
             {error && <p className="text-red-500 text-sm">{error}</p>}
 
-            <button type="submit" className="w-full text-white bg-blue-500 rounded-lg p-2.5">
-                Log In
+            <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`w-full text-white rounded-lg p-2.5 font-semibold flex items-center justify-center
+    ${isSubmitting ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 active:bg-blue-700'}
+    focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200 ease-in-out
+    transform hover:scale-[1.02] active:scale-95`}
+            >
+                {isSubmitting ? (
+                    <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+                        <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            fill="none"
+                        />
+                        <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                        />
+                    </svg>
+                ) : (
+                    "Log In"
+                )}
             </button>
             <p className="text-sm font-light text-gray-500">
                 Don’t have an account yet?{' '}
