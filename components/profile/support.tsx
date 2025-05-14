@@ -8,7 +8,7 @@ export default function Support() {
     const [authPassword, setAuthPassword] = useState("");
     const [isDeleting, setIsDeleting] = useState(false);
     const [isEmailing, setIsEmailing] = useState(false);
-    const [emailForm, setEmailForm] = useState({ subject: "", message: "" });
+    const [emailForm, setEmailForm] = useState({ email: "", subject: "", message: "" });
 
     const handleAuthPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAuthPassword(e.target.value);
@@ -20,7 +20,7 @@ export default function Support() {
 
     const closeModal = () => {
         setAuthPassword("");
-        setEmailForm({ subject: "", message: "" });
+        setEmailForm({ email: "", subject: "", message: "" });
         setIsDeleting(false);
         setIsEmailing(false);
     };
@@ -57,17 +57,31 @@ export default function Support() {
         }
     };
 
-    const handleSendEmail = () => {
-        if (!emailForm.subject || !emailForm.message) {
-            toast("Please fill in both fields.");
+    const handleSendEmail = async () => {
+        if (!emailForm.email || !emailForm.subject || !emailForm.message) {
+            toast("Please fill in all fields.");
             return;
         }
 
-        console.log("Sending email:", emailForm);
-        // Replace this with real logic like EmailJS, an API, etc.
-        toast.success("Email sent successfully!");
-        closeModal();
+        try {
+            const res = await fetch("/api/send-email", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(emailForm),
+            });
+
+            if (!res.ok) {
+                throw new Error("Failed to send email");
+            }
+
+            toast.success("Email sent successfully!");
+            closeModal();
+        } catch (err) {
+            console.error(err);
+            toast.error("Error sending email. Please try again.");
+        }
     };
+
 
     const renderDeleteModal = () => (
         <Modal
@@ -96,6 +110,14 @@ export default function Support() {
             title="Send Support Email"
         >
             <div className="flex flex-col gap-3">
+                <input
+                    type="email"
+                    name="email"
+                    value={emailForm.email}
+                    onChange={handleEmailChange}
+                    placeholder="Email"
+                    className="border px-3 py-2 w-full text-sm rounded"
+                />
                 <input
                     type="text"
                     name="subject"
