@@ -20,9 +20,9 @@ const SignUpPage = () => {
             className={`${montserrat.variable} ${nunitoSans.variable} font-sans h-screen flex flex-col md:flex-row items-center relative z-10`}
         >
             {/* Left side info panel */}
-            <div className=" w-full md:w-1/2 p-10 md:p-12 text-gray-800 flex flex-col justify-center items-start bg-opacity-75 ml-4">
+            <div className=" w-full md:w-1/2 p-10 md:p-12 text-gray-800 flex flex-col justify-center items-start bg-opacity-75 ml-8">
                 <h1 className="text-4xl font-extrabold mb-6 leading-tight font-[var(--font-montserrat)]">
-                    Join NoteApp Today
+                    Join Wrytrai Today
                 </h1>
                 <p className=" hidden md:block text-lg font-light mb-4 font-[var(--font-nunito-sans)]">
                     Organize your thoughts, capture ideas, and stay productive — all in one place.

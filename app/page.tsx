@@ -1,78 +1,102 @@
 import Link from "next/link";
-import Image from "next/image";
-
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-start px-6">
+    <div className="min-h-screen bg-white flex flex-col items-center px-6">
       {/* Header */}
       <header className="w-full max-w-6xl py-8 flex flex-col md:flex-row justify-between items-center">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800">NoteMaster</h1>
+        <h1
+          className="text-4xl md:text-5xl font-extrabold text-gray-900"
+          style={{ fontFamily: "Poppins, sans-serif" }}
+        >
+          Wrytrai
+        </h1>
         <nav className="mt-4 md:mt-0">
-          <Link href="#features" className="text-gray-700 hover:text-indigo-600 mx-4">Features</Link>
-          <Link href="#download" className="text-gray-700 hover:text-indigo-600 mx-4">Download</Link>
-          <Link href="#contact" className="text-gray-700 hover:text-indigo-600 mx-4">Contact</Link>
+          <Link href="#features" className="text-gray-700 hover:text-indigo-600 mx-4">
+            Features
+          </Link>
+          <Link href="#about" className="text-gray-700 hover:text-indigo-600 mx-4">
+            About
+          </Link>
+          <Link href="#contact" className="text-gray-700 hover:text-indigo-600 mx-4">
+            Contact
+          </Link>
         </nav>
       </header>
 
       {/* Hero Section */}
-      <section className="flex flex-col md:flex-row items-center max-w-6xl my-12">
+      <section className="flex flex-col md:flex-row items-center max-w-6xl my-12 gap-10">
         <div className="flex-1">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-800">
-            Take Your Notes to the Next Level
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+            Write smarter.<br /> Organize better.
           </h2>
           <p className="mt-4 text-lg text-gray-600">
-            A smart, AI-powered notes app that integrates real-time news and helps you stay organized effortlessly.
+            Wrytrai is your AI-powered note-taking companion—combining seamless organization with intelligent suggestions and real-time news insights.
           </p>
-          <Link href={'/signup'} className="mt-8 px-8 py-3 bg-indigo-600 text-white text-lg font-semibold rounded-lg shadow-lg hover:bg-indigo-700 transition">
+          <Link
+            href="/signup"
+            className="mt-8 inline-block px-8 py-3 bg-indigo-600 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition"
+          >
             Get Started
           </Link>
         </div>
-        <div className="flex-1 mt-8 md:mt-0">
-          <Image
-            src="/images/notes-app-mockup.png"
-            alt="Notes app mockup"
-            width={600}
-            height={400}
-            className="w-full rounded-lg shadow-xl"
-          />
+
+        {/* Placeholder for Hero Illustration */}
+        <div className="flex-1 bg-gray-100 w-full h-64 md:h-96 rounded-lg shadow-inner flex items-center justify-center">
+          <span className="text-gray-400 text-xl">[ Hero Illustration Placeholder ]</span>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="w-full bg-white py-16">
+      <section id="features" className="w-full bg-gray-50 py-20">
         <div className="max-w-6xl mx-auto text-center">
-          <h3 className="text-3xl font-bold text-gray-800">Features</h3>
+          <h3 className="text-3xl font-bold text-gray-900">Powerful Features</h3>
           <p className="mt-2 text-lg text-gray-600">
-            Everything you need to stay organized, inspired, and in the loop.
+            Everything you need to write, think, and stay informed—all in one place.
           </p>
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-8 bg-gray-100 rounded-xl shadow-md hover:shadow-lg transition">
-              <h4 className="text-xl font-bold text-indigo-600">AI-Powered Insights</h4>
+
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+            <div className="p-8 bg-white rounded-xl shadow-md hover:shadow-lg transition">
+              <h4 className="text-xl font-semibold text-indigo-600">AI-Powered Writing</h4>
               <p className="mt-2 text-gray-600">
-                Intelligent suggestions to help you write and organize smarter.
+                Get intelligent suggestions and structure your thoughts with the help of AI.
               </p>
             </div>
-            <div className="p-8 bg-gray-100 rounded-xl shadow-md hover:shadow-lg transition">
-              <h4 className="text-xl font-bold text-indigo-600">Real-Time News</h4>
+            <div className="p-8 bg-white rounded-xl shadow-md hover:shadow-lg transition">
+              <h4 className="text-xl font-semibold text-indigo-600">Real-Time News Feed</h4>
               <p className="mt-2 text-gray-600">
-                Stay updated with the latest news directly integrated into your workflow.
+                Stay up to date without leaving your notes—news and insights in one place.
               </p>
             </div>
-            <div className="p-8 bg-gray-100 rounded-xl shadow-md hover:shadow-lg transition">
-              <h4 className="text-xl font-bold text-indigo-600">Seamless Organization</h4>
+            <div className="p-8 bg-white rounded-xl shadow-md hover:shadow-lg transition">
+              <h4 className="text-xl font-semibold text-indigo-600">Smart Organization</h4>
               <p className="mt-2 text-gray-600">
-                Tag, categorize, and search your notes with an intuitive, modern interface.
+                Intuitively tag, sort, archive, and search notes for a clutter-free experience.
               </p>
             </div>
           </div>
         </div>
       </section>
 
+      {/* About Section Placeholder */}
+      <section id="about" className="w-full max-w-6xl py-20">
+        <div className="flex flex-col md:flex-row gap-12 items-center">
+          <div className="flex-1 bg-gray-100 w-full h-64 md:h-96 rounded-lg shadow-inner flex items-center justify-center">
+            <span className="text-gray-400 text-xl">[ About Illustration Placeholder ]</span>
+          </div>
+          <div className="flex-1">
+            <h3 className="text-3xl font-bold text-gray-900 mb-4">Why Wrytrai?</h3>
+            <p className="text-lg text-gray-600">
+              We built Wrytrai to help creators, thinkers, and lifelong learners write faster and think deeper. Whether you’re jotting down thoughts or drafting full articles, Wrytrai has your back—with AI support and seamless structure.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
-      <footer className="w-full bg-gray-100 py-6">
+      <footer className="w-full bg-gray-100 py-6 mt-auto">
         <div className="max-w-6xl mx-auto text-center text-gray-600">
-          &copy; {new Date().getFullYear()} NoteMaster. All rights reserved.
+          &copy; {new Date().getFullYear()} Wrytrai. All rights reserved.
         </div>
       </footer>
     </div>

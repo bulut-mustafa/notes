@@ -3,7 +3,7 @@ export default function NoteTag ({name, id, onRemove}: {name: string, id: string
 
     return (
         <>
-            <div className="flex gap-2 px-2 py-1 border border-slate-200 rounded-lg">
+            <div className="group flex gap-2 px-2 py-1 border border-slate-200 rounded-lg transition-all duration-200">
                 <Image
                     src={`/tag.svg`}
                     width={20}
@@ -13,7 +13,7 @@ export default function NoteTag ({name, id, onRemove}: {name: string, id: string
 
                 <p className="text-sm text-nowrap">{name}</p>
                 <button
-                    className="px-1 ml-auto rounded-full text-sm text-[#937b70] hover:bg-slate-200"
+                    className="block md:hidden group-hover:inline-block px-1 ml-auto rounded-full text-sm text-[#937b70] hover:bg-slate-200 transition-opacity duration-200"
                     onClick={() => onRemove(id)}
                 >
                     X

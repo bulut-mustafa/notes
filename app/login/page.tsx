@@ -21,7 +21,7 @@ const LoginPage: React.FC = () => {
                 className={`${montserrat.variable} ${nunitoSans.variable} font-sans h-screen flex flex-col md:flex-row items-center relative z-10`}
             >
 
-                <div className="w-full md:w-1/2 p-12 text-gray-800 flex flex-col justify-center items-start bg-opacity-75">
+                <div className="w-full md:w-1/2 p-12 text-gray-800 flex flex-col justify-center items-start bg-opacity-75 ml-8">
                     <h1 className="text-2xl md:text-4xl font-extrabold mb-4 leading-tight font-[var(--font-montserrat)]">
                         Your ideas, organized.
                     </h1>

@@ -87,7 +87,7 @@ export default function Sidebar() {
         }`}
     >
       {/* Header */}
-      <div className="flex gap-4 items-center border-b dark:border-border border-slate-200 pb-2">
+      <div className="flex gap-4 items-center pb-2">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="cursor-pointer rounded-lg border border-slate-200 dark:border-border active:bg-[#fff5f2] dark:active:bg-[#575757] active:border-[#9f857a] p-1"
@@ -100,14 +100,14 @@ export default function Sidebar() {
             className="min-w-[20px] min-h-[20px]"
           />
         </button>
-        <p className={`${!isOpen && "hidden"} text-base font-bold text-[#856559] dark:text-[#e9cfc5]`}>
-          Note<span className="text-black dark:text-white">App</span>
+        <p className={`${!isOpen && "hidden"} text-base font-bold text-[#856559] dark:text-[#e9cfc5]`} style={{ fontFamily: 'Poppins, sans-serif' }}>
+          Wrytrai
         </p>
       </div>
 
       {/* User Section */}
       {user ? (
-        <div className="flex items-center gap-3 py-2 border-b dark:border-border border-slate-200">
+        <div className="flex items-center gap-3 py-2 ">
           <UserDropdown
             user={user}
             loading={loading}

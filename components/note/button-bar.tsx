@@ -262,7 +262,7 @@ export default function ButtonBar({
 
     return (
         <div className="w-full overflow-x-auto no-scrollbar">
-            <div className="flex gap-2  pb-2 px-2 md:px-4 border-b dark:border-border border-slate-200 w-max min-w-full">
+            <div className="flex gap-2  pb-2 px-2 md:px-4 w-max min-w-full">
                 <Button
                     icon="back"
                     onClick={() => router.push(`/${folder}`)}

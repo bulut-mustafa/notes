@@ -9,7 +9,7 @@ export default function SidebarHeader() {
   const { searchQuery, setSearchQuery } = useNotes();
 
   return (
-    <div className="flex gap-2 items-center border-b border-slate-200 dark:border-border pb-2">
+    <div className="flex gap-2 items-center pb-2">
       <input
         type="text"
         placeholder="Search"

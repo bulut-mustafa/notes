@@ -116,9 +116,11 @@ const SignUpForm: React.FC = () => {
         <div className="h-full bg-white opacity-70 md:rounded-l-3xl w-full md:w-1/2 flex items-center justify-center">
             <div className="flex flex-col items-center w-full max-w-md p-6 gap-6">
                 <div className="w-full">
-                    <p className="text-4xl text-center font-bold" style={{ fontFamily: 'Poppins, sans-serif' }}>
-                        Wrytrai
-                    </p>
+                    <Link href={'/'}>
+                        <p  className="text-4xl text-center font-bold" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                            Wrytrai
+                        </p>
+                    </Link>
                     <form className="space-y-6" onSubmit={handleSubmit}>
                         <div>
                             <label className="block text-gray-700">Name</label>

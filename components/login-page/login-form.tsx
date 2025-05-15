@@ -104,9 +104,11 @@ const LoginForm: React.FC = () => {
 
     return (
         <form className="space-y-6" onSubmit={handleSubmit}>
-            <p className="text-4xl text-center font-bold" style={{ fontFamily: 'Poppins, sans-serif' }}>
-                Wrytrai
-            </p>
+            <Link href={'/'} >
+                <p className="text-4xl text-center font-bold" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                    Wrytrai
+                </p>
+            </Link>
 
             <div>
                 <label className="block text-sm font-medium text-gray-700">Email</label>
