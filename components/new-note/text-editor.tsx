@@ -60,7 +60,7 @@ export default function RichTextEditor({ content, onChange }: Props) {
     content,
     editorProps: {
       attributes: {
-        class: "tiptap w-full max-w-full min-h-[150px] max-h-[700px] lg:max-h-[600px] overflow-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 p-2 border-y border-slate-200 rounded-md focus:outline-none focus:ring-none",
+        class: "tiptap w-full max-w-full min-h-[150px] max-h-[700px] lg:max-h-[600px] overflow-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 p-2 border-y border-slate-200 dark:border-border rounded-md focus:outline-none focus:ring-none",
       },
     },
     onUpdate: ({ editor }) => {

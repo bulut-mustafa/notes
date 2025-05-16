@@ -156,9 +156,8 @@ export default function NoteActionCard({ isActive, note, folder }: { isActive: b
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <button
-                        className={`rounded-full group-hover:bg-[#fce4dc] ${isActive ? "bg-[#fce4dc]" : "bg-[#f3f3f3]"} 
-    dark:group-hover:bg-[#3a2721] dark:${isActive ? "bg-[#5c3e44]" : "bg-[#3a2721]"}
-    dark:text-[#e6d4cb]`}
+                        className={`rounded-full group-hover:bg-[#fce4dc] ${isActive ? "bg-[#fce4dc] dark:bg-[#5c3e44]" : "bg-[#f3f3f3] dark:bg-[#3a2721]"} 
+    dark:group-hover:bg-[#3a2721] dark:text-[#e6d4cb]`}
                     >
                         <svg
                             viewBox="0 0 24 24"

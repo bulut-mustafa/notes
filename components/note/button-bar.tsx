@@ -24,17 +24,9 @@ const MAX_FILE_SIZE_MB = 5;
 const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 export default function ButtonBar({
     note,
-    isEditing,
-    onEdit,
-    onSave,
-    onCancel,
     onToggleAI,
 }: {
     note: Note;
-    isEditing: boolean;
-    onEdit: () => void;
-    onSave: () => void;
-    onCancel: () => void;
     onToggleAI: () => void;
 }) {
     const pathname = usePathname();
@@ -288,8 +280,8 @@ export default function ButtonBar({
                             icon="heart"
                             onClick={handleFavorite}
                             className={`${note.isFavorite
-                                    ? "border-[#9f857a] bg-[#fff5f2] dark:border-[#d1b3a3] dark:bg-[#3e2b2f]"
-                                    : "border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-[#5c3e44] dark:hover:border-[#9f857a]"
+                                ? "border-[#9f857a] bg-[#fff5f2] dark:border-[#d1b3a3] dark:bg-[#3e2b2f]"
+                                : "border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-[#5c3e44] dark:hover:border-[#9f857a]"
                                 }`}
                         />
 
@@ -297,15 +289,15 @@ export default function ButtonBar({
                             icon="pinned"
                             onClick={handlePin}
                             className={`${note.isPinned
-                                    ? "border-[#9f857a] bg-[#fff5f2] dark:border-[#d1b3a3] dark:bg-[#3e2b2f]"
-                                    : "border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-[#5c3e44] dark:hover:border-[#9f857a]"
+                                ? "border-[#9f857a] bg-[#fff5f2] dark:border-[#d1b3a3] dark:bg-[#3e2b2f]"
+                                : "border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-[#5c3e44] dark:hover:border-[#9f857a]"
                                 }`}
                         />
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <button 
+                                <button
                                     className="rounded-md border p-1 active:bg-[#fff5f2] active:border-[#9f857a] dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-[#5c3e44] dark:hover:border-[#9f857a] ${className}"
-                                    >
+                                >
                                     <Image
                                         src={`/buttons/new-tag.svg`}
                                         width={20}
@@ -389,41 +381,11 @@ export default function ButtonBar({
                         />
                         <div className="flex gap-2 ml-auto">
 
-                            {!isEditing ? (
-                                <>
-                                    <Button
-                                        icon="sparkles"
-                                        onClick={onToggleAI}
-                                        className="border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-[#5c3e44] dark:hover:border-[#9f857a]"
-                                    />
-                                    <Button
-                                        icon="edit"
-                                        onClick={onEdit}
-                                        className="border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-[#5c3e44] dark:hover:border-[#9f857a]"
-                                    />
-                                </>
-
-                            ) : (<>
-                                <Button
-                                    icon="sparkles"
-                                    onClick={onToggleAI}
-                                    className="border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-[#5c3e44] dark:hover:border-[#9f857a]"
-                                />
-                                <Button
-                                    icon="save"
-                                    onClick={onSave}
-                                    type="button"
-                                    className="border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-[#5c3e44] dark:hover:border-[#9f857a]"
-                                    asLabel={false}
-                                />
-                                <Button
-                                    icon="cancel"
-                                    onClick={onCancel}
-                                    type="button"
-                                    className="border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-[#5c3e44] dark:hover:border-[#9f857a]"
-                                    asLabel={false}
-                                />
-                            </>)}
+                            <Button
+                                icon="sparkles"
+                                onClick={onToggleAI}
+                                className="border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-[#5c3e44] dark:hover:border-[#9f857a]"
+                            />
                         </div>
                     </>
                 )}

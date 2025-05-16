@@ -114,14 +114,12 @@ export default function NewNotePage() {
 
 
       <form className="flex-1 overflow-auto p-2 space-y-4" onSubmit={handleSubmit}>
-        <div className="sticky mb-2 z-10 bg-white ">
-          <ButtonBar
+        <ButtonBar
             tags={tags}
             selectedTags={noteFormData.tags}
             setSelectedTags={handleTagChange}
             isSubmitting={isSubmitting}
           />
-        </div>
         <ImagePicker
           name="coverImage"
           value={selectedFile}
