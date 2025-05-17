@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { app } from "../../firebase";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 
 import { auth } from '@/firebase';
 import { EyeFilledIcon, EyeSlashFilledIcon } from "./password-input";
@@ -92,7 +92,40 @@ const LoginForm: React.FC = () => {
             setIsSubmitting(false);
         }
     };
+    const handleForgetPassword = () => {
+        if(!formData.email) {
+            setError("Please enter your email address to reset your password.");
+            return;
+        }
+        try {
+            sendPasswordResetEmail(getAuth(app), formData.email)
+                .then(() => {
+                    setError("Password reset email sent. Please check your inbox.");
+                })
+                .catch((error) => {
+                    const errorCode = (error as { code?: string }).code;
+                    let errorMessage = "An unexpected error occurred.";
 
+                    switch (errorCode) {
+                        case "auth/invalid-email":
+                            errorMessage = "Please enter a valid email address.";
+                            break;
+                        case "auth/user-not-found":
+                            errorMessage = "No account found with this email.";
+                            break;
+                        default:
+                            errorMessage = "Failed to send password reset email. Please try again.";
+                    }
+
+                    setError(errorMessage);
+                }
+            );
+        } catch (error) {
+            console.error("Error sending password reset email:", error);
+            setError("Failed to send password reset email. Please try again.");
+        }
+        
+    };
 
     if (loading) {
         return (
@@ -142,6 +175,9 @@ const LoginForm: React.FC = () => {
                         {isVisible ? <EyeSlashFilledIcon className="text-2xl text-gray-500" /> : <EyeFilledIcon className="text-2xl text-gray-500" />}
                     </button>
                 </div>
+                <p onClick={handleForgetPassword} className="text-sm text-end mt-1 font-light text-blue-600 hover:underline cursor-pointer">
+                Forgot  password?{' '}
+                </p>
             </div>
 
             {error && <p className="text-red-500 text-sm">{error}</p>}
