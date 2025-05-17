@@ -61,6 +61,18 @@ const SignUpForm: React.FC = () => {
                 displayName: `${formData.name} ${formData.lastname}`,
                 photoURL: "",
             });
+
+            // Send welcome email
+            await fetch('/api/signup-email', {
+                method: 'POST',
+                headers: {  
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: formData.email,
+                    name: `${formData.name} ${formData.lastname}`,
+                }),
+            });
             router.push('/notes');
         } catch (e: unknown) {
             console.log(e);
