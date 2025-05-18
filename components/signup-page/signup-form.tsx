@@ -156,7 +156,7 @@ const SignUpForm: React.FC = () => {
             <div className="flex flex-col items-center w-full max-w-md p-6 gap-6">
                 <div className="w-full">
                     <Link href={'/'}>
-                        <p className="text-4xl text-center font-bold" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                        <p className="text-4xl text-center font-bold" style={{ fontFamily: '"DM Serif Display", serif'  }}>
                             Wrytrai
                         </p>
                     </Link>

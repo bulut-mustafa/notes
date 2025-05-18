@@ -100,7 +100,7 @@ export default function Sidebar() {
             className="min-w-[20px] min-h-[20px]"
           />
         </button>
-        <p className={`${!isOpen && "hidden"} text-base font-bold text-[#856559] dark:text-[#e9cfc5]`} style={{ fontFamily: 'Poppins, sans-serif' }}>
+        <p className={`${!isOpen && "hidden"} text-base font-bold text-[#856559] dark:text-[#e9cfc5]`} style={{ fontFamily: '"DM Serif Display", serif'  }}>
           Wrytrai
         </p>
       </div>

@@ -1,24 +1,24 @@
 import Link from "next/link";
-
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white flex flex-col items-center px-6">
       {/* Header */}
       <header className="w-full max-w-6xl py-8 flex justify-between items-center">
-        <Link href={'/'}
-          className="text-2xl md:text-5xl font-extrabold text-gray-900"
-          style={{ fontFamily: "Poppins, sans-serif" }}
+        <Link
+          href="/"
+          className="text-2xl md:text-5xl font-extrabold"
+          style={{ fontFamily: '"DM Serif Display", serif' , color: "#856559" }}
         >
           Wrytrai
         </Link>
-        <nav className="">
-          <Link href="#features" className="text-gray-700 hover:text-[#937b70] hover:text-[#7f675f] mx-2 md:mx-4">
+        <nav>
+          <a href="#features" className="text-gray-700 hover:text-[#7f675f] mx-2 md:mx-4">
             Features
-          </Link>
-          <Link href="#about" className="text-gray-700 hover:text-[#937b70] hover:text-[#7f675f] mx-2 md:mx-4">
+          </a>
+          <a href="#about" className="text-gray-700 hover:text-[#7f675f] mx-2 md:mx-4">
             About
-          </Link>
-          <Link href="/login" className="text-gray-700 hover:text-[#937b70] hover:text-[#7f675f] mx-2 md:mx-4">
+          </a>
+          <Link href="/login" className="text-gray-700 hover:text-[#7f675f] mx-2 md:mx-4">
             Log In
           </Link>
         </nav>
@@ -43,7 +43,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="w-full py-12">
+      <section id="features" className="w-full py-12 scroll-mt-24">
         <div className="max-w-6xl mx-auto text-center">
           <p className="mt-2 text-lg text-gray-600">
             Everything you need to write, think, and stay focused—all in one place.
@@ -72,9 +72,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-
-      {/* About Section Placeholder */}
-      <section id="about" className="w-full max-w-6xl py-20">
+      {/* About Section */}
+      <section id="about" className="w-full max-w-6xl py-20 scroll-mt-24">
         <div className="flex flex-col md:flex-row gap-12 items-center">
           <div className="flex-1">
             <h3 className="text-3xl font-bold text-gray-900 mb-4">Why Wrytrai?</h3>
