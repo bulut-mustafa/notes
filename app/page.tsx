@@ -59,7 +59,7 @@ export default function LandingPage() {
       {/* App Screenshot Display */}
       <section className="w-full my-12">
         <div className="max-w-6xl mx-auto flex items-center gap-10">
-         
+
           {/* Laptop Screenshot */}
           <div className="w-full shadow-2xl rounded-md overflow-hidden">
             <Image
@@ -68,6 +68,7 @@ export default function LandingPage() {
               width={800}
               height={600}
               priority
+              className="w-full h-auto"
             />
           </div>
         </div>
@@ -86,22 +87,49 @@ export default function LandingPage() {
           </p>
 
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-            <div className="p-8 bg-[#f8c89d] rounded-xl shadow-md hover:shadow-lg transition">
-              <h4 className="text-xl font-semibold text-[#937b70] hover:text-[#7f675f]">AI-Powered Writing</h4>
+            <div className="p-4">
+              <div className="flex items-center gap-2">
+                <Image
+                  src="/buttons/sparkles.svg"
+                  alt="AI Writing"
+                  width={32}
+                  height={32}
+                  className=""
+                />
+                <h4 className="text-xl font-semibold text-[#937b70] hover:text-[#7f675f]">AI-Powered Writing</h4>
+              </div>
               <p className="mt-2 text-gray-600">
                 Get intelligent suggestions and structure your thoughts with the help of AI.
               </p>
             </div>
-            <div className="p-8 bg-[#f8c89d] rounded-xl shadow-md hover:shadow-lg transition">
-              <h4 className="text-xl font-semibold text-[#937b70] hover:text-[#7f675f]">Distraction-Free Focus Mode</h4>
+            <div className="p-4 ">
+              <div className="flex items-center gap-2">
+                <Image
+                  src="/tag.svg"
+                  alt="Tagging"
+                  width={32}
+                  height={32}
+                  className=""
+                />
+                <h4 className="text-xl font-semibold text-[#937b70] hover:text-[#7f675f]">Smart Organization</h4>
+              </div>
               <p className="mt-2 text-gray-600">
-                Enter a clean workspace designed to minimize interruptions and help you stay in the flow.
+                Intuitively tag, pin, sort, archive, and search notes for a clutter-free experience.
               </p>
             </div>
-            <div className="p-8 bg-[#f8c89d] rounded-xl shadow-md hover:shadow-lg transition">
-              <h4 className="text-xl font-semibold text-[#937b70] hover:text-[#7f675f]">Smart Organization</h4>
+            <div className="p-4">
+              <div className="flex items-center gap-2">
+                <Image
+                  src="/info.svg"
+                  alt="Information"
+                  width={32}
+                  height={32}
+                  className=""
+                />
+                <h4 className="text-xl font-semibold text-[#937b70] hover:text-[#7f675f]">It&apos;s free</h4>
+              </div>
               <p className="mt-2 text-gray-600">
-                Intuitively tag, sort, archive, and search notes for a clutter-free experience.
+                It&apos;s completely free to use. No hidden fees, no subscriptions, just pure writing.
               </p>
             </div>
           </div>
@@ -112,7 +140,9 @@ export default function LandingPage() {
       <section id="about" className="w-full max-w-6xl py-20 scroll-mt-24">
         <div className="flex flex-col md:flex-row gap-12 items-center">
           <div className="flex-1">
-            <h3 className="text-3xl font-bold text-gray-900 mb-4">Why Wrytrai?</h3>
+            <h3 className="text-3xl font-bold text-gray-900 mb-4">Why
+              <span style={{ fontFamily: '"DM Serif Display", serif', color: "#856559" }}> Wrytrai?</span>
+            </h3>
             <p className="text-lg text-gray-600">
               I built Wrytrai to help creators, thinkers, and lifelong learners write faster and think deeper. Whether you’re jotting down thoughts or drafting full articles, Wrytrai has your back—with AI support and seamless structure.
             </p>
@@ -121,8 +151,8 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="w-full bg-[#f8c89d] py-6 mt-auto">
-        <div className="max-w-6xl mx-auto text-center text-gray-600">
+      <footer className="w-full py-6 mt-auto">
+        <div className="text-center text-gray-600">
           &copy; {new Date().getFullYear()} Wrytrai. All rights reserved.
         </div>
       </footer>

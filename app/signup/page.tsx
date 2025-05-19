@@ -21,8 +21,8 @@ const SignUpPage = () => {
         >
             {/* Left side info panel */}
             <div className=" w-full md:w-1/2 p-10 md:p-12 text-gray-800 flex flex-col justify-center items-start bg-opacity-75 ml-8">
-                <h1 className="text-4xl font-extrabold mb-6 leading-tight font-[var(--font-montserrat)]">
-                    Join Wrytrai Today
+                <h1 className="text-4xl font-semibold mb-6 leading-tight">
+                    Join <span style={{ fontFamily: '"DM Serif Display", serif', color: "#856559" }}>Wrytrai</span> Today
                 </h1>
                 <p className=" hidden md:block text-lg font-light mb-4 font-[var(--font-nunito-sans)]">
                     Organize your thoughts, capture ideas, and stay productive — all in one place.
