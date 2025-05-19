@@ -1,4 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
+import { FlipWords } from "@/components/ui/flip-words";
+
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white flex flex-col items-center px-6">
@@ -7,7 +10,7 @@ export default function LandingPage() {
         <Link
           href="/"
           className="text-2xl md:text-5xl font-extrabold"
-          style={{ fontFamily: '"DM Serif Display", serif' , color: "#856559" }}
+          style={{ fontFamily: '"DM Serif Display", serif', color: "#856559" }}
         >
           Wrytrai
         </Link>
@@ -25,10 +28,11 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="flex flex-col-reverse md:flex-row items-center max-w-6xl my-12 gap-10">
+      <section className="flex flex-col-reverse md:flex-row items-center my-8 gap-10">
         <div className="flex-1">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-            Write smarter.<br /> Organize better.
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+            Think deeper. Write
+            <FlipWords words={['brighter', 'faster', 'clearer', 'smarter', 'bolder', 'better']} />
           </h2>
           <p className="mt-4 text-md md:lg text-gray-600">
             Wrytrai is your AI-powered note-taking companion—combining seamless organization with intelligent suggestions.
@@ -40,7 +44,39 @@ export default function LandingPage() {
             Get Started
           </Link>
         </div>
+        <div className="flex-1">
+          <Image
+            src="/signup-illustration.svg"
+            alt="Hero Image"
+            className="w-full max-w-md mx-auto"
+            width={500}
+            height={500}
+            priority
+          />
+        </div>
       </section>
+
+      {/* App Screenshot Display */}
+      <section className="w-full my-12">
+        <div className="max-w-6xl mx-auto flex items-center gap-10">
+         
+          {/* Laptop Screenshot */}
+          <div className="w-full shadow-2xl rounded-md overflow-hidden">
+            <Image
+              src="/laptop-screen.png"
+              alt="Laptop Screenshot"
+              width={800}
+              height={600}
+              priority
+            />
+          </div>
+        </div>
+      </section>
+
+
+
+
+
 
       {/* Features Section */}
       <section id="features" className="w-full py-12 scroll-mt-24">
