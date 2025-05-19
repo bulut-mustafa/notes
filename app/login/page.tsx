@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 import LoginForm from '@/components/login-page/login-form';
 import Image from 'next/image';
 import { Montserrat, Nunito_Sans } from 'next/font/google';
@@ -41,8 +41,10 @@ const LoginPage: React.FC = () => {
                     <div className="flex flex-col items-center w-full max-w-md p-6 gap-6">
 
                         <div className="w-full">
+                        <Suspense fallback={<div>Loading login form...</div>}>
                             <LoginForm />
-                        </div>
+                        </Suspense>
+                    </div>
                     </div>
                 </div>
             </main>
