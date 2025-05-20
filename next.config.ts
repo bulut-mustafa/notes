@@ -2,6 +2,13 @@
 
 
 const nextConfig = ({
+   swcMinify: true, // Ensures modern minification
+
+  // Optional, if not already default
+  experimental: {
+    legacyBrowsers: false, // Avoid legacy polyfills for older browsers
+  },
+
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
@@ -13,6 +20,7 @@ const nextConfig = ({
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ['image/avif', 'image/webp'],
   },
+  
 });
 
 export default nextConfig;
