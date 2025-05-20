@@ -60,7 +60,7 @@
       if (newContent !== note?.content) {
         debouncedSave(newContent);
       }
-    }, [newContent]);
+    }, [newContent, note?.content, debouncedSave]);
     
 
     // Sync newContent when note.content changes

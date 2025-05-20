@@ -1,6 +1,36 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FlipWords } from "@/components/ui/flip-words";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Wrytrai – Think Deeper, Write Smarter",
+  description: "AI-powered notes app for creators, thinkers, and lifelong learners. Organize your thoughts, write faster, and focus better with Wrytrai.",
+  keywords: [
+    "Wrytrai", "AI note app", "smart note taking", "productivity tool", "writing assistant", "notes with AI", "organize thoughts", "note-taking app"
+  ],
+  openGraph: {
+    title: "Wrytrai – Think Deeper, Write Smarter",
+    description: "Your intelligent writing companion. Write faster, organize better, and think deeper with AI-powered note-taking.",
+    url: "https://wrytrai.vercel.app",
+    siteName: "Wrytrai",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Wrytrai App Screenshot",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Wrytrai – AI Note Taking App",
+    description: "Wrytrai helps you write smarter and stay focused using AI-enhanced features.",
+    images: ["/og-image.png"],
+  },
+};
 
 export default function LandingPage() {
   return (

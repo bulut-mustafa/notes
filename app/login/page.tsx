@@ -2,6 +2,13 @@ import React, {Suspense} from 'react';
 import LoginForm from '@/components/login-page/login-form';
 import Image from 'next/image';
 import { Montserrat, Nunito_Sans } from 'next/font/google';
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Login – Wrytrai",
+  description: "Log in to your Wrytrai account to access your intelligent notes and AI-powered writing assistant.",
+};
+
 const montserrat = Montserrat({
     subsets: ['latin'],
     weight: ['400', '700'],

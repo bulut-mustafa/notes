@@ -18,7 +18,7 @@ export default function ProfilePage() {
                     width={500}
                     height={500}
                     className="w-[300px] lg:w-[400px] h-auto object-contain"
-                    priority
+                    priority    
                 />
             </div>
 

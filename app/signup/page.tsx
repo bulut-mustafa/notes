@@ -2,6 +2,12 @@ import React from 'react';
 import SignUpForm from '@/components/signup-page/signup-form';
 import { Montserrat, Nunito_Sans } from 'next/font/google';
 import Image from 'next/image';
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sign Up – Wrytrai",
+  description: "Create a free Wrytrai account and start writing smarter with our AI-enhanced note-taking app.",
+};
 const montserrat = Montserrat({
     subsets: ['latin'],
     weight: ['400', '700'],
