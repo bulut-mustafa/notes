@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import "./globals.css";
-
+import { Analytics } from "@vercel/analytics/next"
 
 export const metadata: Metadata = {
   title: "Wrytrai – AI-Powered Notes App",
@@ -55,6 +55,8 @@ export default function RootLayout({
       </head>
       <body>
         <main>{children}</main>
+
+        <Analytics />
       </body>
     </html>
   );
