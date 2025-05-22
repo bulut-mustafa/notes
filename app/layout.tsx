@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next"
-
+import { ThemeProvider } from "@/context/theme-context";
 export const metadata: Metadata = {
   title: "Wrytrai – AI-Powered Notes App",
   description: "Write smarter, stay focused, and organize your thoughts with Wrytrai – your intelligent note-taking assistant.",
@@ -46,6 +46,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function () {
+                try {
+                  const saved = localStorage.getItem('theme');
+                  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  const theme = saved || (prefersDark ? 'dark' : 'light');
+                  document.documentElement.classList.add(theme);
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
         {/* Importing DM Sans font from Google Fonts */}
         <link
           href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap"
@@ -54,7 +68,9 @@ export default function RootLayout({
 
       </head>
       <body>
-        <main>{children}</main>
+        <ThemeProvider>
+          <main>{children}</main>
+        </ThemeProvider>
 
         <Analytics />
       </body>
