@@ -5,13 +5,22 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Wrytrai – Think Deeper, Write Smarter",
-  description: "AI-powered notes app for creators, thinkers, and lifelong learners. Organize your thoughts, write faster, and focus better with Wrytrai.",
+  description:
+    "AI-powered notes app for creators, thinkers, and lifelong learners. Organize your thoughts, write faster, and focus better with Wrytrai.",
   keywords: [
-    "Wrytrai", "AI note app", "smart note taking", "productivity tool", "writing assistant", "notes with AI", "organize thoughts", "note-taking app"
+    "Wrytrai",
+    "AI note app",
+    "smart note taking",
+    "productivity tool",
+    "writing assistant",
+    "notes with AI",
+    "organize thoughts",
+    "note-taking app",
   ],
   openGraph: {
     title: "Wrytrai – Think Deeper, Write Smarter",
-    description: "Your intelligent writing companion. Write faster, organize better, and think deeper with AI-powered note-taking.",
+    description:
+      "Your intelligent writing companion. Write faster, organize better, and think deeper with AI-powered note-taking.",
     url: "https://wrytrai.vercel.app",
     siteName: "Wrytrai",
     images: [
@@ -27,14 +36,15 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Wrytrai – AI Note Taking App",
-    description: "Wrytrai helps you write smarter and stay focused using AI-enhanced features.",
+    description:
+      "Wrytrai helps you write smarter and stay focused using AI-enhanced features.",
     images: ["/og-image.png"],
   },
 };
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center px-6">
+    <div className="min-h-screen bg-white dark:bg-[#121212] flex flex-col items-center px-6 text-gray-900 dark:text-gray-100">
       {/* Header */}
       <header className="w-full max-w-6xl py-8 flex justify-between items-center">
         <Link
@@ -45,13 +55,22 @@ export default function LandingPage() {
           Wrytrai
         </Link>
         <nav>
-          <a href="#features" className="text-gray-700 hover:text-[#7f675f] mx-2 md:mx-4">
+          <a
+            href="#features"
+            className="text-gray-700 dark:text-gray-300 hover:text-[#7f675f] dark:hover:text-[#cbb7b0] mx-2 md:mx-4"
+          >
             Features
           </a>
-          <a href="#about" className="text-gray-700 hover:text-[#7f675f] mx-2 md:mx-4">
+          <a
+            href="#about"
+            className="text-gray-700 dark:text-gray-300 hover:text-[#7f675f] dark:hover:text-[#cbb7b0] mx-2 md:mx-4"
+          >
             About
           </a>
-          <Link href="/login" className="text-gray-700 hover:text-[#7f675f] mx-2 md:mx-4">
+          <Link
+            href="/login"
+            className="text-gray-700 dark:text-gray-300 hover:text-[#7f675f] dark:hover:text-[#cbb7b0] mx-2 md:mx-4"
+          >
             Log In
           </Link>
         </nav>
@@ -60,12 +79,15 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="flex flex-col-reverse md:flex-row items-center my-8 gap-10">
         <div className="flex-1">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
-            Think deeper. Write
-            <FlipWords words={['brighter', 'faster', 'clearer', 'smarter', 'bolder', 'better']} />
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight">
+            Think deeper. Write{" "}
+            <FlipWords
+              words={["brighter", "faster", "clearer", "smarter", "bolder", "better"]}
+            />
           </h2>
-          <p className="mt-4 text-md md:lg text-gray-600">
-            Wrytrai is your AI-powered note-taking companion—combining seamless organization with intelligent suggestions.
+          <p className="mt-4 text-md md:lg text-gray-600 dark:text-gray-400">
+            Wrytrai is your AI-powered note-taking companion—combining seamless
+            organization with intelligent suggestions.
           </p>
           <Link
             href="/signup"
@@ -86,11 +108,9 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* App Screenshot Display */}
+      {/* App Screenshot */}
       <section className="w-full my-12">
         <div className="max-w-6xl mx-auto flex items-center gap-10">
-
-          {/* Laptop Screenshot */}
           <div className="w-full shadow-2xl rounded-md overflow-hidden">
             <Image
               src="/laptop-screen.png"
@@ -104,15 +124,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-
-
-
-
-
       {/* Features Section */}
       <section id="features" className="w-full py-12 scroll-mt-24">
         <div className="max-w-6xl mx-auto text-center">
-          <p className="mt-2 text-lg text-gray-600">
+          <p className="mt-2 text-lg text-gray-600 dark:text-gray-400">
             Everything you need to write, think, and stay focused—all in one place.
           </p>
 
@@ -124,26 +139,28 @@ export default function LandingPage() {
                   alt="AI Writing"
                   width={32}
                   height={32}
-                  className=""
                 />
-                <h4 className="text-xl font-semibold text-[#937b70] hover:text-[#7f675f]">AI-Powered Writing</h4>
+                <h4 className="text-xl font-semibold text-[#937b70] hover:text-[#7f675f]">
+                  AI-Powered Writing
+                </h4>
               </div>
-              <p className="mt-2 text-gray-600">
+              <p className="mt-2 text-gray-600 dark:text-gray-400">
                 Get intelligent suggestions and structure your thoughts with the help of AI.
               </p>
             </div>
-            <div className="p-4 ">
+            <div className="p-4">
               <div className="flex items-center gap-2">
                 <Image
                   src="/tag.svg"
                   alt="Tagging"
                   width={32}
                   height={32}
-                  className=""
                 />
-                <h4 className="text-xl font-semibold text-[#937b70] hover:text-[#7f675f]">Smart Organization</h4>
+                <h4 className="text-xl font-semibold text-[#937b70] hover:text-[#7f675f]">
+                  Smart Organization
+                </h4>
               </div>
-              <p className="mt-2 text-gray-600">
+              <p className="mt-2 text-gray-600 dark:text-gray-400">
                 Intuitively tag, pin, sort, archive, and search notes for a clutter-free experience.
               </p>
             </div>
@@ -154,11 +171,12 @@ export default function LandingPage() {
                   alt="Information"
                   width={32}
                   height={32}
-                  className=""
                 />
-                <h4 className="text-xl font-semibold text-[#937b70] hover:text-[#7f675f]">It&apos;s free</h4>
+                <h4 className="text-xl font-semibold text-[#937b70] hover:text-[#7f675f]">
+                  It&apos;s free
+                </h4>
               </div>
-              <p className="mt-2 text-gray-600">
+              <p className="mt-2 text-gray-600 dark:text-gray-400">
                 It&apos;s completely free to use. No hidden fees, no subscriptions, just pure writing.
               </p>
             </div>
@@ -170,11 +188,18 @@ export default function LandingPage() {
       <section id="about" className="w-full max-w-6xl py-20 scroll-mt-24">
         <div className="flex flex-col md:flex-row gap-12 items-center">
           <div className="flex-1">
-            <h3 className="text-3xl font-bold text-gray-900 mb-4">Why
-              <span style={{ fontFamily: '"DM Serif Display", serif', color: "#856559" }}> Wrytrai?</span>
+            <h3 className="text-3xl font-bold mb-4">
+              Why{" "}
+              <span
+                style={{ fontFamily: '"DM Serif Display", serif', color: "#856559" }}
+              >
+                Wrytrai?
+              </span>
             </h3>
-            <p className="text-lg text-gray-600">
-              I built Wrytrai to help creators, thinkers, and lifelong learners write faster and think deeper. Whether you’re jotting down thoughts or drafting full articles, Wrytrai has your back—with AI support and seamless structure.
+            <p className="text-lg text-gray-600 dark:text-gray-400">
+              I built Wrytrai to help creators, thinkers, and lifelong learners write
+              faster and think deeper. Whether you’re jotting down thoughts or drafting
+              full articles, Wrytrai has your back—with AI support and seamless structure.
             </p>
           </div>
         </div>
@@ -182,7 +207,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="w-full py-6 mt-auto">
-        <div className="text-center text-gray-600">
+        <div className="text-center text-gray-600 dark:text-gray-400">
           &copy; {new Date().getFullYear()} Wrytrai. All rights reserved.
         </div>
       </footer>
