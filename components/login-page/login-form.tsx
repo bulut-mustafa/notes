@@ -93,7 +93,7 @@ const LoginForm: React.FC = () => {
         }
     };
     const handleForgetPassword = () => {
-        if(!formData.email) {
+        if (!formData.email) {
             setError("Please enter your email address to reset your password.");
             return;
         }
@@ -119,12 +119,12 @@ const LoginForm: React.FC = () => {
 
                     setError(errorMessage);
                 }
-            );
+                );
         } catch (error) {
             console.error("Error sending password reset email:", error);
             setError("Failed to send password reset email. Please try again.");
         }
-        
+
     };
 
     if (loading) {
@@ -137,32 +137,47 @@ const LoginForm: React.FC = () => {
 
     return (
         <form className="space-y-6" onSubmit={handleSubmit}>
-            <Link href={'/'} >
-                <p className="text-4xl text-center font-bold" style={{ fontFamily: '"DM Serif Display", serif' }}>
+            <Link href={'/'}>
+                <p
+                    className="text-4xl text-center font-bold text-gray-900 dark:text-gray-100"
+                    style={{ fontFamily: '"DM Serif Display", serif' }}
+                >
                     Wrytrai
                 </p>
             </Link>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">Email</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Email
+                </label>
                 <input
                     required
                     name="email"
                     type="email"
-                    className="mt-1 block w-full p-2.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                    className="mt-1 block w-full p-2.5 border border-gray-300 rounded-lg 
+                 bg-white text-gray-900 
+                 focus:ring-blue-500 focus:border-blue-500
+                 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600
+                 dark:focus:ring-blue-400 dark:focus:border-blue-400"
                     value={formData.email}
                     onChange={handleInputChange}
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">Password</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Password
+                </label>
                 <div className="relative">
                     <input
                         required
                         name="password"
-                        type={isVisible ? "text" : "password"}
-                        className="mt-1 block w-full p-2.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                        type={isVisible ? 'text' : 'password'}
+                        className="mt-1 block w-full p-2.5 border border-gray-300 rounded-lg
+                   bg-white text-gray-900
+                   focus:ring-blue-500 focus:border-blue-500
+                   dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600
+                   dark:focus:ring-blue-400 dark:focus:border-blue-400"
                         value={formData.password}
                         onChange={handleInputChange}
                     />
@@ -172,23 +187,38 @@ const LoginForm: React.FC = () => {
                         type="button"
                         onClick={toggleVisibility}
                     >
-                        {isVisible ? <EyeSlashFilledIcon className="text-2xl text-gray-500" /> : <EyeFilledIcon className="text-2xl text-gray-500" />}
+                        {isVisible ? (
+                            <EyeSlashFilledIcon className="text-2xl text-gray-500 dark:text-gray-400" />
+                        ) : (
+                            <EyeFilledIcon className="text-2xl text-gray-500 dark:text-gray-400" />
+                        )}
                     </button>
                 </div>
-                <p onClick={handleForgetPassword} className="text-sm text-end mt-1 font-light text-blue-600 hover:underline cursor-pointer">
-                Forgot  password?{' '}
+                <p
+                    onClick={handleForgetPassword}
+                    className="text-sm text-end mt-1 font-light text-blue-600 hover:underline cursor-pointer
+                 dark:text-blue-400 dark:hover:text-blue-300"
+                >
+                    Forgot password?{' '}
                 </p>
             </div>
 
-            {error && <p className="text-red-500 text-sm">{error}</p>}
+            {error && (
+                <p className="text-red-600 dark:text-red-400 text-sm">
+                    {error}
+                </p>
+            )}
 
             <button
                 type="submit"
                 disabled={isSubmitting}
                 className={`w-full text-white rounded-lg p-2.5 font-semibold flex items-center justify-center
-    ${isSubmitting ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 active:bg-blue-700'}
-    focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200 ease-in-out
-    transform hover:scale-[1.02] active:scale-95`}
+      ${isSubmitting
+                        ? 'bg-blue-300 cursor-not-allowed dark:bg-blue-600/50'
+                        : 'bg-blue-500 hover:bg-blue-600 active:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 dark:active:bg-blue-800'
+                    }
+      focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-400
+      transition-all duration-200 ease-in-out transform hover:scale-[1.02] active:scale-95`}
             >
                 {isSubmitting ? (
                     <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
@@ -208,16 +238,18 @@ const LoginForm: React.FC = () => {
                         />
                     </svg>
                 ) : (
-                    "Log In"
+                    'Log In'
                 )}
             </button>
-            <p className="text-sm font-light text-gray-500">
+
+            <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{' '}
-                <Link href="/signup" className="font-medium text-blue-600 hover:underline">
+                <Link href="/signup" className="font-medium text-blue-600 hover:underline dark:text-blue-400 dark:hover:text-blue-300">
                     Sign up
                 </Link>
             </p>
         </form>
+
     );
 };
 
